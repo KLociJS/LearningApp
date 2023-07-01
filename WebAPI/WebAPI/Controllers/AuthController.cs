@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Models;
 using WebAPI.Models.AuthModel;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WebAPI.Controllers
 {
@@ -18,13 +24,17 @@ namespace WebAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
         
-        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,IEmailService emailService)
+        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,IEmailService emailService, IConfiguration configuration, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
+            _configuration = configuration;
+            _signInManager = signInManager;
         }
 
         [HttpPost]
@@ -82,5 +92,51 @@ namespace WebAPI.Controllers
             return BadRequest("Unable to verify email!");
         }
 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
+        {
+            // find user
+            var user = await _userManager.FindByNameAsync(loginUser.UserName);
+            
+            // validate password
+            if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
+            {
+                //create claims
+                var authClaims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+                
+                //add user claims
+                var userRoles = await _userManager.GetRolesAsync(user);
+                authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+                
+                //create token
+                var jwtToken = GetToken(authClaims);
+
+                
+                return Ok(new
+                {
+                    expiration = jwtToken.ValidTo, 
+                    token = new JwtSecurityTokenHandler().WriteToken(jwtToken)
+                });
+            }
+
+            return Unauthorized();
+        }
+
+        private JwtSecurityToken GetToken(List<Claim> authClaims)
+        {
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:ValidIssuer"],
+                audience:_configuration["JWT:ValidAudience"],
+                expires: DateTime.Now.AddHours(3),
+                claims:authClaims,
+                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
+                );
+            return token;
+        }
     }
 }
