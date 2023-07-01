@@ -1,14 +1,12 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Contexts;
 using WebAPI.Models;
-using WebAPI.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
