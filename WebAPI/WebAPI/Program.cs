@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using User.Management.Service.Models;
+using User.Management.Service.Services;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.SeedData;
@@ -10,9 +13,19 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDataContext>( options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DataContext")));
 
+// Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDataContext>();
+
+//Add Email config
+var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
+builder.Services.AddSingleton(emailConfig);
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+//Add config for required email
+builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = true);
 
 builder.Services.AddControllers();
 

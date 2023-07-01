@@ -30,4 +30,8 @@
       <Folder Include="Controllers\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\User.Management.Service\User.Management.Service.csproj" />
+    </ItemGroup>
+
 </Project>
