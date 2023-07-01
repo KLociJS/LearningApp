@@ -16,7 +16,11 @@ builder.Services.AddDbContext<AppDataContext>( options =>
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddRoles<IdentityRole<Guid>>()
-    .AddEntityFrameworkStores<AppDataContext>();
+    .AddEntityFrameworkStores<AppDataContext>()
+    .AddDefaultTokenProviders();
+
+//Add config for required email
+builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = true);
 
 //Add Email config
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
@@ -24,8 +28,6 @@ builder.Services.AddSingleton(emailConfig);
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
-//Add config for required email
-builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = true);
 
 builder.Services.AddControllers();
 

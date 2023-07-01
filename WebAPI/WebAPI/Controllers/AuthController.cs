@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using User.Management.Service.Models;
+using User.Management.Service.Services;
 using WebAPI.Models;
 using WebAPI.Models.AuthModel;
 
@@ -16,13 +18,13 @@ namespace WebAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly IConfiguration _configuration;
+        private readonly IEmailService _emailService;
         
-        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, IConfiguration configuration)
+        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _configuration = configuration;
+            _emailService = emailService;
         }
 
         [HttpPost]
@@ -48,8 +50,13 @@ namespace WebAPI.Controllers
                 // Assign role
 
                 if (!result.Succeeded) return StatusCode(500, result.Errors);
-            
                 await _userManager.AddToRoleAsync(newUser, "User");
+                
+                //Add token to verify email
+                var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                var confirmationLink = Url.Action(nameof(ConfirmEmail),"Auth", new {token, email=newUser.Email }, Request.Scheme);
+                var message = new Message(new string[] { newUser.Email! }, "Email validation", confirmationLink!);
+                _emailService.SendEmail(message);
 
                 return Ok("User successfully created!");
             }
@@ -59,5 +66,21 @@ namespace WebAPI.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
+        [HttpGet("ConfirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var result = await _userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return Ok("Email verified successfully!");
+                }
+            }
+            return BadRequest("Unable to verify email!");
+        }
+
     }
 }
