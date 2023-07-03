@@ -1,0 +1,18 @@
+.primary-button{
+    margin-top: 2rem;
+    padding: 0.5rem 2rem;
+    width: 80%;
+    border: none;
+
+    background-color: #002147;
+    color:#FBFBFF;
+
+    font-size: 1rem;
+
+    border-radius: 5px;
+}
+
+.primary-button:hover{
+    cursor: pointer;
+    background-color: #002147f1;
+}
