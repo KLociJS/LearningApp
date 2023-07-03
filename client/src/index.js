@@ -8,6 +8,8 @@ import {
     createRoutesFromElements,
 } from "react-router-dom";
 
+import './index.css'
+
 import Layout from "./Pages/_Layout/Layout";
 
 import Home from "./Pages/Home/Home"
