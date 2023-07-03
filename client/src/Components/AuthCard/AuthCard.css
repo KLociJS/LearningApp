@@ -1,0 +1,23 @@
+.auth-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 2rem 3rem;
+
+    /* border: 1px solid #002147; */
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px 1px #8f8f8f;
+}
+
+.auth-heading{
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+    color: #002147;
+}
+
+.auth-icon{
+    font-size: 5rem;
+    color: #002147;
+}
