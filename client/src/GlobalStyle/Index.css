@@ -1,0 +1,20 @@
+:root {
+  --primary: #002147;
+  --primary-2: #002147f1;
+  --secondary: #FBFBFF;
+  --danger: red;
+  --accent: #FF9900;
+  --shadow:#8f8f8f;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto';
+}
+
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}

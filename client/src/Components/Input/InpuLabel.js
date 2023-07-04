@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './InputLabel.css';
 
-const InputLabel = ({label, inputValue, setInputValue}) => {
+const InputLabel = ({ label, type, inputValue, setInputValue }) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => setIsFocused(true);
@@ -13,16 +13,17 @@ const InputLabel = ({label, inputValue, setInputValue}) => {
   return (
     <div className="input-group">
       <input
-        type="text"
-        id="myInput"
+        type={type}
+        id={label}
+        value={inputValue}
         className="input-control"
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={handleChange}
       />
       <label
-        htmlFor="myInput"
-        className={'input-label '+labelClassName}
+        htmlFor={label}
+        className={'input-label ' + labelClassName}
       >
         {label}
       </label>

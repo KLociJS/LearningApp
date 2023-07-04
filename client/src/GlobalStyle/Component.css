@@ -1,0 +1,52 @@
+/* Button */
+
+.primary-button{
+    padding: 0.5rem 2rem;
+    width: 80%;
+    border: none;
+  
+    background-color: var(--primary);
+    color:var(--secondary);
+  
+    font-size: 1rem;
+  
+    border-radius: 5px;
+  }
+  
+  .primary-button:hover{
+    cursor: pointer;
+    background-color: var(--primary-2);
+  }
+  
+  @media screen and (max-width: 960px) {
+    .primary-button{
+      width: 180px;
+    }
+}
+
+/* Card */
+
+.card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 2rem 3rem;
+
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px 1px var(--shadow);
+}
+
+@media screen and (max-width: 960px) {
+  .card{
+    padding: 2rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .card{
+    padding: 1rem 1rem;
+    width: 100%;
+    border-radius: 0;
+  }
+}

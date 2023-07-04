@@ -20,8 +20,8 @@ export default function Login() {
         <div className='card'>
           <AiOutlineLogin className='card-icon' />
           <h2 className='heading-1'>Login</h2>
-          <InputLabel label='User name' inputValue={userName} setInputValue={setUserName}/>
-          <InputLabel label='Password' inputValue={password} setInputValue={setPassword}/>
+          <InputLabel label='User name' type='text' inputValue={userName} setInputValue={setUserName}/>
+          <InputLabel label='Password' type='password' inputValue={password} setInputValue={setPassword}/>
           <Link to='/password-reset' className='link align-end mt-1'>Forgot password?</Link>
           <button className='primary-button mt-2' onClick={handleLogin}>Login</button>
         </div>
