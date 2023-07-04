@@ -6,10 +6,27 @@
     font-weight: 400;
     color: var(--primary);
 }
+.heading-2{
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 400;
+  color: var(--primary);
+}
 
 /* Link */
 .link{
   font-size: 0.75rem;
+}
+
+@media screen and (max-width: 400px) {
+  .link{
+    /* align-self:flex-end;
+    margin-right: 40%;
+    transform: translateX(100%); */
+    width: min(100%, 220px);
+    text-align: end;
+    align-self:center;
+  }
 }
 
 /* Icon */

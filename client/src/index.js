@@ -21,6 +21,7 @@ import Layout from "./Pages/_Layout";
 import Home from "./Pages/Home"
 import Login from "./Pages/Login"
 import Singup from "./Pages/SingUp"
+import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -28,6 +29,7 @@ const router = createBrowserRouter(
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Singup />} />
+            <Route path="reset-password" element={<ResetPassword />} />
         </Route>
     )
 );

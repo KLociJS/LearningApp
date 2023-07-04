@@ -2,7 +2,7 @@
 
 .primary-button{
     padding: 0.5rem 2rem;
-    width: 80%;
+
     border: none;
   
     background-color: var(--primary);
@@ -17,12 +17,7 @@
     cursor: pointer;
     background-color: var(--primary-2);
   }
-  
-  @media screen and (max-width: 960px) {
-    .primary-button{
-      width: 180px;
-    }
-}
+
 
 /* Card */
 
@@ -35,12 +30,6 @@
 
     border-radius: 5px;
     box-shadow: 3px 3px 10px 1px var(--shadow);
-}
-
-@media screen and (max-width: 960px) {
-  .card{
-    padding: 2rem;
-  }
 }
 
 @media screen and (max-width: 400px) {

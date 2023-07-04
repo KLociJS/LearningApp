@@ -1,12 +1,14 @@
 .input-group {
-    position: relative;
+    position: relative;   
     margin-top: 1rem;
+    width: 100%;
 }
 
 .input-control {
     border: 1px solid #002147;
     border-radius: 5px;
     padding: 0.5rem 0.5rem;
+    width: 100%
 }
 
 .input-control:focus{
@@ -31,5 +33,14 @@
     padding: 0 0.2rem;
     background-color: #FBFBFF;
     font-size: 0.8rem;
+}
+@media screen and (max-width: 400px) {
+    .input-control {
+        width: min(100%, 250px)
+    }
+    .input-group {
+        width:fit-content;
+    }
+    
 }
   
