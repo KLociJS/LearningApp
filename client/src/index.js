@@ -15,12 +15,12 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import Layout from "./Pages/_Layout/Layout";
+import Layout from "./Pages/_Layout";
 
 //Pages
-import Home from "./Pages/Home/Home"
-import Login from "./Pages/Login/Login"
-import Singup from "./Pages/SingUp/SignUp"
+import Home from "./Pages/Home"
+import Login from "./Pages/Login"
+import Singup from "./Pages/SingUp"
 
 const router = createBrowserRouter(
     createRoutesFromElements(
