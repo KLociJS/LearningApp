@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 
-import './Login.css'
-import InputLabel from '../../Components/Input/InpuLabel'
+import InputLabel from '../../Components/Input'
 
 import { AiOutlineLogin } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
