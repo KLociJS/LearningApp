@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
                 var user = await _userManager.FindByEmailAsync(registerUser.Email);
                 if (user != null)
                 {
-                    return Conflict("Email already in use");
+                    return Conflict(new { Message = "Email already in use."});
                 }
             
                 // If user doesnt exists
@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
                 var message = new Message(new string[] { newUser.Email! }, "Email validation", confirmationLink!);
                 _emailService.SendEmail(message);
 
-                return Ok("User successfully created!");
+                return Ok(new { Message = "User successfully created."});
             }
             catch (Exception e)
             {
