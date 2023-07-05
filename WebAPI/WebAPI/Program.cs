@@ -14,6 +14,7 @@ var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
+
 // Apply cors policy
 builder.Services.AddCors(options =>
 {
@@ -35,6 +36,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDataContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default User settings.
+    options.User.AllowedUserNameCharacters =
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+    options.User.RequireUniqueEmail = true;
+});
 
 builder.Services.AddAuthentication(options =>
 {
