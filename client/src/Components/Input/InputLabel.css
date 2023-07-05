@@ -34,6 +34,14 @@
     background-color: #FBFBFF;
     font-size: 0.8rem;
 }
+
+.input-group.error .input-control{
+    border: 1px solid var(--danger);
+}
+.input-group.error .input-label{
+    color: var(--danger);
+}
+
 @media screen and (max-width: 400px) {
     .input-control {
         width: min(100%, 250px)

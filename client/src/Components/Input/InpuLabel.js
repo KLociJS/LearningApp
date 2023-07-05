@@ -1,20 +1,29 @@
 import React, { useState } from 'react';
 import './InputLabel.css';
 
-const InputLabel = ({ label, type, inputValue, setInputValue, setError }) => {
-  const [isFocused, setIsFocused] = useState(false);
+const InputLabel = ({ 
+  label, 
+  type, 
+  inputValue, 
+  setInputValue, 
+  setIsValid, 
+  className, 
+  setError 
+}) => {
+  const [isFocused, setIsFocused] = useState(false)
 
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(false);
+  const handleFocus = () => setIsFocused(true)
+  const handleBlur = () => setIsFocused(false)
   const handleChange = (e) => {
     setInputValue(e.target.value)
-    setError('')
+    if(setIsValid)setIsValid(true)
+    if(setError) setError('')
   };
 
-  const labelClassName = isFocused || inputValue ? 'active' : '';
+  const labelClassName = isFocused || inputValue ? 'active' : ''
 
   return (
-    <div className="input-group">
+    <div className={`input-group ${className }`}>
       <input
         type={type}
         id={label}
@@ -27,7 +36,7 @@ const InputLabel = ({ label, type, inputValue, setInputValue, setError }) => {
       />
       <label
         htmlFor={label}
-        className={'input-label ' + labelClassName}
+        className={`input-label ${labelClassName}`}
       >
         {label}
       </label>
@@ -35,4 +44,4 @@ const InputLabel = ({ label, type, inputValue, setInputValue, setError }) => {
   );
 };
 
-export default InputLabel;
+export default InputLabel

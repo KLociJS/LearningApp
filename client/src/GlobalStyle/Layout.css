@@ -19,6 +19,10 @@
   .align-end{
     align-self: flex-end;
   }
+
+  .align-start{
+    align-self: flex-start;
+  }
   
   /* Margin */
   .mt-1{
