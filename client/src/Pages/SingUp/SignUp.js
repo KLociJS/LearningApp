@@ -47,8 +47,6 @@ export default function SingUp() {
       password
     }
 
-    console.log(newUser);
-
     fetch('https://localhost:7120/api/Auth', {
       method: 'POST',
       headers: {
@@ -69,7 +67,6 @@ export default function SingUp() {
     .catch(error=>{
       if (error instanceof Response) {
         error.json().then(errorData => {
-          console.log(errorData)
           const errorMessages = errorData.map(e=>e.description)
           setError(errorMessages)
         })
