@@ -40,7 +40,7 @@ namespace WebAPI.Controllers
                 var user = await _userManager.FindByEmailAsync(registerUser.Email);
                 if (user != null)
                 {
-                    return Conflict(new { Message = "Email already in use."});
+                    return Conflict(new List<object>() {new { Description = "Email already in use."}});
                 }
             
                 // If user doesnt exists
@@ -62,7 +62,7 @@ namespace WebAPI.Controllers
                 var message = new Message(new string[] { newUser.Email! }, "Email validation", confirmationLink!);
                 _emailService.SendEmail(message);
 
-                return Ok(new { Message = "User successfully created."});
+                return Ok(new List<object>() {new { Description = "User Successfully created"}});
             }
             catch (Exception e)
             {
@@ -74,50 +74,68 @@ namespace WebAPI.Controllers
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
+            try
             {
-                var result = await _userManager.ConfirmEmailAsync(user, token);
-                if (result.Succeeded)
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user != null)
                 {
-                    return Ok("Email verified successfully!");
+                    var result = await _userManager.ConfirmEmailAsync(user, token);
+                    if (result.Succeeded)
+                    {
+                        return Ok(new List<object>() {new { Description = "Email verified successfully!"}});
+                    }
                 }
+                return BadRequest(new List<object>() {new { Description = "Unable to verify email!"}});
             }
-            return BadRequest("Unable to verify email!");
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+            
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
         {
-            // find user
-            var user = await _userManager.FindByNameAsync(loginUser.UserName);
-            
-            // validate password
-            if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
+            try
             {
-                //create claims
-                var authClaims = new List<Claim>()
+                // find user
+                var user = await _userManager.FindByNameAsync(loginUser.UserName);
+            
+                // validate password
+                if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                    //create claims
+                    var authClaims = new List<Claim>()
+                    {
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    };
                 
-                //add user claims
-                var userRoles = await _userManager.GetRolesAsync(user);
-                authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+                    //add user claims
+                    var userRoles = await _userManager.GetRolesAsync(user);
+                    authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
                 
-                //create token
-                var jwtToken = GetToken(authClaims);
+                    //create token
+                    var jwtToken = GetToken(authClaims);
 
                 
-                return Ok(new
-                {
-                    expiration = jwtToken.ValidTo, 
-                    token = new JwtSecurityTokenHandler().WriteToken(jwtToken)
-                });
+                    return Ok(new
+                    {
+                        expiration = jwtToken.ValidTo, 
+                        token = new JwtSecurityTokenHandler().WriteToken(jwtToken)
+                    });
+                }
+
+                return Unauthorized(new List<object>() {new { Description = "Wrong username or password."}});
             }
-
-            return Unauthorized();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, e.Message);
+            }
+            
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
