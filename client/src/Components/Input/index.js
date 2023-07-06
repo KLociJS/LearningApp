@@ -1,1 +1,1 @@
-export { default } from './InpuLabel';
+export { default } from './InputField';

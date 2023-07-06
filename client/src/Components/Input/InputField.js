@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import './InputLabel.css';
+import './InputField.css';
 
-const InputLabel = ({ 
+const InputField = ({ 
   label, 
   type, 
   inputValue, 
   setInputValue, 
   setIsValid, 
   className, 
-  setError 
+  setIsPasswordMatch,
+  setError
 }) => {
   const [isFocused, setIsFocused] = useState(false)
 
@@ -17,13 +18,14 @@ const InputLabel = ({
   const handleChange = (e) => {
     setInputValue(e.target.value)
     if(setIsValid)setIsValid(true)
-    if(setError) setError('')
+    if(setIsPasswordMatch) setIsPasswordMatch(true)
+    setError([])
   };
 
   const labelClassName = isFocused || inputValue ? 'active' : ''
 
   return (
-    <div className={`input-group ${className }`}>
+    <div className={`input-group ${className || '' }`}>
       <input
         type={type}
         id={label}
@@ -44,4 +46,4 @@ const InputLabel = ({
   );
 };
 
-export default InputLabel
+export default InputField
