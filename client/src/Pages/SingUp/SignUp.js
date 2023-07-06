@@ -24,7 +24,7 @@ export default function SingUp() {
 
   const [error, setError] = useState([])
 
-  const handleLogin = () =>{
+  const handleSingup = () =>{
 
     let passwordMatching = password===passwordConfirmation
     if(!passwordMatching) setIsPasswordMatch(false)
@@ -132,7 +132,7 @@ export default function SingUp() {
           {!isPasswordValid && <p className='error-msg align-start'>Password has to be at least 6 characters long. Containing 1 letter 1 number 1 special character.</p>}
           {!isPasswordMatch && isPasswordValid && <p className='error-msg align-start'>Passwords doesnt match.</p>}
           {error.map(error=>(<p key={error} className='error-msg align-start'>{error}</p>))}
-          <button className='primary-button mt-2' onClick={handleLogin}>SignUp</button>
+          <button className='primary-button mt-2' onClick={handleSingup}>SignUp</button>
         </div>
       </main>
     </>
