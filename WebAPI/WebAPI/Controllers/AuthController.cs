@@ -18,17 +18,19 @@ namespace WebAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-        private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         
-        public AuthController(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager,IEmailService emailService, IConfiguration configuration, SignInManager<AppUser> signInManager)
+        public AuthController(
+            UserManager<AppUser> userManager, 
+            RoleManager<IdentityRole<Guid>> roleManager
+            ,IEmailService emailService,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _emailService = emailService;
             _configuration = configuration;
-            _signInManager = signInManager;
         }
 
         [HttpPost]
@@ -59,7 +61,7 @@ namespace WebAPI.Controllers
                 //Add token to verify email
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
                 var confirmationLink = Url.Action(nameof(ConfirmEmail),"Auth", new {token, email=newUser.Email }, Request.Scheme);
-                var message = new Message(new string[] { newUser.Email! }, "Email validation", confirmationLink!);
+                var message = new Message(new [] { newUser.Email! }, "Email validation", confirmationLink!);
                 _emailService.SendEmail(message);
 
                 return Ok(new List<object>() {new { Description = "User Successfully created"}});
