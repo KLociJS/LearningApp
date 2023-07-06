@@ -25,15 +25,25 @@
   }
   
   /* Margin */
+  .mt-0{
+    margin-top: 0.5rem;
+  }
   .mt-1{
     margin-top: 1rem;
   }
   .mt-2{
+    margin-top: 1.5rem;
+  }
+  .mt-3{
     margin-top: 2rem;
   }
 
   .mb-1{
     margin-bottom: 0.5rem;
+  }
+
+  .card div:first-child{
+    margin-top: 0;
   }
 
 /* Auth card container */
@@ -43,3 +53,4 @@
     align-items: center;
     height: 80vh;
 }
+

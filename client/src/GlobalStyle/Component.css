@@ -2,7 +2,7 @@
 
 .primary-button{
     padding: 0.5rem 2rem;
-
+    width: 220px;
     border: none;
   
     background-color: var(--primary);

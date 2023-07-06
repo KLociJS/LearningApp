@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import InputLabel from '../../Components/Input'
+import InputField from '../../Components/Input'
 
 import { AiOutlineLogin } from 'react-icons/ai'
 
@@ -20,13 +20,14 @@ export default function SingUp() {
   const [password, setPassword] = useState('')
   const [passwordConfirmation, setPasswordConfirmation] = useState('')
   const [isPasswordValid,setIsPasswordValid] = useState(true)
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true)
 
-  const [error, setError] = useState('')
+  const [error, setError] = useState([])
 
   const handleLogin = () =>{
 
     let passwordMatching = password===passwordConfirmation
-    if(!passwordMatching) setError('Passwords Doesnt match')
+    if(!passwordMatching) setIsPasswordMatch(false)
   
     let userNameValidState = userNameValidator(userName)
     setIsUserNameValid(userNameValidState)
@@ -35,6 +36,7 @@ export default function SingUp() {
     setIsEmailValid(emailValidState)
 
     let passwordValidState = passwordValidator(password)
+    console.log(passwordValidState);
     setIsPasswordValid(passwordValidState)
 
     if(!passwordMatching || !userNameValidState || !emailValidState || !passwordValidState) return
@@ -68,7 +70,8 @@ export default function SingUp() {
       if (error instanceof Response) {
         error.json().then(errorData => {
           console.log(errorData)
-          setError(errorData.message)
+          const errorMessages = errorData.map(e=>e.description)
+          setError(errorMessages)
         })
       } else {
         console.error('Error:', error)
@@ -82,46 +85,56 @@ export default function SingUp() {
         <div className='card'>
           <AiOutlineLogin className='card-icon' />
           <h2 className='heading-1'>Sing up</h2>
-          <InputLabel
+
+          {/* User name input */}
+          <InputField
             label='User name' 
             type='text' 
             inputValue={userName} 
             setInputValue={setUserName} 
-            setIsValid={setIsUserNameValid} 
+            setIsValid={setIsUserNameValid}
+            setError={setError}
             className={isUserNameValid ? '' : 'error'}
           />
-          {!isUserNameValid && <p className='error-msg align-start'>Must be 4-20 characters.</p>}
-          {!isUserNameValid && <p className='error-msg align-start'>[ a-z, A-Z, 0-9, .-_ ]</p>}
-          <InputLabel 
+          {!isUserNameValid && <p className='error-msg align-start'>User name must be between 4-20 characters.</p>}
+
+          {/* Email input */}
+          <InputField
             label='Email' 
             type='email' 
             inputValue={email} 
             setInputValue={setEmail} 
             setIsValid={setIsEmailValid} 
+            setError={setError}
             className={isEmailValid ? '' : 'error'}
           />
-          {!isEmailValid && <p className='error-msg align-start'>Email is invalid</p>}
-          <InputLabel 
+          {!isEmailValid && <p className='error-msg align-start'>Provided email adress is invalid.</p>}
+
+          {/* Password input */}
+          <InputField
             label='Password' 
             type='password' 
             inputValue={password} 
             setInputValue={setPassword} 
             setIsValid={setIsPasswordValid} 
-            setError={setError} 
-            className={!isPasswordValid || error ? 'error' : ''}/>
-          <InputLabel 
+            setIsPasswordMatch={setIsPasswordMatch}
+            setError={setError}
+            className={isPasswordValid && isPasswordMatch ? '' : 'error'}
+          />
+
+          {/* Verify password input */}
+          <InputField
             label='Verify password' 
             type='password' 
             inputValue={passwordConfirmation} 
             setInputValue={setPasswordConfirmation} 
-            setError={setError} 
+            setIsPasswordMatch={setIsPasswordMatch} 
             setIsValid={setIsPasswordValid} 
-            className={!isPasswordValid || error ? 'error' : ''}/>
-          {!isPasswordValid && <p className='error-msg align-start'>Must be at least 6 characters long</p>}
-          {!isPasswordValid && <p className='error-msg align-start'>Contain at least one of each character</p>}
-          {!isPasswordValid && <p className='error-msg align-start'>[ A-Z, a-z, 0-9, special character ]</p>}
-
-          {error && isPasswordValid && <p className='error-msg align-start'>{error}</p>}
+            setError={setError}
+            className={isPasswordValid && isPasswordMatch ? '' : 'error'}/>
+          {!isPasswordValid && <p className='error-msg align-start'>Password has to be at least 6 characters long. Containing 1 letter 1 number 1 special character.</p>}
+          {!isPasswordMatch && isPasswordValid && <p className='error-msg align-start'>Passwords doesnt match.</p>}
+          {error.map(error=>(<p key={error} className='error-msg align-start'>{error}</p>))}
           <button className='primary-button mt-2' onClick={handleLogin}>SignUp</button>
         </div>
       </main>

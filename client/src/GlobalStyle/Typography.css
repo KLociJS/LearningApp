@@ -2,25 +2,27 @@
 
 .heading-1{
     font-size: 3.5rem;
-    margin-bottom: 2rem;
     font-weight: 400;
     color: var(--primary);
 }
 .heading-2{
   font-size: 2rem;
-  margin-bottom: 2rem;
   font-weight: 400;
   color: var(--primary);
 }
 
 /* Error msgs */
 .error-msg{
+  max-width: 220px;
+  margin-top: 0.1rem;
+  font-size: 0.75rem;
   color: var(--danger);
 }
 
 /* Link */
 .link{
   font-size: 0.75rem;
+  margin-top: 0.25rem;
 }
 
 @media screen and (max-width: 400px) {

@@ -1,7 +1,6 @@
 
 export function userNameValidator(username){
     let validUserName = /^[a-zA-Z0-9-._]{4,20}$/
-
     return validUserName.test(username) 
 }
 

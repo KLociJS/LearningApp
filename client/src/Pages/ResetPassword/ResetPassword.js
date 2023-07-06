@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import InputLabel from '../../Components/Input'
+import InputField from '../../Components/Input'
 
 import { FiLock } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
@@ -20,7 +20,7 @@ export default function ResetPassword() {
       <div className='card'>
         <FiLock className='card-icon mb-1' />
         <h2 className='heading-2'>Reset Password</h2>
-        <InputLabel label='Email address' type='email' inputValue={email} setInputValue={setEmail} setError={setError}/>
+        <InputField label='Email address' type='email' inputValue={email} setInputValue={setEmail} setError={setError}/>
         {error && <p>{error}</p>}
         <Link to='/login' className='link align-end'>Back to login</Link>
         <button className='primary-button mt-2' onClick={handleLogin}>Send request</button>
