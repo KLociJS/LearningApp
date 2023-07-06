@@ -22,6 +22,8 @@ import Home from "./Pages/Home"
 import Login from "./Pages/Login"
 import Singup from "./Pages/SingUp"
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
+import Users from "./Pages/Users/Users";
+import User from "./Pages/User/User";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -30,6 +32,8 @@ const router = createBrowserRouter(
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Singup />} />
             <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="users" element={ <Users/> }/>
+            <Route path="user/:id" element={ <User /> }/>
         </Route>
     )
 );
