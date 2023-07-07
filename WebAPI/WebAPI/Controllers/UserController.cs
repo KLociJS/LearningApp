@@ -67,13 +67,17 @@ public class UserController : ControllerBase
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                var result = await _userManager.AddToRolesAsync(user, roles.Roles);
-                if (result.Succeeded)
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var removeRolesResult = await _userManager.RemoveFromRolesAsync(user,userRoles);
+                if (roles.Roles != null && removeRolesResult.Succeeded )
                 {
-                    Ok(new { Description = "Roles added successfully." });
+                    var result = await _userManager.AddToRolesAsync(user, roles.Roles);
+                    if (result.Succeeded)
+                    {
+                        return Ok(new { Description = "Roles added successfully." });
+                    }
                 }
-
-                return StatusCode(500, "Failed to add roles");
+                return StatusCode(500, new { Description = "Failed to add roles"});
             }
 
             return NotFound(new { Description = "User not found" });
@@ -81,7 +85,7 @@ public class UserController : ControllerBase
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return StatusCode(500, e.Message);
+            return StatusCode(500, new {Description = e.Message });
         }
     }
 }
