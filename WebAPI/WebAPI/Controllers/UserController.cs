@@ -58,4 +58,30 @@ public class UserController : ControllerBase
             return StatusCode(500, e.Message);
         }
     }
+
+    [HttpPost("ChangeRole/{id}")]
+    public async Task<IActionResult> ChangeRole(string id, UserRoles roles)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                var result = await _userManager.AddToRolesAsync(user, roles.Roles);
+                if (result.Succeeded)
+                {
+                    Ok(new { Description = "Roles added successfully." });
+                }
+
+                return StatusCode(500, "Failed to add roles");
+            }
+
+            return NotFound(new { Description = "User not found" });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }
