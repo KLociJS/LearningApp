@@ -39,7 +39,7 @@ public class UserController : ControllerBase
         return userDtos;
     }
 
-    [HttpDelete]
+    [HttpDelete("Delete/{id}")]
     public async Task<IActionResult> DeleteUser(string id)
     {
         try
@@ -48,7 +48,7 @@ public class UserController : ControllerBase
             if (user != null)
             {
                 await _userManager.DeleteAsync(user);
-                return Ok();
+                return Ok(new { Description = "User successfully deleted." });
             }
             return NotFound(new{Description="User not found."});
         }
