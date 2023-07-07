@@ -1,0 +1,28 @@
+.modal-container{
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(48, 48, 48, 0.747);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal{
+    background-color: var(--secondary);
+    padding: 2rem;
+    border-radius: 5px;
+
+    position: relative;
+    
+    display: flex;
+    flex-direction: column;
+}
+.modal-close-btn{
+    position: absolute;
+    
+}
