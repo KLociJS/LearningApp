@@ -38,4 +38,24 @@ public class UserController : ControllerBase
 
         return userDtos;
     }
+
+    [HttpDelete]
+    public async Task<IActionResult> DeleteUser(string id)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user != null)
+            {
+                await _userManager.DeleteAsync(user);
+                return Ok();
+            }
+            return NotFound(new{Description="User not found."});
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, e.Message);
+        }
+    }
 }
