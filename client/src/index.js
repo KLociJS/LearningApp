@@ -1,6 +1,8 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 
+import { disableReactDevTools } from '@fvilers/disable-react-devtools';
+
 import {
     createBrowserRouter,
     RouterProvider,
@@ -23,6 +25,10 @@ import Login from "./Pages/Login"
 import Singup from "./Pages/SingUp"
 import ResetPassword from "./Pages/ResetPassword/ResetPassword";
 import Users from "./Pages/Users/Users";
+
+if (process.env.NODE_ENV === 'production') {
+    disableReactDevTools();
+}
 
 const router = createBrowserRouter(
     createRoutesFromElements(
