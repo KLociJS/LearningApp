@@ -1,16 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 
-import AuthContext from '../../Context/AuthProvider'
-
 import NavBar from './NavBar/NavBar'
+import useAuth from '../../Hooks/useAuth'
+import validateAuthentication from '../../Utility/checkAuthentication'
 
 export default function Layout() {
-  const [user,setUser] = useState({})
+
+  const { setUser } = useAuth()
+
+  useEffect(()=>{
+    validateAuthentication(setUser)
+  },[setUser])
+
   return (
-    <AuthContext.Provider value={{user,setUser}}>
+    <>
       <NavBar />
       <Outlet />
-    </AuthContext.Provider>
+    </>
   )
 }

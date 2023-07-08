@@ -8,7 +8,9 @@ using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Models;
 using WebAPI.Models.AuthModel;
+using WebAPI.Models.UserModels;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
+using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace WebAPI.Controllers
 {
@@ -55,7 +57,7 @@ namespace WebAPI.Controllers
                 var result = await _userManager.CreateAsync(newUser, registerUser.Password);
                 // Assign role
 
-                if (!result.Succeeded) return StatusCode(500, result.Errors);
+                if (!result.Succeeded) return StatusCode(500, new { Description = result.Errors });
                 await _userManager.AddToRoleAsync(newUser, "User");
                 
                 //Add token to verify email
@@ -69,7 +71,7 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { Description = e.Message });
             }
         }
 
@@ -92,7 +94,7 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, e.Message);
+                return StatusCode(500,new { Description = e.Message });
             }
             
         }
@@ -121,24 +123,89 @@ namespace WebAPI.Controllers
                 
                     //create token
                     var jwtToken = GetToken(authClaims);
-
+                    var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                    
+                    HttpContext.Response.Cookies.Append("token", token, new CookieOptions()
+                    {
+                        SameSite = SameSiteMode.None,
+                        Expires = DateTimeOffset.Now.AddDays(14),
+                        IsEssential = true,
+                        Secure = true,
+                        HttpOnly = true
+                    });
                 
                     return Ok(new
                     {
                         expiration = jwtToken.ValidTo,
-                        roles = userRoles,
-                        token = new JwtSecurityTokenHandler().WriteToken(jwtToken)
+                        roles = userRoles
                     });
                 }
 
-                return Unauthorized(new List<object>() {new { Description = "Wrong username or password."}});
+                return Unauthorized(new List<object>() { new { Description = "Wrong username or password."} });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, e.Message);
+                return StatusCode(500, new { Description = e.Message });
             }
             
+        }
+        
+        [HttpGet("check-authentication")]
+        public async Task<IActionResult> CheckAuthentication()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                var username = User.Identity.Name;
+                var user = await _userManager.FindByNameAsync(username);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                return Ok(new { UserName = username, Roles = roles, UnAuthorized = false });
+            }
+
+            return Ok(new { UnAuthorized = true});
+        }
+        
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
+        {
+            try
+            {
+                var user = await _userManager.FindByNameAsync(refreshTokenDto.UserName);
+
+                if (user == null || user.RefreshToken != refreshTokenDto.RefreshToken)
+                {
+                    return Unauthorized(new List<object>() {new { Description = "Invalid refresh token."}});
+                }
+
+                var refreshToken = new Guid().ToString();
+                user.RefreshToken = refreshToken;
+                await _userManager.UpdateAsync(user);
+
+                var authClaims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                };
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+                authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+                var accessToken = GetToken(authClaims);
+
+                return Ok(new
+                {
+                    expiration = accessToken.ValidTo,
+                    roles = userRoles,
+                    token = new JwtSecurityTokenHandler().WriteToken(accessToken),
+                    refreshToken
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, new { Description =  e.Message });
+            }
         }
 
         private JwtSecurityToken GetToken(List<Claim> authClaims)
@@ -147,7 +214,7 @@ namespace WebAPI.Controllers
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience:_configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(3),
+                expires: DateTime.Now.AddDays(14),
                 claims:authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
