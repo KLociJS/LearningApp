@@ -195,6 +195,10 @@ namespace WebAPI.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("RefreshToken")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
 
@@ -254,7 +258,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -269,7 +273,7 @@ namespace WebAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WebAPI.Models.SubCategory", b =>
@@ -289,7 +293,7 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategories", (string)null);
+                    b.ToTable("SubCategories");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
