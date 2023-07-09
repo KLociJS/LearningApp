@@ -23,7 +23,8 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:3000")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
         });
 });
 
@@ -50,7 +51,12 @@ builder.Services.AddAuthentication(options =>
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(
+})
+    .AddCookie(options =>
+    {
+        options.Cookie.Name = "MyAuthCookie";
+    })
+    .AddJwtBearer(
     options =>
     {
         options.SaveToken = true;
@@ -65,10 +71,18 @@ builder.Services.AddAuthentication(options =>
             ValidAudience = configuration["JWT:ValidAudience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
         };
+        options.Events = new JwtBearerEvents()
+        {
+            OnMessageReceived = context =>
+            {
+                context.Token = context.Request.Cookies["token"];
+                return Task.CompletedTask;
+            }
+        };
     });
 
 //Add config for required email
-builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = true);
+builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = false);
 
 //Add Email config
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();

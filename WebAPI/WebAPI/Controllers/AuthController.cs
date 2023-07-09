@@ -136,8 +136,8 @@ namespace WebAPI.Controllers
                 
                     return Ok(new
                     {
-                        expiration = jwtToken.ValidTo,
-                        roles = userRoles
+                        Roles = userRoles,
+                        UserName = user.UserName
                     });
                 }
 
