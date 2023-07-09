@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import InputField from '../../Components/Input'
+import { InputField } from 'Components'
 
 import { FiLock } from 'react-icons/fi'
 import { Link } from 'react-router-dom'

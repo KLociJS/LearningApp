@@ -15,21 +15,22 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import Layout from "./Pages/_Layout";
+import { Layout } from "Pages"
 
 //Pages
-import Home from "./Pages/Home"
-import Login from "./Pages/Login"
-import Singup from "./Pages/SingUp"
-import ResetPassword from "./Pages/ResetPassword/ResetPassword";
-import Users from "./Pages/Users/Users";
+import { Home } from "Pages"
+import { Login } from "Pages"
+import { SingUp } from "Pages"
+import { ResetPassword } from "Pages"
+import { Users } from "Pages"
+
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Singup />} />
+            <Route path="signup" element={<SingUp />} />
             <Route path="reset-password" element={<ResetPassword />} />
             <Route path="users" element={ <Users/> }/>
         </Route>

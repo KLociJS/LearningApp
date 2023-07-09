@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import InputField from '../../Components/Input'
+import  { InputField } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
 
