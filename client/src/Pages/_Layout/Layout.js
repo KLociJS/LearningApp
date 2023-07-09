@@ -1,17 +1,19 @@
 import React, { useEffect } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 
 import NavBar from './NavBar/NavBar'
 import useAuth from '../../Hooks/useAuth'
-import validateAuthentication from '../../Utility/checkAuthentication'
+import checkAuthentication from '../../Utility/checkAuthentication'
 
 export default function Layout() {
 
-  const { setUser } = useAuth()
+  const { user, setUser } = useAuth()
 
   useEffect(()=>{
-    validateAuthentication(setUser)
-  },[setUser])
+    if(!user){
+      checkAuthentication(setUser)
+    }
+  },[setUser, user])
 
   return (
     <>

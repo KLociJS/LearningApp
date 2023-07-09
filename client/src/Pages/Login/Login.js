@@ -4,7 +4,7 @@ import { InputField } from 'Components'
 import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 
 import AuthContext from '../../Context/AuthProvider'
 
@@ -16,6 +16,9 @@ export default function Login() {
   const [error, setError] = useState([])
 
   const { setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const from = location.state?.from.pathname || '/'
 
   const handleLogin = (e) =>{
     e.preventDefault()
@@ -38,18 +41,16 @@ export default function Login() {
       }
     })
     .then(response=>{
-      console.log(response)
-
       const {roles, userName } = response
 
       const Identity = {
-        name:userName,
+        userName,
         roles,
+        unAuthorized: false
       }
 
-      console.log(Identity)
       setUser(Identity)
-      
+      navigate(from, {replace: true})
     })
     .catch(error=>{
       if (error instanceof Response) {
