@@ -18,27 +18,39 @@ import './GlobalStyle/Typography.css'
 import { Layout } from "Pages"
 
 //Pages
-import { Home } from "Pages"
-import { Login } from "Pages"
-import { SingUp } from "Pages"
-import { ResetPassword } from "Pages"
-import { Users } from "Pages"
+import { 
+    UnAuthorized, 
+    Home, 
+    Login, 
+    SingUp, 
+    ResetPassword, 
+    Users,
+} from "Pages"
+
+import { RequireRoles, UnauthenticatedRoute } from "Components";
 
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SingUp />} />
-            <Route path="reset-password" element={<ResetPassword />} />
-            <Route path="users" element={ <Users/> }/>
+            <Route element={<RequireRoles allowedRoles={['User']} />}>
+                <Route index element={<Home />} />  
+            </Route>
+            <Route element={<RequireRoles allowedRoles={['Admin','Moderator']} />}>
+                <Route path="users" element={ <Users/> }/>
+            </Route>
+            <Route element={<UnauthenticatedRoute />}>
+                <Route path="login" element={<Login />} />
+                <Route path="signup" element={<SingUp />} />
+                <Route path="reset-password" element={<ResetPassword />} />
+            </Route>
+            <Route path='/unauthorized' element={<UnAuthorized/>}/>
         </Route>
     )
 );
 
 export default function App() {
-  const [user,setUser] = useState({})
+  const [user,setUser] = useState(null)
   
   return (
     <AuthContext.Provider value={{user,setUser}}>

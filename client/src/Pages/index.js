@@ -4,6 +4,7 @@ import Login from "./Login/Login";
 import ResetPassword from "./ResetPassword/ResetPassword";
 import SingUp from "./SingUp/SignUp";
 import Users from "./Users/Users";
+import UnAuthorized from "./UnAuthorized/UnAuthorized";
 
 export {
     Layout,
@@ -12,4 +13,5 @@ export {
     ResetPassword,
     SingUp,
     Users,
+    UnAuthorized,
 }

@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
 import { LuBrainCircuit } from 'react-icons/lu'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { AiOutlineHome, AiOutlineUserAdd, AiOutlineLogin } from 'react-icons/ai'
 
-import { IconContext } from 'react-icons/lib'
 
 import './NavBar.css'
+import { AuthBasedRender, RoleBasedRender } from 'Components'
 
 
 export default function NavBar() {
@@ -27,30 +27,44 @@ export default function NavBar() {
                     {isOpen ? <FaTimes /> : <FaBars />}
                 </div>
                 <ul className={isOpen ? "nav-menu active" : "nav-menu"}>
-                    <li className='nav-item nav-pc-align-left'>
-                        <NavLink to='/' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                    <RoleBasedRender allowedroles={['User']}>
+                        <li className='nav-item nav-pc-align-left'>
+                            <NavLink to='/' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                                <div className='centered-label'>
+                                    <AiOutlineHome className='mobile-icon' size={16}/>
+                                    Home
+                                </div>
+                            </NavLink>
+                        </li>
+                    </RoleBasedRender>
+                    <RoleBasedRender allowedroles={['Admin']}>
+                        <li className='nav-item'>
+                        <NavLink to='/users' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
                             <div className='centered-label'>
-                                <AiOutlineHome className='mobile-icon' size={16}/>
-                                Home
+                                <AiOutlineUserAdd className='mobile-icon' size={16}/>
+                                Users
                             </div>
                         </NavLink>
-                    </li>
-                    <li className='nav-item'>
-                    <NavLink to='/signup' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
-                        <div className='centered-label'>
-                            <AiOutlineUserAdd className='mobile-icon' size={16}/>
-                            Singup
-                        </div>
-                    </NavLink>
-                    </li>
-                    <li className='nav-item'>
-                    <NavLink to='/login' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
-                        <div className='centered-label'>
-                            <AiOutlineLogin className='mobile-icon' size={16}/>
-                            Login
-                        </div>
-                    </NavLink>
-                    </li>
+                        </li>
+                    </RoleBasedRender>
+                    <AuthBasedRender>
+                        <li className='nav-item nav-pc-align-right'>
+                        <NavLink to='/signup' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                            <div className='centered-label'>
+                                <AiOutlineUserAdd className='mobile-icon' size={16}/>
+                                Singup
+                            </div>
+                        </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                        <NavLink to='/login' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                            <div className='centered-label'>
+                                <AiOutlineLogin className='mobile-icon' size={16}/>
+                                Login
+                            </div>
+                        </NavLink>
+                        </li>
+                    </AuthBasedRender>
                 </ul>
             </div>
         </nav>

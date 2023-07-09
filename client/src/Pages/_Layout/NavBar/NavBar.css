@@ -43,6 +43,10 @@
   .nav-pc-align-left{
     margin-right: auto;
   }
+
+  .nav-pc-align-right{
+    margin-left: auto;
+  }
   
   .nav-item {
     height: 80px;
