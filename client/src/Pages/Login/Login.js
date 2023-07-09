@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 
-import InputField from '../../Components/Input'
+import { InputField } from 'Components'
+import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
@@ -26,6 +27,7 @@ export default function Login() {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: 'include',
       body: JSON.stringify(userCredentials)
     })
     .then(response=>{
@@ -37,14 +39,17 @@ export default function Login() {
     })
     .then(response=>{
       console.log(response)
-      const user = {
+
+      const {roles, userName } = response
+
+      const Identity = {
         name:userName,
-        roles:response.roles,
-        expiration: response.expiration,
-        token: response.token
+        roles,
       }
-      console.log(user)
-      setUser(user)
+
+      console.log(Identity)
+      setUser(Identity)
+      
     })
     .catch(error=>{
       if (error instanceof Response) {
@@ -61,14 +66,17 @@ export default function Login() {
   return (
     <>
       <main className='container card-container'>
-        <form className='card'>
-          <AiOutlineLogin className='card-icon' />
-          <h2 className='heading-1'>Login</h2>
-          <InputField label='User name' type='text' inputValue={userName} setInputValue={setUserName} setError={setError}/>
-          <InputField label='Password' type='password' inputValue={password} setInputValue={setPassword} setError={setError}/>
-          <Link to='/reset-password' className='link align-end'>Forgot password?</Link>
-          <button className='primary-button mt-2' onClick={handleLogin}>Login</button>
-        </form>
+        <AuthCard icon={AiOutlineLogin} heading="Login" onSubmit={handleLogin}>
+          <InputField label="User name" type="text" inputValue={userName} setInputValue={setUserName} setError={setError} />
+          <InputField label="Password" type="password" inputValue={password} setInputValue={setPassword} setError={setError} />
+          {error && error.map(msg=>(<p key={msg} className='error-msg align-start'>{msg}</p>))}
+          <Link to="/reset-password" className="link align-end">
+            Forgot password?
+          </Link>
+          <button className="primary-button mt-2" type="submit">
+            Login
+          </button>
+        </AuthCard>
       </main>
     </>
   )

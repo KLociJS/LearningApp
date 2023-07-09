@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 
 import  { InputField } from 'Components'
+import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
 
@@ -24,7 +25,8 @@ export default function SingUp() {
 
   const [error, setError] = useState([])
 
-  const handleSingup = () =>{
+  const handleSignup = (e) =>{
+    e.preventDefault()
 
     let passwordMatching = password===passwordConfirmation
     if(!passwordMatching) setIsPasswordMatch(false)
@@ -79,10 +81,7 @@ export default function SingUp() {
   return (
     <>
       <main className='container card-container'>
-        <div className='card'>
-          <AiOutlineLogin className='card-icon' />
-          <h2 className='heading-1'>Sing up</h2>
-
+      <AuthCard icon={AiOutlineLogin} heading="Sign up" onSubmit={handleSignup}>
           {/* User name input */}
           <InputField
             label='User name' 
@@ -128,12 +127,13 @@ export default function SingUp() {
             setIsPasswordMatch={setIsPasswordMatch} 
             setIsValid={setIsPasswordValid} 
             setError={setError}
-            className={isPasswordValid && isPasswordMatch ? '' : 'error'}/>
+            className={isPasswordValid && isPasswordMatch ? '' : 'error'}
+          />
           {!isPasswordValid && <p className='error-msg align-start'>Password has to be at least 6 characters long. Containing 1 letter 1 number 1 special character.</p>}
           {!isPasswordMatch && isPasswordValid && <p className='error-msg align-start'>Passwords doesnt match.</p>}
           {error.map(error=>(<p key={error} className='error-msg align-start'>{error}</p>))}
-          <button className='primary-button mt-2' onClick={handleSingup}>SignUp</button>
-        </div>
+          <button className='primary-button mt-2' type='submit'>SignUp</button>
+        </AuthCard>
       </main>
     </>
   )
