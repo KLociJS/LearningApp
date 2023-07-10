@@ -59,7 +59,7 @@ export default function SingUp() {
       password
     }
 
-    fetch('https://localhost:7120/api/Auth', {
+    fetch('https://localhost:7120/api/Auth/Register', {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

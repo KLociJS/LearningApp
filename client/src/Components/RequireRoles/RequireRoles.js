@@ -2,12 +2,18 @@ import { useLocation, Navigate, Outlet } from 'react-router-dom'
 import useAuth from 'Hooks/useAuth'
 
 export default function RequireRoles({ allowedRoles }) {
-    const { user } = useAuth()
+    const { user, isAuthenticationDone } = useAuth()
     const location = useLocation()
 
-    console.log(user)
+    console.log('rr',user)
 
     const isAuthenticated = user!==null;
+
+    if(!isAuthenticationDone){
+        return (
+            <p>Loading</p>
+        )
+    }
 
     if(!isAuthenticated){
         return (
@@ -22,7 +28,6 @@ export default function RequireRoles({ allowedRoles }) {
             <Navigate to='unauthorized' state={{from: location}} replace />
         )
     }
-
   return (
      <Outlet />
   )

@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import AuthContext from "./Context/AuthProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //Stylesheets
 import './GlobalStyle/Index.css'
@@ -18,43 +18,51 @@ import './GlobalStyle/Typography.css'
 import { Layout } from "Pages"
 
 //Pages
-import { 
-    UnAuthorized, 
-    Home, 
-    Login, 
-    SingUp, 
-    ResetPassword, 
+import {
+    UnAuthorized,
+    Home,
+    Login,
+    SingUp,
+    ResetPassword,
     Users,
 } from "Pages"
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
+import checkAuthentication from "Utility/checkAuthentication";
 
 
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route element={<RequireRoles allowedRoles={['User']} />}>
-                <Route index element={<Home />} />  
+                <Route index element={<Home />} />
             </Route>
-            <Route element={<RequireRoles allowedRoles={['Admin','Moderator']} />}>
-                <Route path="users" element={ <Users/> }/>
+            <Route element={<RequireRoles allowedRoles={['Admin']} />}>
+                <Route path="users" element={<Users />} />
             </Route>
             <Route element={<UnauthenticatedRoute />}>
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SingUp />} />
                 <Route path="reset-password" element={<ResetPassword />} />
             </Route>
-            <Route path='/unauthorized' element={<UnAuthorized/>}/>
+            <Route path='/unauthorized' element={<UnAuthorized />} />
         </Route>
     )
 );
 
 export default function App() {
-  const [user,setUser] = useState(null)
+    const [user, setUser] = useState(null)
+    const [isAuthenticationDone, setIsAuthenticationDone] = useState(false)
   
-  return (
-    <AuthContext.Provider value={{user,setUser}}>
-        <RouterProvider router={router} />
-    </AuthContext.Provider>
-  )
+  useEffect(()=>{
+    if(user===null){
+      checkAuthentication(setUser,setIsAuthenticationDone)
+    }
+  },[setUser, user])
+
+    return (
+        <AuthContext.Provider value={{ user, setUser, isAuthenticationDone }}>
+            <RouterProvider router={router} />
+        </AuthContext.Provider>
+    )
 }
