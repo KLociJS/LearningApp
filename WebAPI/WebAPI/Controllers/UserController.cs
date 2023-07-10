@@ -60,7 +60,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("ChangeRole/{id}")]
-    public async Task<IActionResult> ChangeRole(string id, UserRoles roles)
+    public async Task<IActionResult> ChangeRole(string id, UserRolesDto rolesDto)
     {
         try
         {
@@ -69,9 +69,9 @@ public class UserController : ControllerBase
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
                 var removeRolesResult = await _userManager.RemoveFromRolesAsync(user,userRoles);
-                if (roles.Roles != null && removeRolesResult.Succeeded )
+                if (rolesDto.Roles != null && removeRolesResult.Succeeded )
                 {
-                    var result = await _userManager.AddToRolesAsync(user, roles.Roles);
+                    var result = await _userManager.AddToRolesAsync(user, rolesDto.Roles);
                     if (result.Succeeded)
                     {
                         return Ok(new { Description = "Roles added successfully." });

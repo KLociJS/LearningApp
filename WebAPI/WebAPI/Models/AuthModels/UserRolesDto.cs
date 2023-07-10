@@ -1,6 +1,6 @@
 namespace WebAPI.Models.UserModels;
 
-public class UserRoles
+public class UserRolesDto
 {
     public IEnumerable<string>? Roles { get; set; }
 }

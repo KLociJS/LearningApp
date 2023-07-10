@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Models;
-using WebAPI.Models.AuthModel;
+using WebAPI.Models.AuthModels;
 using WebAPI.Models.UserModels;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
@@ -19,35 +19,32 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
         
         public AuthController(
-            UserManager<AppUser> userManager, 
-            RoleManager<IdentityRole<Guid>> roleManager
-            ,IEmailService emailService,
+            UserManager<AppUser> userManager,
+            IEmailService emailService,
             IConfiguration configuration)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _emailService = emailService;
             _configuration = configuration;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterUser registerUser)
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(RegisterUserDto registerUserDto)
         {
             try
             {
                 // Check user exists
-                var userNameExists = await _userManager.FindByNameAsync(registerUser.UserName);
+                var userNameExists = await _userManager.FindByNameAsync(registerUserDto.UserName);
                 if (userNameExists != null)
                 {
                     return Conflict(new List<object>() {new { Type="UserName", Description = "Username already in use."}});
                 }
                 
-                var userExists = await _userManager.FindByEmailAsync(registerUser.Email);
+                var userExists = await _userManager.FindByEmailAsync(registerUserDto.Email);
                 if (userExists != null)
                 {
                     return Conflict(new List<object>() {new { Type="Email", Description = "Email already in use."}});
@@ -56,12 +53,12 @@ namespace WebAPI.Controllers
                 // If user doesnt exists
                 AppUser newUser = new()
                 {
-                    Email = registerUser.Email,
-                    UserName = registerUser.UserName,
+                    Email = registerUserDto.Email,
+                    UserName = registerUserDto.UserName,
                     SecurityStamp = Guid.NewGuid().ToString(),
                     RefreshToken = Guid.NewGuid().ToString()
                 };
-                var result = await _userManager.CreateAsync(newUser, registerUser.Password);
+                var result = await _userManager.CreateAsync(newUser, registerUserDto.Password);
                 // Assign role
 
                 if (!result.Succeeded) return StatusCode(500, new { Description = result.Errors });
@@ -107,15 +104,15 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUser loginUser)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
             try
             {
                 // find user
-                var user = await _userManager.FindByNameAsync(loginUser.UserName);
+                var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
             
                 // validate password
-                if (user != null && await _userManager.CheckPasswordAsync(user, loginUser.Password))
+                if (user != null && await _userManager.CheckPasswordAsync(user, loginUserDto.Password))
                 {
                     //create claims
                     var authClaims = new List<Claim>()
@@ -143,8 +140,7 @@ namespace WebAPI.Controllers
                 
                     return Ok(new
                     {
-                        Roles = userRoles,
-                        UserName = user.UserName
+                        Roles = userRoles, user.UserName
                     });
                 }
 

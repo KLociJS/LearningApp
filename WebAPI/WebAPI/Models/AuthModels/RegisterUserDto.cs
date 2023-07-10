@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace WebAPI.Models.AuthModel;
+namespace WebAPI.Models.AuthModels;
 
-public class RegisterUser
+public class RegisterUserDto
 {
     [EmailAddress]
     [Required(ErrorMessage = "Email is required")]
