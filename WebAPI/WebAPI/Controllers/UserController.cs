@@ -1,25 +1,25 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 using WebAPI.Models.UserModels;
 
+namespace WebAPI.Controllers;
+
+[Authorize(Roles = "User")]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
-
-
+    
     public UserController(
-        UserManager<AppUser> userManager,
-        RoleManager<IdentityRole<Guid>> roleManager
+        UserManager<AppUser> userManager
     )
     {
         _userManager = userManager;
-        _roleManager = roleManager;
     }
 
     [HttpGet]
