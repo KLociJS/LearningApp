@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { InputField } from 'Components'
+import { Input } from 'Components'
 import { AuthCard } from 'Components'
 
 import { FiLock } from 'react-icons/fi'
@@ -19,7 +19,7 @@ export default function ResetPassword() {
     <>
     <main className='container card-container'>
       <AuthCard icon={FiLock} heading="Reset Password" onSubmit={handleResetPassword}>
-        <InputField label='Email address' type='email' inputValue={email} setInputValue={setEmail} setError={setError}/>
+        <Input label='Email address' type='email' inputValue={email} setInputValue={setEmail} setError={setError}/>
         {error && <p>{error}</p>}
         <Link to='/login' className='link align-end'>Back to login</Link>
         <button className='primary-button mt-2' type='submit'>Send request</button>
