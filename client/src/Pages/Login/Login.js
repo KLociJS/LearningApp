@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 
-import { InputField } from 'Components'
+import {  PasswordInput, Input } from 'Components'
 import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
@@ -23,7 +23,6 @@ export default function Login() {
   const handleLogin = (e) =>{
     e.preventDefault()
     const userCredentials = {userName,password}
-    console.log(userCredentials)
 
     fetch('https://localhost:7120/api/Auth/login', {
       method: 'POST',
@@ -68,8 +67,15 @@ export default function Login() {
     <>
       <main className='container card-container'>
         <AuthCard icon={AiOutlineLogin} heading="Login" onSubmit={handleLogin}>
-          <InputField label="User name" type="text" inputValue={userName} setInputValue={setUserName} setError={setError} />
-          <InputField label="Password" type="password" inputValue={password} setInputValue={setPassword} setError={setError} />
+          <Input 
+            label='Username'
+            inputValue={userName}
+            setInputValue={setUserName}
+          />
+          <PasswordInput 
+            inputValue={password}
+            setInputValue={setPassword}
+          />
           {error && error.map(msg=>(<p key={msg} className='error-msg align-start'>{msg}</p>))}
           <Link to="/reset-password" className="link align-end">
             Forgot password?
