@@ -10,7 +10,9 @@ export default function Users() {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(()=>{
-    fetch('https://localhost:7120/api/User')
+    fetch('https://localhost:7120/api/User',{
+      credentials: 'include'
+    })
     .then(res=>res.json())
     .then(data=>{
         console.log(data)
@@ -22,7 +24,8 @@ export default function Users() {
 
   const handleUserDelete = (id) => {
     fetch(`https://localhost:7120/api/User/Delete/${id}`,{
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'include'
     })
     .then(response=>{
       if (response.ok) {
