@@ -1,7 +1,12 @@
 import React, { useState } from 'react'
 
-import  { InputField } from 'Components'
-import { AuthCard } from 'Components'
+import  { 
+  UserNameInputWithValidation,
+  PasswordInputWithValidation,
+  EmailInputWithValidation,
+  AuthCard
+} from 'Components'
+
 
 import { AiOutlineLogin } from 'react-icons/ai'
 
@@ -11,37 +16,42 @@ passwordValidator,
 emailValidator,
 } from '../../Utility/ValidatorMethods'
 
+import { useNavigate } from 'react-router-dom'
+
+
 export default function SingUp() {
   const [userName, setUserName] = useState('')
-  const [isUserNameValid, setIsUserNameValid] = useState(true)
+  const [userNameError,setUserNameError] = useState('')
 
   const [email, setEmail] = useState('')
-  const [isEmailValid, setIsEmailValid] = useState(true)
+  const [emailError, setEmailError] = useState('')
 
   const [password, setPassword] = useState('')
-  const [passwordConfirmation, setPasswordConfirmation] = useState('')
-  const [isPasswordValid,setIsPasswordValid] = useState(true)
-  const [isPasswordMatch, setIsPasswordMatch] = useState(true)
+  const [passwordError, setPasswordError] = useState('')
 
   const [error, setError] = useState([])
 
+  const navigate = useNavigate()
+
   const handleSignup = (e) =>{
     e.preventDefault()
-
-    let passwordMatching = password===passwordConfirmation
-    if(!passwordMatching) setIsPasswordMatch(false)
   
     let userNameValidState = userNameValidator(userName)
-    setIsUserNameValid(userNameValidState)
-
+    if(!userNameValidState){
+      setUserNameError('User name must be between 4-20 alphanumeric characters.')
+    }
+ 
     let emailValidState = emailValidator(email)
-    setIsEmailValid(emailValidState)
+    if(!emailValidState){
+      setEmailError('Email is invalid.')
+    }
 
     let passwordValidState = passwordValidator(password)
-    console.log(passwordValidState);
-    setIsPasswordValid(passwordValidState)
+    if(!passwordValidState){
+      setPasswordError('Password has to be at least 6 characters long. Containing 1 letter 1 number 1 special character.')
+    }
 
-    if(!passwordMatching || !userNameValidState || !emailValidState || !passwordValidState) return
+    if(!userNameValidState || !emailValidState || !passwordValidState) return
 
     const newUser = {
       userName,
@@ -57,20 +67,27 @@ export default function SingUp() {
       body: JSON.stringify(newUser)
     })
     .then(response=>{
+      console.log('response: ', response)
       if (response.ok) {
         return response.json()
       } else {
         throw response
       }
     })
-    .then(res=>{
-      console.log(res)
+    .then(()=>{
+      navigate('/login')
     })
     .catch(error=>{
       if (error instanceof Response) {
         error.json().then(errorData => {
-          const errorMessages = errorData.map(e=>e.description)
-          setError(errorMessages)
+          if(errorData[0].type === 'UserName'){
+            setUserNameError(errorData[0].description)
+          }else if(errorData[0].type === 'Email'){
+            setEmailError(errorData[0].description)
+          } else{
+            const serverError = errorData.map(e=>e.description)
+            setError(serverError)
+          }
         })
       } else {
         console.error('Error:', error)
@@ -82,55 +99,25 @@ export default function SingUp() {
     <>
       <main className='container card-container'>
       <AuthCard icon={AiOutlineLogin} heading="Sign up" onSubmit={handleSignup}>
-          {/* User name input */}
-          <InputField
-            label='User name' 
-            type='text' 
-            inputValue={userName} 
-            setInputValue={setUserName} 
-            setIsValid={setIsUserNameValid}
-            setError={setError}
-            className={isUserNameValid ? '' : 'error'}
+          <UserNameInputWithValidation
+            inputValue={userName}
+            setInputValue={setUserName}
+            error={userNameError}
+            setError={setUserNameError}
           />
-          {!isUserNameValid && <p className='error-msg align-start'>User name must be between 4-20 characters.</p>}
-
-          {/* Email input */}
-          <InputField
-            label='Email' 
-            type='email' 
-            inputValue={email} 
-            setInputValue={setEmail} 
-            setIsValid={setIsEmailValid} 
-            setError={setError}
-            className={isEmailValid ? '' : 'error'}
+          <PasswordInputWithValidation
+            inputValue={password}
+            setInputValue={setPassword}
+            error={passwordError}
+            setError={setPasswordError}
           />
-          {!isEmailValid && <p className='error-msg align-start'>Provided email adress is invalid.</p>}
-
-          {/* Password input */}
-          <InputField
-            label='Password' 
-            type='password' 
-            inputValue={password} 
-            setInputValue={setPassword} 
-            setIsValid={setIsPasswordValid} 
-            setIsPasswordMatch={setIsPasswordMatch}
-            setError={setError}
-            className={isPasswordValid && isPasswordMatch ? '' : 'error'}
+          <EmailInputWithValidation 
+            inputValue={email}
+            setInputValue={setEmail}
+            error={emailError}
+            setError={setEmailError}
           />
 
-          {/* Verify password input */}
-          <InputField
-            label='Verify password' 
-            type='password' 
-            inputValue={passwordConfirmation} 
-            setInputValue={setPasswordConfirmation} 
-            setIsPasswordMatch={setIsPasswordMatch} 
-            setIsValid={setIsPasswordValid} 
-            setError={setError}
-            className={isPasswordValid && isPasswordMatch ? '' : 'error'}
-          />
-          {!isPasswordValid && <p className='error-msg align-start'>Password has to be at least 6 characters long. Containing 1 letter 1 number 1 special character.</p>}
-          {!isPasswordMatch && isPasswordValid && <p className='error-msg align-start'>Passwords doesnt match.</p>}
           {error.map(error=>(<p key={error} className='error-msg align-start'>{error}</p>))}
           <button className='primary-button mt-2' type='submit'>SignUp</button>
         </AuthCard>
