@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 
-import {  PasswordInput, Input } from 'Components'
+import {  PasswordInput, Input, Loading } from 'Components'
 import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
@@ -14,6 +14,8 @@ export default function Login() {
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState([])
+
+  const [isLoaded, setIsLoaded] = useState(false)
 
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
@@ -33,6 +35,8 @@ export default function Login() {
       body: JSON.stringify(userCredentials)
     })
     .then(response=>{
+      setIsLoaded(true)
+
       if (response.ok) {
         return response.json()
       } else {
@@ -49,6 +53,7 @@ export default function Login() {
       }
 
       setUser(Identity)
+      setIsLoaded(false)
       navigate(from, {replace: true})
     })
     .catch(error=>{
@@ -60,8 +65,14 @@ export default function Login() {
       } else {
         console.error('Error:', error)
       }
+      setIsLoaded(false)
     })
   }
+
+  if(!isLoaded){
+    return <Loading />
+  }
+
 
   return (
     <>

@@ -1,17 +1,16 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom'
 import useAuth from 'Hooks/useAuth'
+import Loading from 'Components/LoadingComponent/Loading';
 
 export default function RequireRoles({ allowedRoles }) {
     const { user, isAuthenticationDone } = useAuth()
     const location = useLocation()
 
-    console.log('rr',user)
-
     const isAuthenticated = user!==null;
 
     if(!isAuthenticationDone){
         return (
-            <p>Loading</p>
+            <Loading />
         )
     }
 

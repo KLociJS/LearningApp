@@ -9,6 +9,7 @@ import PasswordInputWithValidation from "./Input/PasswordInputWithValidation/Pas
 import PasswordInput from "./Input/PasswordInput/Passwordinput"
 import EmailInputWithValidation from "./Input/EmailInputWithValidation/EmailInputWithValidation"
 import UserNameInputWithValidation from "./Input/UserNameInputWithValidation/UserNameInputWithValidation"
+import Loading from "./LoadingComponent/Loading"
 
 
 export { 
@@ -23,4 +24,5 @@ export {
     EmailInputWithValidation,
     UserNameInputWithValidation,
     PasswordInput,
+    Loading,
 }

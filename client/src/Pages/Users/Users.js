@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import './Users.css'
 import Modal from '../../Components/Modal/Modal'
 import RolesModalContent from './RolesModal/RolesModalContent'
+import { Loading } from 'Components'
 
 export default function Users() {
 
@@ -44,7 +45,7 @@ export default function Users() {
   }
 
   if(!isLoaded){
-    return(<p>Loading...</p>)
+    return <Loading />
   }
 
   return (
