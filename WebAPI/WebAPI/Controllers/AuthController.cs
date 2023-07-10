@@ -41,18 +41,25 @@ namespace WebAPI.Controllers
             try
             {
                 // Check user exists
-                var user = await _userManager.FindByEmailAsync(registerUser.Email);
-                if (user != null)
+                var userNameExists = await _userManager.FindByNameAsync(registerUser.UserName);
+                if (userNameExists != null)
                 {
-                    return Conflict(new List<object>() {new { Description = "Email already in use."}});
+                    return Conflict(new List<object>() {new { Type="UserName", Description = "Username already in use."}});
                 }
-            
+                
+                var userExists = await _userManager.FindByEmailAsync(registerUser.Email);
+                if (userExists != null)
+                {
+                    return Conflict(new List<object>() {new { Type="Email", Description = "Email already in use."}});
+                }
+
                 // If user doesnt exists
                 AppUser newUser = new()
                 {
                     Email = registerUser.Email,
                     UserName = registerUser.UserName,
-                    SecurityStamp = Guid.NewGuid().ToString()
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    RefreshToken = Guid.NewGuid().ToString()
                 };
                 var result = await _userManager.CreateAsync(newUser, registerUser.Password);
                 // Assign role
@@ -71,7 +78,7 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Description = e.Message });
+                return StatusCode(500, new { Type="Server", Description = e.Message });
             }
         }
 
