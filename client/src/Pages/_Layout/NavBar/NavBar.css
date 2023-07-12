@@ -52,6 +52,14 @@
     height: 80px;
   }
   
+  button.nav-link{
+    background-color: var(--primary);
+    border: none;
+    border-bottom: 4px solid transparent;
+  }
+  button.nav-link:hover{
+    cursor: pointer;
+  }
   .nav-link {
     color: var(--secondary);
     display: flex;
@@ -61,6 +69,7 @@
     height: 100%;
     border-bottom: 4px solid transparent;
   }
+  
 
   .activated,.nav-link:hover {
     color: var(--accent);

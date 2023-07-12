@@ -15,7 +15,7 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState([])
 
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(true)
 
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()

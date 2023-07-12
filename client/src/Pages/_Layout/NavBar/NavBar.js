@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 
 import { LuBrainCircuit } from 'react-icons/lu'
 import { FaBars, FaTimes } from 'react-icons/fa'
@@ -8,13 +8,30 @@ import { AiOutlineHome, AiOutlineUserAdd, AiOutlineLogin } from 'react-icons/ai'
 
 import './NavBar.css'
 import { AuthBasedRender, RoleBasedRender } from 'Components'
+import useAuth from 'Hooks/useAuth'
 
 
 export default function NavBar() {
     const [isOpen, setIsOpen] = useState(false)
 
-    const closeMobileMenu = () => setIsOpen(false);
-    const handleClick = () => setIsOpen(!isOpen);
+    const closeMobileMenu = () => setIsOpen(false)
+    const handleClick = () => setIsOpen(!isOpen)
+
+    const { setUser } = useAuth()
+
+    const handleLogout = () => {
+        fetch('https://localhost:7120/api/Auth/logout', { credentials: 'include' })
+        .then(res=>{
+            if(res.ok){
+                return res.json()
+            }
+            throw res
+        })
+        .then(()=>{
+            setUser(null)
+        })
+        .catch(console.log)
+    }
 
     return (
         <nav className='navbar'>
@@ -28,7 +45,7 @@ export default function NavBar() {
                 </div>
                 <ul className={isOpen ? "nav-menu active" : "nav-menu"}>
                     <RoleBasedRender allowedroles={['User']}>
-                        <li className='nav-item nav-pc-align-left'>
+                        <li className='nav-item'>
                             <NavLink to='/' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
                                 <div className='centered-label'>
                                     <AiOutlineHome className='mobile-icon' size={16}/>
@@ -45,6 +62,16 @@ export default function NavBar() {
                                 Users
                             </div>
                         </NavLink>
+                        </li>
+                    </RoleBasedRender>
+                    <RoleBasedRender allowedroles={['User', 'Admin', 'Moderator', 'Author']}>
+                        <li className='nav-item nav-pc-align-right'>
+                            <button className='nav-link' onClick={handleLogout}>
+                                <div className='centered-label'>
+                                    <AiOutlineUserAdd className='mobile-icon' size={16}/>
+                                    Logout
+                                </div>
+                            </button>
                         </li>
                     </RoleBasedRender>
                     <AuthBasedRender>
