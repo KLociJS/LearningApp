@@ -14,7 +14,7 @@ import {
 userNameValidator,
 passwordValidator,
 emailValidator,
-} from '../../Utility/ValidatorMethods'
+} from 'Utility/ValidatorMethods'
 
 import { useNavigate } from 'react-router-dom'
 
