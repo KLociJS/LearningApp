@@ -5,7 +5,7 @@ import {
     createRoutesFromElements,
 } from "react-router-dom";
 
-import AuthContext from "./Context/AuthProvider";
+import AuthContext from "Context";
 import { useState, useEffect } from "react";
 
 //Stylesheets
@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Layout } from "Pages"
+import { ConfirmEmail, Layout } from "Pages"
 
 //Pages
 import {
@@ -45,6 +45,7 @@ const router = createBrowserRouter(
                 <Route path="signup" element={<SingUp />} />
                 <Route path="reset-password" element={<ResetPassword />} />
             </Route>
+            <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />
         </Route>
     )

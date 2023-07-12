@@ -1,8 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Services;
@@ -66,8 +72,8 @@ namespace WebAPI.Controllers
                 
                 //Add token to verify email
                 var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                var confirmationLink = Url.Action(nameof(ConfirmEmail),"Auth", new {token, email=newUser.Email }, Request.Scheme);
-                var message = new Message(new [] { newUser.Email! }, "Email validation", confirmationLink!);
+                var confirmationLink = $"http://localhost:3000/confirm-email?email={HttpUtility.UrlEncode(newUser.Email)}&token={HttpUtility.UrlEncode(token)}";
+                var message = new Message(new [] { newUser.Email! }, "Email validation", confirmationLink);
                 _emailService.SendEmail(message);
 
                 return Ok(new List<object>() {new { Description = "User Successfully created"}});
@@ -79,8 +85,8 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("ConfirmEmail")]
-        public async Task<IActionResult> ConfirmEmail(string token, string email)
+        [HttpGet("confirmEmail")]
+        public async Task<IActionResult> ConfirmEmail(string email, string token)
         {
             try
             {
@@ -153,7 +159,30 @@ namespace WebAPI.Controllers
             }
             
         }
-        
+
+        [Authorize]
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            try
+            {
+                HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
+                {
+                    SameSite = SameSiteMode.None,
+                    Expires = DateTimeOffset.Now,
+                    IsEssential = true,
+                    Secure = true,
+                    HttpOnly = true
+                });
+                return Ok(new { Description = "Logged out."});
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, new { Description = e.Message });
+            }
+        }
+
         [HttpGet("check-authentication")]
         public async Task<IActionResult> CheckAuthentication()
         {

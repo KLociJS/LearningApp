@@ -45,6 +45,11 @@ builder.Services.Configure<IdentityOptions>(options =>
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
     options.User.RequireUniqueEmail = true;
 });
+//Add config for required email
+builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = false);
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+    options.TokenLifespan = TimeSpan.FromHours(2));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -81,8 +86,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-//Add config for required email
-builder.Services.Configure<IdentityOptions>(options => options.SignIn.RequireConfirmedEmail = false);
 
 //Add Email config
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();

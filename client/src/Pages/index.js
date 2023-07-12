@@ -5,6 +5,7 @@ import ResetPassword from "./ResetPassword/ResetPassword";
 import SingUp from "./SingUp/SignUp";
 import Users from "./Users/Users";
 import UnAuthorized from "./UnAuthorized/UnAuthorized";
+import ConfirmEmail from "./ConfirmEmail/ConfirmEmail";
 
 export {
     Layout,
@@ -14,4 +15,5 @@ export {
     SingUp,
     Users,
     UnAuthorized,
+    ConfirmEmail,
 }
