@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { ConfirmEmail, Layout } from "Pages"
+import { ConfirmEmail, ForgotPassword, Layout } from "Pages"
 
 //Pages
 import {
@@ -44,6 +44,7 @@ const router = createBrowserRouter(
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SingUp />} />
                 <Route path="reset-password" element={<ResetPassword />} />
+                <Route path="forgot-password" element={<ForgotPassword />} />
             </Route>
             <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />

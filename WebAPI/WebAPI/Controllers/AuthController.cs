@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -197,7 +198,44 @@ namespace WebAPI.Controllers
 
             return Ok(new { UnAuthorized = true});
         }
-        
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword(EmailDto email)
+        {
+            var user = await _userManager.FindByEmailAsync(email.Address);
+            if (user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var url = $"http://localhost:3000/forgot-password?token={HttpUtility.UrlEncode(token)}";
+
+                var message = new Message(new[] { email.Address! }, "Reset password", url);
+                _emailService.SendEmail(message);
+
+                return Ok(new { Description = "Reset password email sent." });
+            }
+
+            return BadRequest(new { Description = "Could not find user by email."});
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ChangeForgotPassword(ResetPasswordDto resetPasswordDto)
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+                if (!result.Succeeded)
+                {
+                    return BadRequest("Could not change password");
+                }
+
+                return Ok(new { Description = "Password changed." });
+            }
+
+            return BadRequest(new { Description = "Could not reset password" });
+
+        }
+
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
         {
