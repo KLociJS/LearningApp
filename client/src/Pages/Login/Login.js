@@ -35,7 +35,7 @@ export default function Login() {
       body: JSON.stringify(userCredentials)
     })
     .then(response=>{
-      setIsLoaded(true)
+      setIsLoaded(false)
 
       if (response.ok) {
         return response.json()
@@ -53,7 +53,7 @@ export default function Login() {
       }
 
       setUser(Identity)
-      setIsLoaded(false)
+      setIsLoaded(true)
       navigate(from, {replace: true})
     })
     .catch(error=>{
@@ -65,7 +65,7 @@ export default function Login() {
       } else {
         console.error('Error:', error)
       }
-      setIsLoaded(false)
+      setIsLoaded(true)
     })
   }
 
