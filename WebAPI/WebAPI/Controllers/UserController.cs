@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
-using WebAPI.Models.UserModels;
+using WebAPI.Models.AuthModels;
+using WebAPI.Models.UserDtos;
 
 namespace WebAPI.Controllers;
 

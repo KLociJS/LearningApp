@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Identity;
-
-namespace WebAPI.Models.UserModels;
+namespace WebAPI.Models.UserDtos;
 
 public class UserDto
 {

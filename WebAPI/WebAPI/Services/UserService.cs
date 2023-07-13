@@ -4,6 +4,7 @@ using User.Management.Service.Models;
 using WebAPI.Models;
 using WebAPI.Models.AuthModels;
 using WebAPI.Models.ResultModels;
+using WebAPI.Models.UserDtos;
 using IEmailService = User.Management.Service.Services.IEmailService;
 
 namespace WebAPI.Services;

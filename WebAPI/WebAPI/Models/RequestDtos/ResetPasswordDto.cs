@@ -1,4 +1,4 @@
-namespace WebAPI.Models.AuthModels;
+namespace WebAPI.Models.RequestDtos;
 
 public class ResetPasswordDto
 {

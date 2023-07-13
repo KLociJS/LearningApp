@@ -1,5 +1,6 @@
 using WebAPI.Models.AuthModels;
 using WebAPI.Models.ResultModels;
+using WebAPI.Models.UserDtos;
 
 namespace WebAPI.Services;
 
