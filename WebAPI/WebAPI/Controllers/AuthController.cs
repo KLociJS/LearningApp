@@ -1,21 +1,20 @@
-using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.IdentityModel.Tokens;
 using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Models;
 using WebAPI.Models.AuthModels;
-using WebAPI.Models.UserModels;
+using WebAPI.Models.Enums;
+using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResultModels;
+using WebAPI.Models.UserDtos;
+using WebAPI.Services;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
@@ -27,16 +26,18 @@ namespace WebAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
         private readonly IConfiguration _configuration;
         
         public AuthController(
             UserManager<AppUser> userManager,
             IEmailService emailService,
-            IConfiguration configuration)
+            IConfiguration configuration, IUserService userService)
         {
             _userManager = userManager;
             _emailService = emailService;
             _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpPost("Register")]
@@ -44,45 +45,32 @@ namespace WebAPI.Controllers
         {
             try
             {
-                // Check user exists
-                var userNameExists = await _userManager.FindByNameAsync(registerUserDto.UserName);
-                if (userNameExists != null)
+                if (!ModelState.IsValid)
                 {
-                    return Conflict(new List<object>() {new { Type="UserName", Description = "Username already in use."}});
-                }
-                
-                var userExists = await _userManager.FindByEmailAsync(registerUserDto.Email);
-                if (userExists != null)
-                {
-                    return Conflict(new List<object>() {new { Type="Email", Description = "Email already in use."}});
+                    var result = new Result() { ErrorType = ErrorType.Client, Description = "Invalid input values." };
+                    return BadRequest(result);
                 }
 
-                // If user doesnt exists
-                AppUser newUser = new()
+                var registrationResult = await _userService.RegisterUserAsync(registerUserDto);
+
+                if (registrationResult.Succeeded)
                 {
-                    Email = registerUserDto.Email,
-                    UserName = registerUserDto.UserName,
-                    SecurityStamp = Guid.NewGuid().ToString(),
-                    RefreshToken = Guid.NewGuid().ToString()
-                };
-                var result = await _userManager.CreateAsync(newUser, registerUserDto.Password);
-                // Assign role
+                    return Ok(registrationResult.Data);
+                }
 
-                if (!result.Succeeded) return StatusCode(500, new { Description = result.Errors });
-                await _userManager.AddToRoleAsync(newUser, "User");
-                
-                //Add token to verify email
-                var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-                var confirmationLink = $"http://localhost:3000/confirm-email?email={HttpUtility.UrlEncode(newUser.Email)}&token={HttpUtility.UrlEncode(token)}";
-                var message = new Message(new [] { newUser.Email! }, "Email validation", confirmationLink);
-                _emailService.SendEmail(message);
+                if (registrationResult.Data.ErrorType == ErrorType.Server)
+                {
+                    return StatusCode(500, registrationResult.Data);
+                }
 
-                return Ok(new List<object>() {new { Description = "User Successfully created"}});
+                return BadRequest(registrationResult.Data);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Type="Server", Description = e.Message });
+                var result = new Result()
+                    { ErrorType = ErrorType.Server, Description = "An error occured on the server." };
+                return StatusCode(500, result);
             }
         }
 
@@ -91,21 +79,24 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var user = await _userManager.FindByEmailAsync(email);
-                if (user != null)
+                var confirmationResult = await _userService.ConfirmEmailAsync(email, token);
+                if (confirmationResult.Succeeded)
                 {
-                    var result = await _userManager.ConfirmEmailAsync(user, token);
-                    if (result.Succeeded)
-                    {
-                        return Ok(new List<object>() {new { Description = "Email verified successfully!"}});
-                    }
+                    return Ok(confirmationResult.Data);
                 }
-                return BadRequest(new List<object>() {new { Description = "Unable to verify email!"}});
+
+                if (confirmationResult.Data.ErrorType == ErrorType.Server)
+                {
+                    return StatusCode(500, confirmationResult.Data);
+                }
+
+                return BadRequest(confirmationResult.Data);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500,new { Description = e.Message });
+                var serverError = new Result() { ErrorType = ErrorType.Server, Description = "An error occured on the server."};
+                return StatusCode(500,serverError);
             }
             
         }

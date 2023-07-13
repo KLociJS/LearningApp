@@ -8,6 +8,7 @@ using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Contexts;
 using WebAPI.Models;
+using WebAPI.Services;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -31,6 +32,8 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 builder.Services.AddDbContext<AppDataContext>( options =>
     options.UseNpgsql(configuration.GetConnectionString("DataContext")));
+
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
