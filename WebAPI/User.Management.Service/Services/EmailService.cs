@@ -18,6 +18,12 @@ public class EmailService : IEmailService
         var emailMessage = CreateEmailMessage(message);
         Send(emailMessage);
     }
+    
+    public void SendEmailConfirmationLink(string confirmationLink, string[] emails)
+    {
+        var message = new Message(emails, "Email validation", confirmationLink);
+        SendEmail(message);
+    }
 
     private MimeMessage CreateEmailMessage(Message message)
     {
