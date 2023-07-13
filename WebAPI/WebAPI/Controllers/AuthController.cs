@@ -12,8 +12,7 @@ using WebAPI.Models;
 using WebAPI.Models.AuthModels;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos;
-using WebAPI.Models.ResultModels;
-using WebAPI.Models.UserDtos;
+using WebAPI.Models.ResultDtos;
 using WebAPI.Services;
 using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
@@ -106,28 +105,16 @@ namespace WebAPI.Controllers
         {
             try
             {
-                // find user
-                var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
-            
-                // validate password
-                if (user != null && await _userManager.CheckPasswordAsync(user, loginUserDto.Password))
+                if (!ModelState.IsValid)
                 {
-                    //create claims
-                    var authClaims = new List<Claim>()
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                    };
+                    return BadRequest(new { Description = "Invalid inputs" });
+                }
                 
-                    //add user claims
-                    var userRoles = await _userManager.GetRolesAsync(user);
-                    authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-                
-                    //create token
-                    var jwtToken = GetToken(authClaims);
-                    var token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-                    
-                    HttpContext.Response.Cookies.Append("token", token, new CookieOptions()
+                var authResult = await _userService.LoginAsync(loginUserDto);
+
+                if (authResult.Succeeded)
+                {
+                    HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
                     {
                         SameSite = SameSiteMode.None,
                         Expires = DateTimeOffset.Now.AddDays(14),
@@ -135,14 +122,16 @@ namespace WebAPI.Controllers
                         Secure = true,
                         HttpOnly = true
                     });
-                
+
+                    var roles = await _userService.GetRolesAsync(loginUserDto.UserName!);
+                    
                     return Ok(new
                     {
-                        Roles = userRoles, user.UserName
+                        Roles = roles, loginUserDto.UserName
                     });
                 }
 
-                return Unauthorized(new List<object>() { new { Description = "Wrong username or password."} });
+                return Unauthorized(new { Description = "Wrong username or password."});
             }
             catch (Exception e)
             {
@@ -175,19 +164,15 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("check-authentication")]
         public async Task<IActionResult> CheckAuthentication()
         {
-            if (User.Identity != null && User.Identity.IsAuthenticated)
-            {
-                var username = User.Identity.Name;
-                var user = await _userManager.FindByNameAsync(username);
-                var roles = await _userManager.GetRolesAsync(user);
+            var username = User.Identity!.Name;
+            var roles = await _userService.GetRolesAsync(username!);
 
-                return Ok(new { UserName = username, Roles = roles, UnAuthorized = false });
-            }
-
-            return Ok(new { UnAuthorized = true});
+            return Ok(new { UserName = username, Roles = roles });
+            
         }
 
         [HttpPost("forgot-password")]

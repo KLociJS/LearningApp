@@ -1,11 +1,13 @@
-using WebAPI.Models.AuthModels;
-using WebAPI.Models.ResultModels;
-using WebAPI.Models.UserDtos;
+using WebAPI.Models;
+using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResultDtos;
 
 namespace WebAPI.Services;
 
 public interface IUserService
 {
-    Task<OperationResult> RegisterUserAsync(RegisterUserDto registerUserDto);
-    Task<OperationResult> ConfirmEmailAsync(string email, string token);
+    Task<RegisterResult> RegisterUserAsync(RegisterUserDto registerUserDto);
+    Task<ConfirmEmailResult> ConfirmEmailAsync(string email, string token);
+    Task<LoginResult> LoginAsync(LoginUserDto loginUserDto);
+    Task<IList<string>> GetRolesAsync(string userName);
 }

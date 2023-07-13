@@ -1,11 +1,15 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
 using User.Management.Service.Models;
 using WebAPI.Models;
 using WebAPI.Models.AuthModels;
-using WebAPI.Models.ResultModels;
-using WebAPI.Models.UserDtos;
+using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResultDtos;
+using WebAPI.Utility;
 using IEmailService = User.Management.Service.Services.IEmailService;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WebAPI.Services;
 
@@ -13,17 +17,18 @@ public class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;
     private readonly IEmailService _emailService;
+    private readonly ITokenProvider _tokenProvider;
 
     public UserService(
         UserManager<AppUser> userManager,
-        IEmailService emailService
-    )
+        IEmailService emailService, ITokenProvider tokenProvider)
     {
         _userManager = userManager;
         _emailService = emailService;
+        _tokenProvider = tokenProvider;
     }
 
-    public async Task<OperationResult> RegisterUserAsync(RegisterUserDto registerUserDto)
+    public async Task<RegisterResult> RegisterUserAsync(RegisterUserDto registerUserDto)
     {
         try
         {
@@ -31,41 +36,41 @@ public class UserService : IUserService
             var userNameExists = await _userManager.FindByNameAsync(registerUserDto.UserName);
             if (userNameExists != null)
             {
-                return OperationResult.UserNameExists();
+                return RegisterResult.UserNameExists();
             }
 
             var userEmailExists = await _userManager.FindByEmailAsync(registerUserDto.Email);
             if (userEmailExists != null)
             {
-                return OperationResult.EmailExists();
+                return RegisterResult.EmailExists();
             }
                 
             var newUser = CreateUser(registerUserDto.Email, registerUserDto.UserName);
             var userCreationResult = await _userManager.CreateAsync(newUser, registerUserDto.Password);
             if (!userCreationResult.Succeeded)
             {
-                return OperationResult.ServerError();
+                return RegisterResult.ServerError();
             }
 
             var assignRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
             if (!assignRoleResult.Succeeded)
             {
-                return OperationResult.ServerError();
+                return RegisterResult.ServerError();
             }
 
             var confirmationLink = await GenerateConfirmationLink(newUser);
             _emailService.SendEmailConfirmationLink(confirmationLink, new []{ registerUserDto.Email });
 
-            return OperationResult.Success("User successfully created.");
+            return RegisterResult.Success("User successfully created.");
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return OperationResult.ServerError();
+            return RegisterResult.ServerError();
         }
     }
 
-    public async Task<OperationResult> ConfirmEmailAsync(string email, string token)
+    public async Task<ConfirmEmailResult> ConfirmEmailAsync(string email, string token)
     {
         try
         {
@@ -75,21 +80,71 @@ public class UserService : IUserService
                 var confirmationResult = await _userManager.ConfirmEmailAsync(user, token);
                 if (confirmationResult.Succeeded)
                 {
-                    return OperationResult.Success("Email verified successfully!");
+                    return ConfirmEmailResult.Success();
                 }
 
-                return OperationResult.ServerError();
+                return ConfirmEmailResult.ServerError();
             }
 
-            return OperationResult.InvalidInput("Verification failed, invalid link");
+            return ConfirmEmailResult.InvalidInput();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return OperationResult.ServerError();
+            return ConfirmEmailResult.ServerError();
         }
     }
-    
+
+    public async Task<LoginResult> LoginAsync(LoginUserDto loginUserDto)
+    {
+        try
+        {
+            var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
+            if (user != null)
+            { 
+                var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginUserDto.Password);
+                if (isPasswordValid)
+                {
+                    var token = await GetJwtTokenAsync(user, loginUserDto.Password!);
+                    return LoginResult.Success(token!);
+                }
+            }
+            return LoginResult.Fail();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return LoginResult.ServerError();
+        }
+    }
+
+    public async Task<IList<string>> GetRolesAsync(string userName)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        return await _userManager.GetRolesAsync(user);
+    }
+
+    private async Task<string?> GetJwtTokenAsync(AppUser user, string password)
+    {
+        var claims = await GetClaims(user);
+        var token = _tokenProvider.GetJwtSecurityToken(claims);
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    private async Task<List<Claim>> GetClaims(AppUser user)
+    {
+        var authClaims = new List<Claim>()
+        {
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+        
+        var userRoles = await _userManager.GetRolesAsync(user);
+        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+        return authClaims;
+    }
+
     private AppUser CreateUser(string email, string userName)
     {
         return new AppUser()

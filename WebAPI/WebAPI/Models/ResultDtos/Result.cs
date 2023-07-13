@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using WebAPI.Models.Enums;
 
-namespace WebAPI.Models.ResultModels;
+namespace WebAPI.Models.ResultDtos;
 
 public class Result
 {
