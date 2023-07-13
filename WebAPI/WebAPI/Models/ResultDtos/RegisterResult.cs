@@ -1,45 +1,45 @@
 using WebAPI.Models.Enums;
 
-namespace WebAPI.Models.ResultModels;
+namespace WebAPI.Models.ResultDtos;
 
-public class OperationResult
+public class RegisterResult
 {
         public bool Succeeded { get; private set; }
         public Result Data { get; private set; }
 
-        private OperationResult(bool isSuccess, Result data)
+        public RegisterResult(bool isSuccess, Result data)
         {
             Succeeded = isSuccess;
             Data = data;
         }
 
-        public static OperationResult Success(string description)
+        public static RegisterResult Success(string description)
         {
             var result = new Result() { Description = description };
-            return new OperationResult(true, result);
+            return new RegisterResult(true, result);
         }
 
-        public static OperationResult InvalidInput(string description)
+        public static RegisterResult InvalidInput(string description)
         {
             var result = new Result() { ErrorType = ErrorType.Client ,Description = description };
-            return new OperationResult(false, result);
+            return new RegisterResult(false, result);
         }
 
-        public static OperationResult UserNameExists()
+        public static RegisterResult UserNameExists()
         {
             var result = new Result() { ErrorType = ErrorType.UserName, Description = "Username already in use." };
-            return new OperationResult(false, result);
+            return new RegisterResult(false, result);
         }
 
-        public static OperationResult EmailExists()
+        public static RegisterResult EmailExists()
         {
             var result = new Result() { ErrorType = ErrorType.Email, Description = "Email already in use." };
-            return new OperationResult(false, result);
+            return new RegisterResult(false, result);
         }
 
-        public static OperationResult ServerError()
+        public static RegisterResult ServerError()
         {
             var result = new Result() { ErrorType = ErrorType.Server, Description = "An error occured on the server." };
-            return new OperationResult(false, result);
+            return new RegisterResult(false, result);
         }
     }
