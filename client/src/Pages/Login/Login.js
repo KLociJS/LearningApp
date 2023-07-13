@@ -59,8 +59,8 @@ export default function Login() {
     .catch(error=>{
       if (error instanceof Response) {
         error.json().then(errorData => {
-          const errorMessages = errorData.map(e=>e.description)
-          setError(errorMessages)
+          //const errorMessages = errorData.map(e=>e.description)
+          setError(errorData.description)
         })
       } else {
         console.error('Error:', error)
@@ -87,7 +87,7 @@ export default function Login() {
             inputValue={password}
             setInputValue={setPassword}
           />
-          {error && error.map(msg=>(<p key={msg} className='error-msg align-start'>{msg}</p>))}
+          {error && <p className='error-msg align-start'>{error}</p>}
           <Link to="/reset-password" className="link align-end">
             Forgot password?
           </Link>
