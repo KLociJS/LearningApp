@@ -29,12 +29,17 @@ export default function SingUp() {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const [error, setError] = useState([])
+  const [error, setError] = useState('')
 
   const navigate = useNavigate()
 
   const handleSignup = (e) =>{
     e.preventDefault()
+
+    setUserNameError('')
+    setEmailError('')
+    setPasswordError('')
+    setError('')
   
     let userNameValidState = userNameValidator(userName)
     if(!userNameValidState){
@@ -80,13 +85,15 @@ export default function SingUp() {
     .catch(error=>{
       if (error instanceof Response) {
         error.json().then(errorData => {
-          if(errorData[0].type === 'UserName'){
-            setUserNameError(errorData[0].description)
-          }else if(errorData[0].type === 'Email'){
-            setEmailError(errorData[0].description)
+          console.log(errorData);
+          if(errorData.errorType === 'UserName'){
+            setUserNameError(errorData.description)
+          }else if(errorData.errorType === 'Email'){
+            console.log("emailerror");
+            setEmailError(errorData.description)
           } else{
-            const serverError = errorData.map(e=>e.description)
-            setError(serverError)
+            console.log("servererror");
+            setError(errorData.description)
           }
         })
       } else {
@@ -118,7 +125,7 @@ export default function SingUp() {
             setError={setEmailError}
           />
 
-          {error.map(error=>(<p key={error} className='error-msg align-start'>{error}</p>))}
+          {error && <p key={error} className='error-msg align-start'>{error}</p>}
           <button className='primary-button mt-2' type='submit'>SignUp</button>
         </AuthCard>
       </main>
