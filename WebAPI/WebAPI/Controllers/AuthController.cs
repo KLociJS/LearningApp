@@ -175,22 +175,34 @@ namespace WebAPI.Controllers
             
         }
 
-        [HttpPost("forgot-password")]
-        public async Task<IActionResult> ForgotPassword(EmailDto email)
+        [HttpPost("request-password-change")]
+        public async Task<IActionResult> RequestPasswordChange(EmailDto email)
         {
-            var user = await _userManager.FindByEmailAsync(email.Address);
-            if (user != null)
+            try
             {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var url = $"http://localhost:3000/forgot-password?token={HttpUtility.UrlEncode(token)}";
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(new { Description = "Invalid email." });
+                }
+                var requestResult = await _userService.RequestPasswordChangeAsync(email.Address!);
+                if (requestResult.Succeed)
+                {
+                    return Ok(new { requestResult.Description });
+                }
 
-                var message = new Message(new[] { email.Address! }, "Reset password", url);
-                _emailService.SendEmail(message);
+                if (requestResult.ErrorType == ErrorType.Server)
+                {
+                    return StatusCode(500, new { requestResult.Description });
+                }
 
-                return Ok(new { Description = "Reset password email sent." });
+                return BadRequest(new { requestResult.Description });
+
             }
-
-            return BadRequest(new { Description = "Could not find user by email."});
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, new { Description = "An error occured on the server."});
+            }
         }
 
         [HttpPost("reset-password")]

@@ -9,5 +9,6 @@ public interface IUserService
     Task<RegisterResult> RegisterUserAsync(RegisterUserDto registerUserDto);
     Task<ConfirmEmailResult> ConfirmEmailAsync(string email, string token);
     Task<LoginResult> LoginAsync(LoginUserDto loginUserDto);
+    Task<RequestPasswordChangeResult> RequestPasswordChangeAsync(string email);
     Task<IList<string>> GetRolesAsync(string userName);
 }

@@ -118,6 +118,30 @@ public class UserService : IUserService
         }
     }
 
+    public async Task<RequestPasswordChangeResult> RequestPasswordChangeAsync(string email)
+    {
+        try
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user != null)
+            {
+                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var url = $"http://localhost:3000/forgot-password?token={HttpUtility.UrlEncode(token)}";
+                
+                var message = new Message(new[] { email }, "Reset password", url);
+                _emailService.SendEmail(message);
+
+                return RequestPasswordChangeResult.Success();
+            }
+            return RequestPasswordChangeResult.WrongEmail();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return RequestPasswordChangeResult.ServerError();
+        }
+    }
+
     public async Task<IList<string>> GetRolesAsync(string userName)
     {
         var user = await _userManager.FindByNameAsync(userName);
