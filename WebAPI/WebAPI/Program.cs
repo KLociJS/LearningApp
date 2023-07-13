@@ -9,6 +9,7 @@ using User.Management.Service.Services;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Services;
+using WebAPI.Utility;
 
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -34,6 +35,7 @@ builder.Services.AddDbContext<AppDataContext>( options =>
     options.UseNpgsql(configuration.GetConnectionString("DataContext")));
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
