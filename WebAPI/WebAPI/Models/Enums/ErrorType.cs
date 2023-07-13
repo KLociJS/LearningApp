@@ -6,5 +6,6 @@ public enum ErrorType
     Client,
     UserName,
     Email,
-    Password
+    Password,
+    Input
 }

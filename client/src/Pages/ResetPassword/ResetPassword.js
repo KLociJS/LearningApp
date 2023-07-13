@@ -24,12 +24,12 @@ export default function ResetPassword() {
       return
     }
 
-    fetch('https://localhost:7120/api/Auth/forgot-password',{
+    fetch('https://localhost:7120/api/Auth/request-password-change',{
       method: 'POST',
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({address:email})
+      body: JSON.stringify({ address:email })
     })
     .then(res=>{
       if(res.ok){

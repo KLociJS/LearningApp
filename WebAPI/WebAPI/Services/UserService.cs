@@ -142,6 +142,28 @@ public class UserService : IUserService
         }
     }
 
+    public async Task<ChangeForgotPasswordResult> ChangeForgotPasswordAsync(ResetPasswordDto resetPasswordDto)
+    {
+        try
+        {
+            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+            if (user != null)
+            {
+                var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
+                if (result.Succeeded)
+                {
+                    return ChangeForgotPasswordResult.Success();
+                }
+                return ChangeForgotPasswordResult.ServerError();
+            }
+            return ChangeForgotPasswordResult.InvalidInput();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return ChangeForgotPasswordResult.ServerError();
+        }
+    }
     public async Task<IList<string>> GetRolesAsync(string userName)
     {
         var user = await _userManager.FindByNameAsync(userName);

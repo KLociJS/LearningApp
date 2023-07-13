@@ -1,20 +1,9 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Web;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using User.Management.Service.Models;
-using User.Management.Service.Services;
-using WebAPI.Models;
-using WebAPI.Models.AuthModels;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.ResultDtos;
 using WebAPI.Services;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace WebAPI.Controllers
@@ -23,19 +12,9 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly IEmailService _emailService;
         private readonly IUserService _userService;
-        private readonly IConfiguration _configuration;
-        
-        public AuthController(
-            UserManager<AppUser> userManager,
-            IEmailService emailService,
-            IConfiguration configuration, IUserService userService)
+        public AuthController( IUserService userService)
         {
-            _userManager = userManager;
-            _emailService = emailService;
-            _configuration = configuration;
             _userService = userService;
         }
 
@@ -208,75 +187,28 @@ namespace WebAPI.Controllers
         [HttpPost("reset-password")]
         public async Task<IActionResult> ChangeForgotPassword(ResetPasswordDto resetPasswordDto)
         {
-            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
-            if (user != null)
-            {
-                var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
-                if (!result.Succeeded)
-                {
-                    return BadRequest("Could not change password");
-                }
-
-                return Ok(new { Description = "Password changed." });
-            }
-
-            return BadRequest(new { Description = "Could not reset password" });
-
-        }
-
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenDto refreshTokenDto)
-        {
             try
             {
-                var user = await _userManager.FindByNameAsync(refreshTokenDto.UserName);
-
-                if (user == null || user.RefreshToken != refreshTokenDto.RefreshToken)
+                var changeResult = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+                if (changeResult.Succeed)
                 {
-                    return Unauthorized(new List<object>() {new { Description = "Invalid refresh token."}});
+                    return Ok(new { changeResult.Description });
                 }
 
-                var refreshToken = new Guid().ToString();
-                user.RefreshToken = refreshToken;
-                await _userManager.UpdateAsync(user);
-
-                var authClaims = new List<Claim>()
+                if (changeResult.ErrorType == ErrorType.Server)
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                };
+                    return StatusCode(500, new { changeResult.Description });
+                }
 
-                var userRoles = await _userManager.GetRolesAsync(user);
-                authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-                var accessToken = GetToken(authClaims);
-
-                return Ok(new
-                {
-                    expiration = accessToken.ValidTo,
-                    roles = userRoles,
-                    token = new JwtSecurityTokenHandler().WriteToken(accessToken),
-                    refreshToken
-                });
+                return BadRequest(new { changeResult.Description });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Description =  e.Message });
+                return StatusCode(500, new { Description = "An error occured on the server." });
             }
-        }
 
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
-            var token = new JwtSecurityToken(
-                issuer: _configuration["JWT:ValidIssuer"],
-                audience:_configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddDays(14),
-                claims:authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-            return token;
         }
+        
     }
 }

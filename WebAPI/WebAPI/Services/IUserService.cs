@@ -10,5 +10,6 @@ public interface IUserService
     Task<ConfirmEmailResult> ConfirmEmailAsync(string email, string token);
     Task<LoginResult> LoginAsync(LoginUserDto loginUserDto);
     Task<RequestPasswordChangeResult> RequestPasswordChangeAsync(string email);
+    Task<ChangeForgotPasswordResult> ChangeForgotPasswordAsync(ResetPasswordDto resetPasswordDto);
     Task<IList<string>> GetRolesAsync(string userName);
 }
