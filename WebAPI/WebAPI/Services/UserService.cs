@@ -55,7 +55,8 @@ public class UserService : IUserService
             var assignRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
             if (!assignRoleResult.Succeeded)
             {
-                return RegisterResult.ServerError();
+                Console.WriteLine(assignRoleResult.Errors);
+                throw new Exception();
             }
 
             var confirmationLink = await GenerateConfirmationLink(newUser);
@@ -66,7 +67,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return RegisterResult.ServerError();
+            throw new Exception(e.Message);
         }
     }
 
@@ -91,7 +92,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return ConfirmEmailResult.ServerError();
+            throw new Exception(e.Message);
         }
     }
 
