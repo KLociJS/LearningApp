@@ -334,5 +334,23 @@ public class AuthControllerTest
         Assert.AreEqual(exceptedResult.Description, (unauthorizedResult.Value as Result).Description);
     }
 
+    [Test]
+    public async Task Login_ServerError_ReturnsStatusCode500()
+    {
+        var loginUserDto = new LoginUserDto();
+        var exceptedResult = new Result { Description = "An error occured on the server." };
+
+        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+            .ThrowsAsync(new Exception());
+
+        var result = await _authController.Login(loginUserDto);
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var serverErrorResult = result as ObjectResult;
+        Assert.NotNull(serverErrorResult);
+        Assert.AreEqual(exceptedResult.Description, (serverErrorResult.Value as Result).Description);
+    }
     #endregion
+
+   
 }
