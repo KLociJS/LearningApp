@@ -31,4 +31,8 @@
       <ProjectReference Include="..\User.Management.Service\User.Management.Service.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models\ErrorDtos\" />
+    </ItemGroup>
+
 </Project>

@@ -46,9 +46,8 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                var result = new Result()
-                    { ErrorType = ErrorType.Server, Description = "An error occured on the server." };
-                return StatusCode(500, result);
+                var result = RegisterResult.ServerError();
+                return StatusCode(500, result.Data);
             }
         }
 
