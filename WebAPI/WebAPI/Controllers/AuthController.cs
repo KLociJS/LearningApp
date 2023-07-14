@@ -120,15 +120,15 @@ namespace WebAPI.Controllers
         {
             try
             {
-                HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
+                _httpContextAccessor.HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
                 {
                     SameSite = SameSiteMode.None,
-                    Expires = DateTimeOffset.Now,
+                    Expires = DateTimeOffset.Now.AddDays(-1),
                     IsEssential = true,
                     Secure = true,
                     HttpOnly = true
                 });
-                return Ok(new { Description = "Logged out."});
+                return Ok(new Result { Description = "Logged out."});
             }
             catch (Exception e)
             {

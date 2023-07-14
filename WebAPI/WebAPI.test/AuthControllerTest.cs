@@ -267,21 +267,33 @@ public class AuthControllerTest
             .ReturnsAsync(loginResult);
         _userServiceMock.Setup(service => service.GetRolesAsync(loginUserDto.UserName))
             .ReturnsAsync(roles);
-        _httpContextMock.SetupGet(service => service.HttpContext.Response.Cookies)
-            .Returns(_cookiesMock.Object);
 
-        _cookiesMock.Setup(cookies => cookies.Append("token", token, new CookieOptions()
-        {
-            SameSite = SameSiteMode.None,
-            Expires = DateTimeOffset.Now.AddDays(14),
-            IsEssential = true,
-            Secure = true,
-            HttpOnly = true
-        }));
+        CookieOptions? capturedCookieOptions = null;
+        string? capturedCookieName = null;
+
+        _httpContextMock.Setup(ctx => ctx.HttpContext.Response.Cookies.Append(
+                It.IsAny<string>(), 
+                It.IsAny<string>(), 
+                It.IsAny<CookieOptions>()))
+            .Callback<string, string, CookieOptions>((key, value, options) =>
+            {
+                capturedCookieOptions = options;
+                capturedCookieName = key;
+            });
 
         _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
 
         var result = await _authController.Login(loginUserDto);
+        
+        Assert.Multiple(() =>
+        {
+            Assert.AreEqual("token", capturedCookieName);
+            Assert.AreEqual(SameSiteMode.None, capturedCookieOptions.SameSite);
+            Assert.AreEqual(true, capturedCookieOptions.HttpOnly);
+            Assert.AreEqual(true, capturedCookieOptions.Secure);
+            Assert.AreEqual(true, capturedCookieOptions.IsEssential);
+
+        });
 
         Assert.IsInstanceOf<OkObjectResult>(result);
         var okResult = result as OkObjectResult;
@@ -352,5 +364,40 @@ public class AuthControllerTest
     }
     #endregion
 
-   
+    #region Logout
+
+    [Test]
+    public void Logout_ReturnsExpiredCookie()
+    {
+        CookieOptions? capturedCookieOptions = null;
+        string? capturedCookieName = null;
+
+        _httpContextMock.Setup(ctx => ctx.HttpContext.Response.Cookies.Append(
+                It.IsAny<string>(), 
+                It.IsAny<string>(), 
+                It.IsAny<CookieOptions>()))
+            .Callback<string, string, CookieOptions>((key, value, options) =>
+            {
+                capturedCookieName = key;
+                capturedCookieOptions = options;
+            });
+
+        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+
+        _authController.Logout();
+        
+        Assert.Multiple(() =>
+        {
+            var expectedExpiration = DateTimeOffset.Now.AddDays(-1);
+            var actualExpiration = capturedCookieOptions.Expires;
+
+            Assert.IsTrue(actualExpiration >= expectedExpiration.AddSeconds(-1) && actualExpiration <= expectedExpiration.AddSeconds(1));
+            Assert.AreEqual("token", capturedCookieName);
+        });
+        
+    }
+    
+
+    #endregion
+    
 }
