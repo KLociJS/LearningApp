@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResultDtos;
 using WebAPI.Services;
+using WebAPI.Utility;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
 
 namespace WebAPI.Controllers
@@ -13,9 +15,11 @@ namespace WebAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IUserService _userService;
-        public AuthController( IUserService userService)
+        private readonly IHttpContextAccessorWrapper _httpContextAccessor;
+        public AuthController( IUserService userService, IHttpContextAccessorWrapper httpContextAccessor)
         {
             _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost("Register")]
@@ -34,11 +38,6 @@ namespace WebAPI.Controllers
                 if (registrationResult.Succeeded)
                 {
                     return Ok(registrationResult.Data);
-                }
-
-                if (registrationResult.Data.ErrorType == ErrorType.Server)
-                {
-                    return StatusCode(500, registrationResult.Data);
                 }
 
                 return BadRequest(registrationResult.Data);
@@ -62,11 +61,6 @@ namespace WebAPI.Controllers
                     return Ok(confirmationResult.Data);
                 }
 
-                if (confirmationResult.Data.ErrorType == ErrorType.Server)
-                {
-                    return StatusCode(500, confirmationResult.Data);
-                }
-
                 return BadRequest(confirmationResult.Data);
             }
             catch (Exception e)
@@ -85,14 +79,14 @@ namespace WebAPI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new { Description = "Invalid inputs" });
+                    return BadRequest(new Result { Description = "Invalid inputs" });
                 }
                 
                 var authResult = await _userService.LoginAsync(loginUserDto);
 
                 if (authResult.Succeeded)
                 {
-                    HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
+                    _httpContextAccessor.HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
                     {
                         SameSite = SameSiteMode.None,
                         Expires = DateTimeOffset.Now.AddDays(14),
@@ -103,13 +97,14 @@ namespace WebAPI.Controllers
 
                     var roles = await _userService.GetRolesAsync(loginUserDto.UserName!);
                     
-                    return Ok(new
+                    return Ok(new LoginResponseDto
                     {
-                        Roles = roles, loginUserDto.UserName
+                        Roles = roles, 
+                        UserName = loginUserDto.UserName
                     });
                 }
 
-                return Unauthorized(new { Description = "Wrong username or password."});
+                return Unauthorized(new Result { Description = "Wrong username or password."});
             }
             catch (Exception e)
             {
