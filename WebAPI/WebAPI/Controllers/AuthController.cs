@@ -133,7 +133,7 @@ namespace WebAPI.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Description = e.Message });
+                return StatusCode(500, new  Result { Description = "An error occured on the server." });
             }
         }
 

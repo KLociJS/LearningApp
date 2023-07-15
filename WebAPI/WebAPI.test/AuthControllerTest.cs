@@ -413,8 +413,30 @@ public class AuthControllerTest
         });
         
     }
-    
 
+    [Test]
+    public void Logout_ReturnsOkResult()
+    {
+        var result = _authController.Logout();
+        
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual("Logged out.", (okResult.Value as Result).Description);
+    }
+
+    [Test]
+    public void Logout_ServerError_ReturnsStatusCode500()
+    {
+        _httpContextMock.Setup(context => context.HttpContext.Response.Cookies)
+            .Throws(new Exception("simulated Exception"));
+        
+        var result = _authController.Logout();
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var errorResult = result as ObjectResult;
+        Assert.AreEqual("An error occured on the server.", (errorResult.Value as Result).Description);
+    }
+    
     #endregion
     
 }
