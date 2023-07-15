@@ -163,20 +163,20 @@ namespace WebAPI.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(new { Description = "Invalid email." });
+                    return BadRequest(new  Result { Description = "Invalid email." });
                 }
                 var requestResult = await _userService.RequestPasswordChangeAsync(email.Address!);
                 if (requestResult.Succeed)
                 {
-                    return Ok(new { requestResult.Description });
+                    return Ok(new Result { Description = requestResult!.Data!.Description });
                 }
 
-                return BadRequest(new { requestResult.Description });
+                return BadRequest(new Result { Description = requestResult!.Data!.Description });
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Description = "An error occured on the server."});
+                return StatusCode(500, new Result { Description = "An error occured on the server."});
             }
         }
 

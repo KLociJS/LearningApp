@@ -472,6 +472,75 @@ public class AuthControllerTest
         Assert.AreEqual("An error occured on the server.", (errorResult!.Value as Result)!.Description);
     }
     #endregion
-    
+
+    #region Reset-Password-Change
+
+    [Test]
+    public async Task RequestPasswordChange_InvalidInput_ReturnsBadRequest()
+    {
+        var emailDto = new EmailDto { Address = "email" };
+        _authController.ModelState.AddModelError("email", "wrong email");
+
+        var result = await _authController.RequestPasswordChange(emailDto);
+        
+        Assert.IsInstanceOf<BadRequestObjectResult>(result);
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.AreEqual("Invalid email.", (badRequestResult!.Value as Result)!.Description);
+    }
+
+    [Test]
+    public async Task RequestPasswordChange_ValidEmail_ReturnsOkResult()
+    {
+        var emailDto = new EmailDto { Address = "email@email.com" };
+        var requestResult = RequestPasswordChangeResult.Success();
+
+        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+            .ReturnsAsync(requestResult);
+
+        var exceptedResult = new Result { Description = "Email with password change link sent." };
+
+        var result = await _authController.RequestPasswordChange(emailDto);
+        
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (okResult!.Value as Result)!.Description);
+    }
+
+    [Test]
+    public async Task RequestPasswordChange_InvalidEmail_ReturnsBadRequest()
+    {
+        var emailDto = new EmailDto { Address = "email@email.com" };
+        var requestResult = RequestPasswordChangeResult.WrongEmail();
+
+        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+            .ReturnsAsync(requestResult);
+
+        var exceptedResult = new Result { Description = "Wrong email." };
+
+        var result = await _authController.RequestPasswordChange(emailDto);
+        
+        Assert.IsInstanceOf<BadRequestObjectResult>(result);
+        var badRequestResult = result as BadRequestObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (badRequestResult!.Value as Result)!.Description);
+    }
+
+    [Test]
+    public async Task RequestPasswordChange_ServerError_ReturnsStatusCode500()
+    {
+        var emailDto = new EmailDto { Address = "email@email.com" };
+
+        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+            .ThrowsAsync(new Exception("Simulated exception"));
+
+        var exceptedResult = new Result { Description = "An error occured on the server." };
+
+        var result = await _authController.RequestPasswordChange(emailDto);
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var badRequestResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (badRequestResult!.Value as Result)!.Description);
+    }
+
+    #endregion
     
 }

@@ -138,7 +138,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return RequestPasswordChangeResult.ServerError();
+            throw new Exception();
         }
     }
 
