@@ -1,6 +1,6 @@
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
-using WebAPI.Models.ResultDtos;
+using WebAPI.Models.ResultModels;
 
 namespace WebAPI.Services;
 

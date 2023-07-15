@@ -1,6 +1,6 @@
 using WebAPI.Models.Enums;
 
-namespace WebAPI.Models.ResultDtos;
+namespace WebAPI.Models.ResultModels;
 
 public class ChangeForgotPasswordResult
 {

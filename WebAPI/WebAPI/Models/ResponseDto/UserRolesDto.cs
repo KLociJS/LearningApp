@@ -1,4 +1,4 @@
-namespace WebAPI.Models.AuthModels;
+namespace WebAPI.Models.ResponseDto;
 
 public class UserRolesDto
 {

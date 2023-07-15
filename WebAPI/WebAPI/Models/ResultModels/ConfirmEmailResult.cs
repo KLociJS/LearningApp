@@ -1,6 +1,7 @@
 using WebAPI.Models.Enums;
+using WebAPI.Models.ResponseDto;
 
-namespace WebAPI.Models.ResultDtos;
+namespace WebAPI.Models.ResultModels;
 
 public class ConfirmEmailResult
 {

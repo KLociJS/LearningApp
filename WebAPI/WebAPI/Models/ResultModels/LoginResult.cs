@@ -1,4 +1,4 @@
-namespace WebAPI.Models.ResultDtos;
+namespace WebAPI.Models.ResultModels;
 
 public class LoginResult
 {

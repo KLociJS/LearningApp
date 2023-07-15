@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.ResponseDto;
-using WebAPI.Models.ResultDtos;
+using WebAPI.Models.ResultModels;
 using WebAPI.Services;
 using WebAPI.Utility;
 using SameSiteMode = Microsoft.AspNetCore.Http.SameSiteMode;
