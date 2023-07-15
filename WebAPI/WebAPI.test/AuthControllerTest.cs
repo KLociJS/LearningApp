@@ -473,7 +473,7 @@ public class AuthControllerTest
     }
     #endregion
 
-    #region Reset-Password-Change
+    #region RequestPasswordChange
 
     [Test]
     public async Task RequestPasswordChange_InvalidInput_ReturnsBadRequest()
@@ -542,5 +542,77 @@ public class AuthControllerTest
     }
 
     #endregion
+
+    #region ChangeForgotPassword
+
+    [Test]
+    public async Task ChangeForgotPassword_ValidTokeAndEmail_ReturnsOkResult()
+    {
+        var resetPasswordDto = new ResetPasswordDto
+        {
+            Email = "email@email.com", 
+            Password = "abcd@1234", 
+            Token = Guid.NewGuid().ToString()
+        };
+        var changeForgotPasswordResult = ChangeForgotPasswordResult.Success();
+
+        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+            .ReturnsAsync(changeForgotPasswordResult);
+
+        var exceptedResult = new Result { Description = "Password successfully changed." };
+
+        var result = await _authController.ChangeForgotPassword(resetPasswordDto);
+        
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (okResult!.Value as Result)!.Description);
+    }
+
+    [Test]
+    public async Task ChangeForgotPassword_InvalidTokenOrEmail_ReturnsBadRequest()
+    {
+        var resetPasswordDto = new ResetPasswordDto
+        {
+            Email = "email@email.com", 
+            Password = "abcd@1234", 
+            Token = Guid.NewGuid().ToString()
+        };
+        var changeForgotPasswordResult = ChangeForgotPasswordResult.InvalidInput();
+
+        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+            .ReturnsAsync(changeForgotPasswordResult);
+
+        var exceptedResult = new Result { Description = "Invalid credentials." };
+
+        var result = await _authController.ChangeForgotPassword(resetPasswordDto);
+        
+        Assert.IsInstanceOf<BadRequestObjectResult>(result);
+        var okResult = result as BadRequestObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (okResult!.Value as Result)!.Description);
+    }
+
+    [Test]
+    public async Task ChangeForgotPassword_ServerError_ReturnsStatusCode500()
+    {
+        var resetPasswordDto = new ResetPasswordDto
+        {
+            Email = "email@email.com", 
+            Password = "abcd@1234", 
+            Token = Guid.NewGuid().ToString()
+        };
+
+        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+            .ThrowsAsync(new Exception("Simulated exception"));
+
+        var exceptedResult = new Result { Description = "An error occured on the server." };
+
+        var result = await _authController.ChangeForgotPassword(resetPasswordDto);
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var okResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (okResult!.Value as Result)!.Description);
+    }
     
+
+    #endregion
 }

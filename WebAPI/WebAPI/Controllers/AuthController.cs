@@ -168,10 +168,10 @@ namespace WebAPI.Controllers
                 var requestResult = await _userService.RequestPasswordChangeAsync(email.Address!);
                 if (requestResult.Succeed)
                 {
-                    return Ok(new Result { Description = requestResult!.Data!.Description });
+                    return Ok(requestResult!.Data);
                 }
 
-                return BadRequest(new Result { Description = requestResult!.Data!.Description });
+                return BadRequest(requestResult!.Data);
             }
             catch (Exception e)
             {
@@ -188,20 +188,15 @@ namespace WebAPI.Controllers
                 var changeResult = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
                 if (changeResult.Succeed)
                 {
-                    return Ok(new { changeResult.Description });
+                    return Ok( changeResult.Data );
                 }
 
-                if (changeResult.ErrorType == ErrorType.Server)
-                {
-                    return StatusCode(500, new { changeResult.Description });
-                }
-
-                return BadRequest(new { changeResult.Description });
+                return BadRequest( changeResult.Data );
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return StatusCode(500, new { Description = "An error occured on the server." });
+                return StatusCode(500, new  Result { Description = "An error occured on the server." });
             }
 
         }

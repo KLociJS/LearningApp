@@ -161,7 +161,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return ChangeForgotPasswordResult.ServerError();
+            throw new Exception(e.Message);
         }
     }
     public async Task<IList<string>> GetRolesAsync(string userName)

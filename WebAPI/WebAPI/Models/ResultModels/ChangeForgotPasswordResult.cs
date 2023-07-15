@@ -1,12 +1,12 @@
 using WebAPI.Models.Enums;
+using WebAPI.Models.ResponseDto;
 
 namespace WebAPI.Models.ResultModels;
 
 public class ChangeForgotPasswordResult
 {
     public bool Succeed { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public ErrorType? ErrorType { get; set; }
+    public Result? Data { get; set; }
 
     public ChangeForgotPasswordResult(bool succeed)
     {
@@ -15,16 +15,19 @@ public class ChangeForgotPasswordResult
 
     public static ChangeForgotPasswordResult Success()
     {
-        return new ChangeForgotPasswordResult(true) { Description = "Password successfully changed." };
+        var result = new Result { Description = "Password successfully changed." };
+        return new ChangeForgotPasswordResult(true) { Data = result };
     }
 
     public static ChangeForgotPasswordResult InvalidInput()
     {
-        return new ChangeForgotPasswordResult(false) { Description = "Invalid credentials", ErrorType = Enums.ErrorType.Input};
+        var result = new Result { Description = "Invalid credentials." };
+        return new ChangeForgotPasswordResult(false) { Data = result };
     }
 
     public static ChangeForgotPasswordResult ServerError()
     {
-        return new ChangeForgotPasswordResult(false) { Description = "An error occured on the server.", ErrorType = Enums.ErrorType.Server};
+        var result = new Result { Description = "An error occured on the server." };
+        return new ChangeForgotPasswordResult(false) { Data = result };
     }
 }
