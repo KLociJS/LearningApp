@@ -253,23 +253,19 @@ public class AuthControllerTest
     #region Login
 
     [Test]
-    public async Task Login_ValidInput_ReturnsOkResultWithRolesAndUserName()
+    public async Task Login_ValidInput_AssignsCookieToResponse()
     {
         var loginUserDto = new LoginUserDto() { UserName = "loci", Password = "Abcd@1234" };
-
+        
+        CookieOptions? capturedCookieOptions = null;
+        string? capturedCookieName = null;
+        
         var token = Guid.NewGuid().ToString();
-        var roles = new List<string>() { "User", "Admin", "Moderator" };
 
         var loginResult = LoginResult.Success(token);
-        var expectedResult = new LoginResponseDto() { Roles = roles, UserName = loginUserDto.UserName };
 
         _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
             .ReturnsAsync(loginResult);
-        _userServiceMock.Setup(service => service.GetRolesAsync(loginUserDto.UserName))
-            .ReturnsAsync(roles);
-
-        CookieOptions? capturedCookieOptions = null;
-        string? capturedCookieName = null;
 
         _httpContextMock.Setup(ctx => ctx.HttpContext.Response.Cookies.Append(
                 It.IsAny<string>(), 
@@ -294,6 +290,27 @@ public class AuthControllerTest
             Assert.AreEqual(true, capturedCookieOptions.IsEssential);
 
         });
+    }
+
+    [Test]
+    public async Task Login_ValidInput_ReturnsOkResultWithRolesAndUserName()
+    {
+        var loginUserDto = new LoginUserDto() { UserName = "loci", Password = "Abcd@1234" };
+
+        var token = Guid.NewGuid().ToString();
+        var roles = new List<string>() { "User", "Admin", "Moderator" };
+
+        var loginResult = LoginResult.Success(token);
+        var expectedResult = new LoginResponseDto() { Roles = roles, UserName = loginUserDto.UserName };
+
+        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+            .ReturnsAsync(loginResult);
+        _userServiceMock.Setup(service => service.GetRolesAsync(loginUserDto.UserName))
+            .ReturnsAsync(roles);
+
+        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+
+        var result = await _authController.Login(loginUserDto);
 
         Assert.IsInstanceOf<OkObjectResult>(result);
         var okResult = result as OkObjectResult;
