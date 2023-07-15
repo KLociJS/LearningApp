@@ -438,5 +438,40 @@ public class AuthControllerTest
     }
     
     #endregion
+
+    #region Check-Auth
+
+    [Test]
+    public async Task CheckAuth_ValidUser_ReturnsOkResult()
+    {
+        var roles = new List<string>() { "User", "Admin", "Moderator" };
+        var exceptedResult = new LoginResponseDto { UserName = "loci", Roles = roles };
+        _httpContextMock.Setup(context => context.HttpContext.User.Identity!.Name)
+            .Returns("loci");
+        _userServiceMock.Setup(service => service.GetRolesAsync("loci"))
+            .ReturnsAsync(roles);
+
+        var result = await _authController.CheckAuthentication();
+        
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual(exceptedResult.Roles, (okResult!.Value as LoginResponseDto)!.Roles);
+        Assert.AreEqual(exceptedResult.UserName, (okResult!.Value as LoginResponseDto)!.UserName);
+
+    }
+
+    [Test]
+    public async Task CheckAuth_ServerError_ReturnsStatusCode500()
+    {
+        _httpContextMock.Setup(context => context.HttpContext.User.Identity!.Name)
+            .Throws(new Exception("Simulated exception"));
+        
+        var result = await _authController.CheckAuthentication();
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var errorResult = result as ObjectResult;
+        Assert.AreEqual("An error occured on the server.", (errorResult!.Value as Result)!.Description);
+    }
+    #endregion
+    
     
 }

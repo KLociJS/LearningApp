@@ -141,10 +141,18 @@ namespace WebAPI.Controllers
         [HttpGet("check-authentication")]
         public async Task<IActionResult> CheckAuthentication()
         {
-            var username = User.Identity!.Name;
-            var roles = await _userService.GetRolesAsync(username!);
+            try
+            {
+                var username = _httpContextAccessor.HttpContext.User.Identity!.Name;
+                var roles = await _userService.GetRolesAsync(username!);
 
-            return Ok(new { UserName = username, Roles = roles });
+                return Ok(new LoginResponseDto { UserName = username!, Roles = roles });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(500, new Result { Description = "An error occured on the server." });
+            }
             
         }
 
@@ -163,13 +171,7 @@ namespace WebAPI.Controllers
                     return Ok(new { requestResult.Description });
                 }
 
-                if (requestResult.ErrorType == ErrorType.Server)
-                {
-                    return StatusCode(500, new { requestResult.Description });
-                }
-
                 return BadRequest(new { requestResult.Description });
-
             }
             catch (Exception e)
             {
