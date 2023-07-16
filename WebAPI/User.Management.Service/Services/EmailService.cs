@@ -13,16 +13,34 @@ public class EmailService : IEmailService
         _emailConfiguration = emailConfiguration;
     }
     
-    public void SendEmail(Message message)
+    public SendEmailResult SendEmail(Message message)
     {
-        var emailMessage = CreateEmailMessage(message);
-        Send(emailMessage);
+        try
+        {
+            var emailMessage = CreateEmailMessage(message);
+            Send(emailMessage);
+            return SendEmailResult.Success();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
     
-    public void SendEmailConfirmationLink(string confirmationLink, string[] emails)
+    public SendEmailResult SendEmailConfirmationLink(string confirmationLink, string[] emails)
     {
-        var message = new Message(emails, "Email validation", confirmationLink);
-        SendEmail(message);
+        try
+        {
+            var message = new Message(emails, "Email validation", confirmationLink);
+            SendEmail(message);
+            return SendEmailResult.Success();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private MimeMessage CreateEmailMessage(Message message)
