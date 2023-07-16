@@ -21,6 +21,7 @@ export default function RolesModalContent({user,setUsers,setShow}) {
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: 'include',
             body: JSON.stringify({roles})
         })
         .then(response=>{
