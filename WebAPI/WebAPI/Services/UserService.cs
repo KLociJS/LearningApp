@@ -20,7 +20,9 @@ public class UserService : IUserService
 
     public UserService(
         UserManager<AppUser> userManager,
-        IEmailService emailService, ITokenProvider tokenProvider)
+        IEmailService emailService,
+        ITokenProvider tokenProvider
+        )
     {
         _userManager = userManager;
         _emailService = emailService;
@@ -31,7 +33,6 @@ public class UserService : IUserService
     {
         try
         {
-
             var userNameExists = await _userManager.FindByNameAsync(registerUserDto.UserName);
             if (userNameExists != null)
             {
@@ -48,18 +49,21 @@ public class UserService : IUserService
             var userCreationResult = await _userManager.CreateAsync(newUser, registerUserDto.Password);
             if (!userCreationResult.Succeeded)
             {
-                return RegisterResult.ServerError();
+                throw new Exception("Failed to create user.");
             }
 
             var assignRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
             if (!assignRoleResult.Succeeded)
             {
-                Console.WriteLine(assignRoleResult.Errors);
-                throw new Exception();
+                throw new Exception("Failed to assign role.");
             }
 
             var confirmationLink = await GenerateConfirmationLink(newUser);
-            _emailService.SendEmailConfirmationLink(confirmationLink, new []{ registerUserDto.Email });
+            var sendEmailResult = _emailService.SendEmailConfirmationLink(confirmationLink, new []{ registerUserDto.Email });
+            if (!sendEmailResult.Succeeded)
+            {
+                throw new Exception("Failed to send email.");
+            }
 
             return RegisterResult.Success("User successfully created.");
         }
@@ -91,7 +95,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception(e.Message);
+            throw new Exception("An error occured on the server.");
         }
     }
 
