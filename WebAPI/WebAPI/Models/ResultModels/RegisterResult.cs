@@ -20,12 +20,6 @@ public class RegisterResult
             return new RegisterResult(true, result);
         }
 
-        public static RegisterResult InvalidInput(string description)
-        {
-            var result = new Result() { ErrorType = ErrorType.Client ,Description = description };
-            return new RegisterResult(false, result);
-        }
-
         public static RegisterResult UserNameExists()
         {
             var result = new Result() { ErrorType = ErrorType.UserName, Description = "Username already in use." };
