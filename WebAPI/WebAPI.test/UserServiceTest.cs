@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
-using System.Threading;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Identity;
@@ -20,7 +22,6 @@ public class UserServiceTest
 {
     private Mock<UserManager<AppUser>> _userManagerMock;
     private Mock<IUserStore<AppUser>> _mockUserStore;
-    private Mock<IUserEmailStore<AppUser>> _emailStore;
     private Mock<User.Management.Service.Services.IEmailService> _emailServiceMock;
     private Mock<ITokenProvider> _tokenProviderMock;
     private IUserService _userService;
@@ -94,7 +95,7 @@ public class UserServiceTest
     }
 
     [Test]
-    public async Task RegisterUserAsync_CreateAsyncNotSucceeded_ThrowsException()
+    public void RegisterUserAsync_CreateAsyncNotSucceeded_ThrowsException()
     {
         var registerUserDto = new RegisterUserDto();
 
@@ -109,7 +110,7 @@ public class UserServiceTest
     }
 
     [Test]
-    public async Task RegisterUserAsync_FailedToAssignRole_ThrowsException()
+    public void RegisterUserAsync_FailedToAssignRole_ThrowsException()
     {
         var registerUserDto = new RegisterUserDto();
         
@@ -127,7 +128,7 @@ public class UserServiceTest
     }
 
     [Test]
-    public async Task RegisterUserAsync_FailedToSendEmail_ThrowsException()
+    public void RegisterUserAsync_FailedToSendEmail_ThrowsException()
     {
         var registerUserDto = new RegisterUserDto();
         
@@ -256,7 +257,7 @@ public class UserServiceTest
     }
 
     [Test]
-    public async Task ConfirmEmailAsync_Error_throwsException()
+    public void ConfirmEmailAsync_Error_throwsException()
     {
         var email = "";
         var token = Guid.NewGuid().ToString();
@@ -272,7 +273,72 @@ public class UserServiceTest
 
     #region LoginAsync
 
-    
+    [Test]
+    public async Task LoginUserAsync_WrongUsername_ReturnsFailedLoginResult()
+    {
+        var loginUserDto = new LoginUserDto();
+        var exceptedResult = LoginResult.Fail();
+        var result = await _userService.LoginAsync(loginUserDto);
+        
+        Assert.IsInstanceOf<LoginResult>(result);
+        Assert.AreEqual(exceptedResult.Succeeded, result.Succeeded);
+        Assert.AreEqual(exceptedResult.Description, result.Description);
+    }
+
+    [Test]
+    public async Task LoginUserAsync_ValidUserNameWrongPassword_ReturnsFailedLoginResult()
+    {
+        var appUser = new AppUser();
+        var loginUserDto = new LoginUserDto();
+        var exceptedResult = LoginResult.Fail();
+
+        _userManagerMock.Setup(service => service.FindByNameAsync(It.IsAny<string>()))
+            .ReturnsAsync(appUser);
+        _userManagerMock.Setup(service => service.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+            .ReturnsAsync(false);
+
+        var result = await _userService.LoginAsync(loginUserDto);
+        
+        Assert.IsInstanceOf<LoginResult>(result);
+        Assert.AreEqual(exceptedResult.Description,result.Description);
+        Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
+    }
+
+    [Test]
+    public async Task LoginUserAsync_ValidCredentials_ReturnsSucceededLoginResult()
+    {
+        var appUser = new AppUser() { UserName = "asd"};
+        var loginUserDto = new LoginUserDto();
+        var token = new JwtSecurityToken();
+        var exceptedResult = LoginResult.Success(token.ToString());
+        
+        _userManagerMock.Setup(service => service.FindByNameAsync(It.IsAny<string>()))
+            .ReturnsAsync(appUser);
+        _userManagerMock.Setup(service => service.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
+            .ReturnsAsync(true);
+        _userManagerMock.Setup(service => service.GetRolesAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(new List<string>());
+        _tokenProviderMock.Setup(service => service.GetJwtSecurityToken(It.IsAny<List<Claim>>()))
+            .Returns(token);
+
+        var result = await _userService.LoginAsync(loginUserDto);
+        
+        Assert.IsInstanceOf<LoginResult>(result);
+        Assert.AreEqual(exceptedResult.Description, result.Description);
+        Assert.AreEqual(exceptedResult.Succeeded, result.Succeeded);
+
+    }
+
+    [Test]
+    public async Task LoginUserAsync_ServerError_ThrowsException()
+    {
+        var loginUserDto = new LoginUserDto();
+        _userManagerMock.Setup(service => service.FindByNameAsync(It.IsAny<string>()))
+            .Throws<Exception>();
+            
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.LoginAsync(loginUserDto));
+        Assert.AreEqual("An error occured on the server." , exception!.Message);
+    }
 
     #endregion
 }

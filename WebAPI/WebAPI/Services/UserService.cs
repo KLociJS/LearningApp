@@ -118,7 +118,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return LoginResult.ServerError();
+            throw new Exception("An error occured on the server.");
         }
     }
 
