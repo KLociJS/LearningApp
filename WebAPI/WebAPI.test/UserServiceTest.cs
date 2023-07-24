@@ -341,4 +341,54 @@ public class UserServiceTest
     }
 
     #endregion
+
+    #region MyRegion
+
+    [Test]
+    public async Task RequestPasswordChangeAsync_EmailNotFound_ReturnsWrongEmailResult()
+    {
+        var email = "";
+        var exceptedResult = RequestPasswordChangeResult.WrongEmail();
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .ReturnsAsync((AppUser)null!);
+
+        var result = await _userService.RequestPasswordChangeAsync(email);
+        
+        Assert.IsInstanceOf<RequestPasswordChangeResult>(result);
+        Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
+        Assert.AreEqual(exceptedResult.Data!.Description, result.Data!.Description);
+    }
+
+    [Test]
+    public async Task RequestPasswordChangeAsync_ValidEmail_ReturnsSucceededRequestResult()
+    {
+        var email = "";
+        var user = new AppUser();
+        var token = Guid.NewGuid().ToString();
+        var exceptedResult = RequestPasswordChangeResult.Success(token);
+        
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+        _userManagerMock.Setup(service => service.GeneratePasswordResetTokenAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(token);
+        var result = await _userService.RequestPasswordChangeAsync(email);
+        Assert.IsInstanceOf<RequestPasswordChangeResult>(result);
+        Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
+        Assert.AreEqual(exceptedResult.Token,result.Token);
+        Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
+
+    }
+    [Test]
+    public async Task RequestPasswordChangeAsync_serverError_ThrowsException()
+    {
+        var email = "";
+
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .Throws<Exception>();
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.RequestPasswordChangeAsync(email));
+        
+        Assert.AreEqual("An error occured on the server.", exception!.Message);
+    }
+
+    #endregion
 }

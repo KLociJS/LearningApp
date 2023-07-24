@@ -492,7 +492,7 @@ public class AuthControllerTest
     public async Task RequestPasswordChange_ValidEmail_ReturnsOkResult()
     {
         var emailDto = new EmailDto { Address = "email@email.com" };
-        var requestResult = RequestPasswordChangeResult.Success();
+        var requestResult = RequestPasswordChangeResult.Success(Guid.NewGuid().ToString());
 
         _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
             .ReturnsAsync(requestResult);

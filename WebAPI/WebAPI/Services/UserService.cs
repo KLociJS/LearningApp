@@ -135,14 +135,14 @@ public class UserService : IUserService
                 var message = new Message(new[] { email }, "Reset password", url);
                 _emailService.SendEmail(message);
 
-                return RequestPasswordChangeResult.Success();
+                return RequestPasswordChangeResult.Success(token);
             }
             return RequestPasswordChangeResult.WrongEmail();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception();
+            throw new Exception("An error occured on the server.");
         }
     }
 

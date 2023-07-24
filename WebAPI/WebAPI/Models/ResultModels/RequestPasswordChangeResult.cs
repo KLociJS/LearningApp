@@ -6,6 +6,7 @@ namespace WebAPI.Models.ResultModels;
 public class RequestPasswordChangeResult
 {
     public bool Succeed { get; set; }
+    public string Token { get; set; } = string.Empty;
     public Result? Data { get; set; }
 
     public RequestPasswordChangeResult(bool succeed)
@@ -13,10 +14,10 @@ public class RequestPasswordChangeResult
         Succeed = succeed;
     }
 
-    public static RequestPasswordChangeResult Success()
+    public static RequestPasswordChangeResult Success(string token)
     {
         var result = new Result() { Description = "Email with password change link sent." };
-        return new RequestPasswordChangeResult(true) { Data = result };
+        return new RequestPasswordChangeResult(true) { Data = result, Token = token};
     }
 
     public static RequestPasswordChangeResult WrongEmail()
