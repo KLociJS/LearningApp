@@ -391,4 +391,80 @@ public class UserServiceTest
     }
 
     #endregion
+
+    #region ChangeForgotPasswordAsync
+
+    [Test]
+    public async Task ChangeForgotPasswordAsync_WrongEmail_ReturnsInvalidInputResult()
+    {
+        var resetPasswordDto = new ResetPasswordDto() { Email = "" };
+        var exceptedResult = ChangeForgotPasswordResult.InvalidInput();
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .ReturnsAsync((AppUser)null!);
+
+        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        
+        Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
+        Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
+        Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
+    }
+
+    [Test]
+    public async Task ChangeForgotPasswordAsync_ValidEmailWrongToken_ReturnsInvalidInputResult()
+    {
+        var resetPasswordDto = new ResetPasswordDto() { Email = "" };
+        var user = new AppUser() { UserName = ""};
+        
+        var exceptedResult = ChangeForgotPasswordResult.InvalidInput();
+        
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+        var failedIdentityResult = IdentityResult.Failed();
+        _userManagerMock.Setup(service =>
+                service.ResetPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(failedIdentityResult);
+
+        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
+        Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
+        Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
+    }
+
+    [Test]
+    public async Task ChangeForgotPasswordAsync_ValidCredentials_ReturnsSucceededPasswordChangeResult()
+    {
+        var resetPasswordDto = new ResetPasswordDto() { Email = "" };
+        var user = new AppUser() { UserName = ""};
+        
+        var exceptedResult = ChangeForgotPasswordResult.Success();
+        
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+        var succeededIdentityResult = IdentityResult.Success;
+        
+        _userManagerMock.Setup(service =>
+                service.ResetPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(succeededIdentityResult);
+
+        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
+        Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
+        Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
+    }
+
+    [Test]
+    public async Task ChangeForgotPasswordAsync_ServerError_ThrowsException()
+    {
+        var resetPasswordDto = new ResetPasswordDto();
+        _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
+            .Throws<Exception>();
+
+        var exception =
+            Assert.ThrowsAsync<Exception>(async () => await _userService.ChangeForgotPasswordAsync(resetPasswordDto));
+        
+        Assert.AreEqual("An error occured on the server.",exception!.Message);
+    }
+    
+
+    #endregion
 }

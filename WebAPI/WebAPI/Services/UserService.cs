@@ -158,14 +158,14 @@ public class UserService : IUserService
                 {
                     return ChangeForgotPasswordResult.Success();
                 }
-                return ChangeForgotPasswordResult.ServerError();
+                return ChangeForgotPasswordResult.InvalidInput();
             }
             return ChangeForgotPasswordResult.InvalidInput();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception(e.Message);
+            throw new Exception("An error occured on the server.");
         }
     }
     public async Task<IList<string>> GetRolesAsync(string userName)
