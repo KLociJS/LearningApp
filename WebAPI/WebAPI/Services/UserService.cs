@@ -1,214 +1,92 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Web;
 using Microsoft.AspNetCore.Identity;
-using User.Management.Service.Models;
+using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResultModels;
-using WebAPI.Utility;
-using IEmailService = User.Management.Service.Services.IEmailService;
-using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace WebAPI.Services;
 
 public class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly IEmailService _emailService;
-    private readonly ITokenProvider _tokenProvider;
-
-    public UserService(
-        UserManager<AppUser> userManager,
-        IEmailService emailService,
-        ITokenProvider tokenProvider
-        )
+    
+    public UserService(UserManager<AppUser> userManager)
     {
         _userManager = userManager;
-        _emailService = emailService;
-        _tokenProvider = tokenProvider;
     }
 
-    public async Task<RegisterResult> RegisterUserAsync(RegisterUserDto registerUserDto)
+    public async Task<List<UserDto>> GetUsers()
     {
         try
         {
-            var userNameExists = await _userManager.FindByNameAsync(registerUserDto.UserName);
-            if (userNameExists != null)
-            {
-                return RegisterResult.UserNameExists();
-            }
+            var users = await _userManager.Users.ToListAsync();
+            var userDtoList = GetUserDtoList(users);
 
-            var userEmailExists = await _userManager.FindByEmailAsync(registerUserDto.Email);
-            if (userEmailExists != null)
-            {
-                return RegisterResult.EmailExists();
-            }
-                
-            var newUser = CreateUser(registerUserDto.Email, registerUserDto.UserName);
-            var userCreationResult = await _userManager.CreateAsync(newUser, registerUserDto.Password);
-            if (!userCreationResult.Succeeded)
-            {
-                throw new Exception("Failed to create user.");
-            }
-
-            var assignRoleResult = await _userManager.AddToRoleAsync(newUser, "User");
-            if (!assignRoleResult.Succeeded)
-            {
-                throw new Exception("Failed to assign role.");
-            }
-
-            var confirmationLink = await GenerateConfirmationLink(newUser);
-            var sendEmailResult = _emailService.SendEmailConfirmationLink(confirmationLink, new []{ registerUserDto.Email });
-            if (!sendEmailResult.Succeeded)
-            {
-                throw new Exception("Failed to send email.");
-            }
-
-            return RegisterResult.Success("User successfully created.");
+            return userDtoList;
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception(e.Message);
+            throw;
         }
     }
 
-    public async Task<ConfirmEmailResult> ConfirmEmailAsync(string email, string token)
+    public async Task<DeleteUserResult> DeleteUserById(string id)
     {
         try
         {
-            var user = await _userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                var confirmationResult = await _userManager.ConfirmEmailAsync(user, token);
-                if (confirmationResult.Succeeded)
+                await _userManager.DeleteAsync(user);
+                return DeleteUserResult.Success();
+            }
+            return DeleteUserResult.UserNotFound();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<ChangeRolesResult> ChangeRole(string userId, UserRolesDto rolesDto)
+    {
+        try
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var userRoles = await _userManager.GetRolesAsync(user);
+                var removeRolesResult = await _userManager.RemoveFromRolesAsync(user,userRoles);
+                if (removeRolesResult.Succeeded)
                 {
-                    return ConfirmEmailResult.Success();
+                    var result = await _userManager.AddToRolesAsync(user, rolesDto.Roles);
+                    if (result.Succeeded)
+                    {
+                        return ChangeRolesResult.Success();
+                    }
                 }
-
-                return ConfirmEmailResult.ServerError();
+                return ChangeRolesResult.ServerError();
             }
-
-            return ConfirmEmailResult.InvalidInput();
+            return ChangeRolesResult.UserNotFound();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw new Exception("An error occured on the server.");
+            throw;
         }
     }
 
-    public async Task<LoginResult> LoginAsync(LoginUserDto loginUserDto)
+    private List<UserDto> GetUserDtoList(List<AppUser> users)
     {
-        try
+        return users.Select(u => new UserDto
         {
-            var user = await _userManager.FindByNameAsync(loginUserDto.UserName);
-            if (user != null)
-            { 
-                var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginUserDto.Password);
-                if (isPasswordValid)
-                {
-                    var token = await GetJwtTokenAsync(user, loginUserDto.Password!);
-                    return LoginResult.Success(token!);
-                }
-            }
-            return LoginResult.Fail();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("An error occured on the server.");
-        }
-    }
-
-    public async Task<RequestPasswordChangeResult> RequestPasswordChangeAsync(string email)
-    {
-        try
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user != null)
-            {
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var url = $"http://localhost:3000/forgot-password?token={HttpUtility.UrlEncode(token)}";
-                
-                var message = new Message(new[] { email }, "Reset password", url);
-                _emailService.SendEmail(message);
-
-                return RequestPasswordChangeResult.Success(token);
-            }
-            return RequestPasswordChangeResult.WrongEmail();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("An error occured on the server.");
-        }
-    }
-
-    public async Task<ChangeForgotPasswordResult> ChangeForgotPasswordAsync(ResetPasswordDto resetPasswordDto)
-    {
-        try
-        {
-            var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
-            if (user != null)
-            {
-                var result = await _userManager.ResetPasswordAsync(user, resetPasswordDto.Token, resetPasswordDto.Password);
-                if (result.Succeeded)
-                {
-                    return ChangeForgotPasswordResult.Success();
-                }
-                return ChangeForgotPasswordResult.InvalidInput();
-            }
-            return ChangeForgotPasswordResult.InvalidInput();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw new Exception("An error occured on the server.");
-        }
-    }
-    public async Task<IList<string>> GetRolesAsync(string userName)
-    {
-        var user = await _userManager.FindByNameAsync(userName);
-        return await _userManager.GetRolesAsync(user);
-    }
-
-    private async Task<string?> GetJwtTokenAsync(AppUser user, string password)
-    {
-        var claims = await GetClaims(user);
-        var token = _tokenProvider.GetJwtSecurityToken(claims);
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
-    private async Task<List<Claim>> GetClaims(AppUser user)
-    {
-        var authClaims = new List<Claim>()
-        {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-        
-        var userRoles = await _userManager.GetRolesAsync(user);
-        authClaims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
-
-        return authClaims;
-    }
-
-    private AppUser CreateUser(string email, string userName)
-    {
-        return new AppUser()
-        {
-            Email = email,
-            UserName = userName,
-            SecurityStamp = Guid.NewGuid().ToString(),
-            RefreshToken = Guid.NewGuid().ToString()
-        };
-    }
-    
-    private async Task<string> GenerateConfirmationLink(AppUser user)
-    {
-        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        return $"http://localhost:3000/confirm-email?email={HttpUtility.UrlEncode(user.Email)}&token={HttpUtility.UrlEncode(token)}";
+            Id = u.Id.ToString(),
+            UserName = u.UserName,
+            Email = u.Email,
+            Roles = _userManager.GetRolesAsync(u).Result.ToList()
+        }).ToList();
     }
 }

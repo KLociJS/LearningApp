@@ -4,89 +4,85 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
-using WebAPI.Models.AuthModels;
-using WebAPI.Models.UserDtos;
+using WebAPI.Models.Enums;
+using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResponseDto;
+using WebAPI.Services;
 
 namespace WebAPI.Controllers;
 
-[Authorize(Roles = "User")]
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase
 {
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IUserService _userService;
     
-    public UserController(
-        UserManager<AppUser> userManager
-    )
+    public UserController(IUserService userService)
     {
-        _userManager = userManager;
+        _userService = userService;
     }
 
     [HttpGet]
     [SuppressMessage("ReSharper.DPA", "DPA0006: Large number of DB commands", MessageId = "count: 100")]
     public async Task<ActionResult<List<UserDto>>> GetUsers()
     {
-        var users = await _userManager.Users.ToListAsync();
-
-        var userDtos = users.Select(u => new UserDto
+        try
         {
-            Id = u.Id.ToString(),
-            UserName = u.UserName,
-            Email = u.Email,
-            Roles = _userManager.GetRolesAsync(u).Result.ToList()
-        }).ToList();
-
-        return userDtos;
+            var userDtoList = await _userService.GetUsers();
+            return Ok(userDtoList);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            var result = new Result { Description = "An error occured on the server." };
+            return StatusCode(500, result);
+        }
     }
 
     [HttpDelete("Delete/{id}")]
-    public async Task<IActionResult> DeleteUser(string id)
+    public async Task<IActionResult> DeleteUserById(string id)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user != null)
+            var deletionResult = await _userService.DeleteUserById(id);
+            if (deletionResult.Succeeded)
             {
-                await _userManager.DeleteAsync(user);
-                return Ok(new { Description = "User successfully deleted." });
+                return Ok(deletionResult.Data);
             }
-            return NotFound(new{Description="User not found."});
+            return NotFound(deletionResult.Data);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return StatusCode(500, e.Message);
+            var result = new Result { Description = "An error occured on the server." };
+            return StatusCode(500, result);
         }
     }
 
-    [HttpPost("ChangeRole/{id}")]
-    public async Task<IActionResult> ChangeRole(string id, UserRolesDto rolesDto)
+    [HttpPost("ChangeRole/{userId}")]
+    public async Task<IActionResult> ChangeRole(string userId, UserRolesDto rolesDto)
     {
         try
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user != null)
+            var changeRoleResult = await _userService.ChangeRole(userId,rolesDto);
+            if (changeRoleResult.Succeeded)
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
-                var removeRolesResult = await _userManager.RemoveFromRolesAsync(user,userRoles);
-                if (rolesDto.Roles != null && removeRolesResult.Succeeded )
-                {
-                    var result = await _userManager.AddToRolesAsync(user, rolesDto.Roles);
-                    if (result.Succeeded)
-                    {
-                        return Ok(new { Description = "Roles added successfully." });
-                    }
-                }
-                return StatusCode(500, new { Description = "Failed to add roles"});
+                return Ok(changeRoleResult.Data);
             }
 
-            return NotFound(new { Description = "User not found" });
+            if (changeRoleResult.Data!.ErrorType == ErrorType.UserName)
+            {
+                return NotFound(changeRoleResult.Data);
+            }
+
+            return StatusCode(500, changeRoleResult.Data);
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            return StatusCode(500, new {Description = e.Message });
+            var result = new Result { Description = "An error occured on the server" };
+            return StatusCode(500, result);
         }
     }
 }
