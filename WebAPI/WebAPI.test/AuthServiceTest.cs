@@ -18,13 +18,13 @@ using WebAPI.Utility;
 namespace WebAPI.test;
 
 [TestFixture]
-public class UserServiceTest
+public class AuthServiceTest
 {
     private Mock<UserManager<AppUser>> _userManagerMock;
     private Mock<IUserStore<AppUser>> _mockUserStore;
     private Mock<User.Management.Service.Services.IEmailService> _emailServiceMock;
     private Mock<ITokenProvider> _tokenProviderMock;
-    private IUserService _userService;
+    private IAuthService _authService;
 
     [SetUp]
     public void Setup()
@@ -33,7 +33,7 @@ public class UserServiceTest
         _userManagerMock = new Mock<UserManager<AppUser>>(_mockUserStore.Object,null,null,null,null,null,null,null,null);
         _emailServiceMock = new Mock<User.Management.Service.Services.IEmailService>();
         _tokenProviderMock = new Mock<ITokenProvider>();
-        _userService = new UserService(_userManagerMock.Object,_emailServiceMock.Object,_tokenProviderMock.Object);
+        _authService = new AuthService(_userManagerMock.Object,_emailServiceMock.Object,_tokenProviderMock.Object);
     }
 
     #region RegisterUserAsync
@@ -53,7 +53,7 @@ public class UserServiceTest
 
         var exceptedResult = RegisterResult.UserNameExists();
 
-        var result = await _userService.RegisterUserAsync(registerUserDto);
+        var result = await _authService.RegisterUserAsync(registerUserDto);
         
         Assert.IsInstanceOf<RegisterResult>(result);
         Assert.AreEqual(exceptedResult.Data.Description, result.Data.Description);
@@ -75,7 +75,7 @@ public class UserServiceTest
 
         var exceptedResult = RegisterResult.EmailExists();
 
-        var result = await _userService.RegisterUserAsync(registerUserDto);
+        var result = await _authService.RegisterUserAsync(registerUserDto);
         
         Assert.IsInstanceOf<RegisterResult>(result);
         Assert.AreEqual(exceptedResult.Data.Description, result.Data.Description);
@@ -86,9 +86,9 @@ public class UserServiceTest
     public void RegisterUserAsync_CreatUser_ReturnsValidAppUser()
     {
         var exceptedUser = new AppUser { Email = "email@email.com", UserName = "loci", };
-        MethodInfo methodInfo = typeof(UserService).GetMethod("CreateUser", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        MethodInfo methodInfo = typeof(AuthService).GetMethod("CreateUser", BindingFlags.NonPublic | BindingFlags.Instance)!;
         object[] parameters = { "email@email.com", "loci" };
-        var result = methodInfo.Invoke(_userService, parameters);
+        var result = methodInfo.Invoke(_authService, parameters);
         
         Assert.AreEqual(exceptedUser.Email, (result as AppUser)!.Email);
         Assert.AreEqual(exceptedUser.UserName, (result as AppUser)!.UserName);
@@ -104,7 +104,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
             .ReturnsAsync(createAsyncResult);
         
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.RegisterUserAsync(registerUserDto));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.RegisterUserAsync(registerUserDto));
 
         Assert.AreEqual("Failed to create user.", exception!.Message);
     }
@@ -122,7 +122,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.AddToRoleAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
             .ReturnsAsync(addRoleResult);
         
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.RegisterUserAsync(registerUserDto));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.RegisterUserAsync(registerUserDto));
         
         Assert.AreEqual("Failed to assign role." , exception!.Message);
     }
@@ -144,7 +144,7 @@ public class UserServiceTest
         _emailServiceMock.Setup(service => service.SendEmailConfirmationLink(It.IsAny<string>(), It.IsAny<string[]>()))
             .Returns(sendEmailResult);
         
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.RegisterUserAsync(registerUserDto));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.RegisterUserAsync(registerUserDto));
         
         Assert.AreEqual("Failed to send email." , exception!.Message);
     }
@@ -167,7 +167,7 @@ public class UserServiceTest
             .Returns(sendEmailResult);
 
         var exceptedResult = RegisterResult.Success("User successfully created.");
-        var result = await _userService.RegisterUserAsync(registerUserDto);
+        var result = await _authService.RegisterUserAsync(registerUserDto);
         
         Assert.IsInstanceOf<RegisterResult>(result);
         Assert.AreEqual(exceptedResult.Succeeded, result.Succeeded);
@@ -183,9 +183,9 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.GenerateEmailConfirmationTokenAsync(It.IsAny<AppUser>()))
             .ReturnsAsync(token);
         
-        MethodInfo methodInfo = typeof(UserService).GetMethod("GenerateConfirmationLink", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        MethodInfo methodInfo = typeof(AuthService).GetMethod("GenerateConfirmationLink", BindingFlags.NonPublic | BindingFlags.Instance)!;
         object[] parameters = { appUser };
-        dynamic result = methodInfo.Invoke(_userService, parameters)!;
+        dynamic result = methodInfo.Invoke(_authService, parameters)!;
         await result;
 
         var exceptedResult =
@@ -205,7 +205,7 @@ public class UserServiceTest
         var token = Guid.NewGuid().ToString();
 
         var exceptedResult = ConfirmEmailResult.InvalidInput();
-        var result = await _userService.ConfirmEmailAsync(email,token);
+        var result = await _authService.ConfirmEmailAsync(email,token);
         
         Assert.IsInstanceOf<ConfirmEmailResult>(result);
         Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
@@ -227,7 +227,7 @@ public class UserServiceTest
             .ReturnsAsync(failedConfirmResult);
             
         var exceptedResult = ConfirmEmailResult.ServerError();
-        var result = await _userService.ConfirmEmailAsync(email, token);
+        var result = await _authService.ConfirmEmailAsync(email, token);
         
         Assert.IsInstanceOf<ConfirmEmailResult>(result);
         Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
@@ -249,7 +249,7 @@ public class UserServiceTest
             .ReturnsAsync(confirmResult);
             
         var exceptedResult = ConfirmEmailResult.Success();
-        var result = await _userService.ConfirmEmailAsync(email, token);
+        var result = await _authService.ConfirmEmailAsync(email, token);
         
         Assert.IsInstanceOf<ConfirmEmailResult>(result);
         Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
@@ -265,7 +265,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
             .Throws<Exception>();
         
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.ConfirmEmailAsync(email,token));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.ConfirmEmailAsync(email,token));
         
         Assert.AreEqual("An error occured on the server." , exception!.Message);
     }
@@ -278,7 +278,7 @@ public class UserServiceTest
     {
         var loginUserDto = new LoginUserDto();
         var exceptedResult = LoginResult.Fail();
-        var result = await _userService.LoginAsync(loginUserDto);
+        var result = await _authService.LoginAsync(loginUserDto);
         
         Assert.IsInstanceOf<LoginResult>(result);
         Assert.AreEqual(exceptedResult.Succeeded, result.Succeeded);
@@ -297,7 +297,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.CheckPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
             .ReturnsAsync(false);
 
-        var result = await _userService.LoginAsync(loginUserDto);
+        var result = await _authService.LoginAsync(loginUserDto);
         
         Assert.IsInstanceOf<LoginResult>(result);
         Assert.AreEqual(exceptedResult.Description,result.Description);
@@ -321,7 +321,7 @@ public class UserServiceTest
         _tokenProviderMock.Setup(service => service.GetJwtSecurityToken(It.IsAny<List<Claim>>()))
             .Returns(token);
 
-        var result = await _userService.LoginAsync(loginUserDto);
+        var result = await _authService.LoginAsync(loginUserDto);
         
         Assert.IsInstanceOf<LoginResult>(result);
         Assert.AreEqual(exceptedResult.Description, result.Description);
@@ -336,7 +336,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.FindByNameAsync(It.IsAny<string>()))
             .Throws<Exception>();
             
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.LoginAsync(loginUserDto));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.LoginAsync(loginUserDto));
         Assert.AreEqual("An error occured on the server." , exception!.Message);
     }
 
@@ -352,7 +352,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
             .ReturnsAsync((AppUser)null!);
 
-        var result = await _userService.RequestPasswordChangeAsync(email);
+        var result = await _authService.RequestPasswordChangeAsync(email);
         
         Assert.IsInstanceOf<RequestPasswordChangeResult>(result);
         Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
@@ -371,7 +371,7 @@ public class UserServiceTest
             .ReturnsAsync(user);
         _userManagerMock.Setup(service => service.GeneratePasswordResetTokenAsync(It.IsAny<AppUser>()))
             .ReturnsAsync(token);
-        var result = await _userService.RequestPasswordChangeAsync(email);
+        var result = await _authService.RequestPasswordChangeAsync(email);
         Assert.IsInstanceOf<RequestPasswordChangeResult>(result);
         Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
         Assert.AreEqual(exceptedResult.Token,result.Token);
@@ -385,7 +385,7 @@ public class UserServiceTest
 
         _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
             .Throws<Exception>();
-        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.RequestPasswordChangeAsync(email));
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _authService.RequestPasswordChangeAsync(email));
         
         Assert.AreEqual("An error occured on the server.", exception!.Message);
     }
@@ -402,7 +402,7 @@ public class UserServiceTest
         _userManagerMock.Setup(service => service.FindByEmailAsync(It.IsAny<string>()))
             .ReturnsAsync((AppUser)null!);
 
-        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        var result = await _authService.ChangeForgotPasswordAsync(resetPasswordDto);
         
         Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
         Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
@@ -424,7 +424,7 @@ public class UserServiceTest
                 service.ResetPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(failedIdentityResult);
 
-        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        var result = await _authService.ChangeForgotPasswordAsync(resetPasswordDto);
         Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
         Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
         Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
@@ -446,7 +446,7 @@ public class UserServiceTest
                 service.ResetPasswordAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(succeededIdentityResult);
 
-        var result = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+        var result = await _authService.ChangeForgotPasswordAsync(resetPasswordDto);
         Assert.IsInstanceOf<ChangeForgotPasswordResult>(result);
         Assert.AreEqual(exceptedResult.Succeed,result.Succeed);
         Assert.AreEqual(exceptedResult.Data!.Description,result.Data!.Description);
@@ -460,11 +460,31 @@ public class UserServiceTest
             .Throws<Exception>();
 
         var exception =
-            Assert.ThrowsAsync<Exception>(async () => await _userService.ChangeForgotPasswordAsync(resetPasswordDto));
+            Assert.ThrowsAsync<Exception>(async () => await _authService.ChangeForgotPasswordAsync(resetPasswordDto));
         
         Assert.AreEqual("An error occured on the server.",exception!.Message);
     }
     
+
+    #endregion
+
+    #region GetRolesAsync
+
+    [Test]
+    public async Task GetRolesAsync_ReturnsRoles()
+    {
+        var user = new AppUser();
+        var roles = new List<string>() { "User" };
+        _userManagerMock.Setup(service => service.FindByNameAsync(It.IsAny<string>()))
+            .ReturnsAsync(user);
+        _userManagerMock.Setup(service => service.GetRolesAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(roles);
+
+        var result = await _authService.GetRolesAsync("");
+        
+        Assert.AreEqual(roles, result);
+
+    }
 
     #endregion
 }

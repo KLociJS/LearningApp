@@ -14,11 +14,11 @@ namespace WebAPI.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
         private readonly IHttpContextAccessorWrapper _httpContextAccessor;
-        public AuthController( IUserService userService, IHttpContextAccessorWrapper httpContextAccessor)
+        public AuthController( IAuthService authService, IHttpContextAccessorWrapper httpContextAccessor)
         {
-            _userService = userService;
+            _authService = authService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
                     return BadRequest(result);
                 }
 
-                var registrationResult = await _userService.RegisterUserAsync(registerUserDto);
+                var registrationResult = await _authService.RegisterUserAsync(registerUserDto);
 
                 if (registrationResult.Succeeded)
                 {
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var confirmationResult = await _userService.ConfirmEmailAsync(email, token);
+                var confirmationResult = await _authService.ConfirmEmailAsync(email, token);
                 if (confirmationResult.Succeeded)
                 {
                     return Ok(confirmationResult.Data);
@@ -82,7 +82,7 @@ namespace WebAPI.Controllers
                     return BadRequest(new Result { Description = "Invalid inputs" });
                 }
                 
-                var authResult = await _userService.LoginAsync(loginUserDto);
+                var authResult = await _authService.LoginAsync(loginUserDto);
 
                 if (authResult.Succeeded)
                 {
@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
                         HttpOnly = true
                     });
 
-                    var roles = await _userService.GetRolesAsync(loginUserDto.UserName!);
+                    var roles = await _authService.GetRolesAsync(loginUserDto.UserName!);
                     
                     return Ok(new LoginResponseDto
                     {
@@ -144,7 +144,7 @@ namespace WebAPI.Controllers
             try
             {
                 var username = _httpContextAccessor.HttpContext.User.Identity!.Name;
-                var roles = await _userService.GetRolesAsync(username!);
+                var roles = await _authService.GetRolesAsync(username!);
 
                 return Ok(new LoginResponseDto { UserName = username!, Roles = roles });
             }
@@ -165,7 +165,7 @@ namespace WebAPI.Controllers
                 {
                     return BadRequest(new  Result { Description = "Invalid email." });
                 }
-                var requestResult = await _userService.RequestPasswordChangeAsync(email.Address!);
+                var requestResult = await _authService.RequestPasswordChangeAsync(email.Address!);
                 if (requestResult.Succeed)
                 {
                     return Ok(requestResult!.Data);
@@ -185,7 +185,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var changeResult = await _userService.ChangeForgotPasswordAsync(resetPasswordDto);
+                var changeResult = await _authService.ChangeForgotPasswordAsync(resetPasswordDto);
                 if (changeResult.Succeed)
                 {
                     return Ok( changeResult.Data );

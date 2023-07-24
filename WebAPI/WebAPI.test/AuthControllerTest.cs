@@ -17,7 +17,7 @@ namespace WebAPI.test;
 
 public class AuthControllerTest
 {
-    private Mock<IUserService> _userServiceMock;
+    private Mock<IAuthService> _authServiceMock;
     private AuthController _authController;
     private Mock<IHttpContextAccessorWrapper> _httpContextMock;
     private Mock<IResponseCookies> _cookiesMock;
@@ -25,14 +25,14 @@ public class AuthControllerTest
     [SetUp]
     public void Setup()
     {
-        _userServiceMock = new Mock<IUserService>();
+        _authServiceMock = new Mock<IAuthService>();
         _httpContextMock = new Mock<IHttpContextAccessorWrapper>();
 
         _httpContextMock.SetupGet(s => s.HttpContext)
             .Returns(new DefaultHttpContext());
         _cookiesMock = new Mock<IResponseCookies>();
 
-        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+        _authController = new AuthController(_authServiceMock.Object, _httpContextMock.Object);
     }
 
     #region Register
@@ -49,7 +49,7 @@ public class AuthControllerTest
         
         var registrationResult = RegisterResult.Success("User successfully created.");
 
-        _userServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
+        _authServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
             .ReturnsAsync(registrationResult);
 
         // Act
@@ -72,7 +72,7 @@ public class AuthControllerTest
 
         var registrationResult = RegisterResult.ServerError();
         
-        _userServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
+        _authServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
             .ReturnsAsync(registrationResult);
 
         var result = await _authController.Register(registerUserDto);
@@ -125,7 +125,7 @@ public class AuthControllerTest
 
         var registrationResult = RegisterResult.UserNameExists();
 
-        _userServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
+        _authServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
             .ReturnsAsync(registrationResult);
 
         var result = await _authController.Register(registerUserDto);
@@ -149,7 +149,7 @@ public class AuthControllerTest
 
         var registrationResult = RegisterResult.EmailExists();
 
-        _userServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
+        _authServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
             .ReturnsAsync(registrationResult);
         
         var result = await _authController.Register(registerUserDto);
@@ -173,7 +173,7 @@ public class AuthControllerTest
 
         var registrationResult = RegisterResult.ServerError();
 
-        _userServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
+        _authServiceMock.Setup(service => service.RegisterUserAsync(registerUserDto))
             .ThrowsAsync(new Exception("Simulated exception"));
 
         var result = await _authController.Register(registerUserDto);
@@ -196,7 +196,7 @@ public class AuthControllerTest
 
         var confirmResult = ConfirmEmailResult.Success();
 
-        _userServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
+        _authServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
             .ReturnsAsync(confirmResult);
 
         var result = await _authController.ConfirmEmail(email, token);
@@ -215,7 +215,7 @@ public class AuthControllerTest
 
         var confirmResult = ConfirmEmailResult.ServerError();
 
-        _userServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
+        _authServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
             .ThrowsAsync(new Exception("Simulated Exception"));
 
         var result = await _authController.ConfirmEmail(email, token);
@@ -235,7 +235,7 @@ public class AuthControllerTest
 
         var confirmResult = ConfirmEmailResult.InvalidInput();
 
-        _userServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
+        _authServiceMock.Setup(service => service.ConfirmEmailAsync(email, token))
             .ReturnsAsync(confirmResult);
 
         var result = await _authController.ConfirmEmail(email, token);
@@ -264,7 +264,7 @@ public class AuthControllerTest
 
         var loginResult = LoginResult.Success(token);
 
-        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+        _authServiceMock.Setup(service => service.LoginAsync(loginUserDto))
             .ReturnsAsync(loginResult);
 
         _httpContextMock.Setup(ctx => ctx.HttpContext.Response.Cookies.Append(
@@ -277,7 +277,7 @@ public class AuthControllerTest
                 capturedCookieName = key;
             });
 
-        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+        _authController = new AuthController(_authServiceMock.Object, _httpContextMock.Object);
 
         var result = await _authController.Login(loginUserDto);
         
@@ -303,12 +303,12 @@ public class AuthControllerTest
         var loginResult = LoginResult.Success(token);
         var expectedResult = new LoginResponseDto() { Roles = roles, UserName = loginUserDto.UserName };
 
-        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+        _authServiceMock.Setup(service => service.LoginAsync(loginUserDto))
             .ReturnsAsync(loginResult);
-        _userServiceMock.Setup(service => service.GetRolesAsync(loginUserDto.UserName))
+        _authServiceMock.Setup(service => service.GetRolesAsync(loginUserDto.UserName))
             .ReturnsAsync(roles);
 
-        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+        _authController = new AuthController(_authServiceMock.Object, _httpContextMock.Object);
 
         var result = await _authController.Login(loginUserDto);
 
@@ -352,7 +352,7 @@ public class AuthControllerTest
 
         var loginResult = LoginResult.Fail();
 
-        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+        _authServiceMock.Setup(service => service.LoginAsync(loginUserDto))
             .ReturnsAsync(loginResult);
 
         var result = await _authController.Login(loginUserDto);
@@ -369,7 +369,7 @@ public class AuthControllerTest
         var loginUserDto = new LoginUserDto();
         var exceptedResult = new Result { Description = "An error occured on the server." };
 
-        _userServiceMock.Setup(service => service.LoginAsync(loginUserDto))
+        _authServiceMock.Setup(service => service.LoginAsync(loginUserDto))
             .ThrowsAsync(new Exception());
 
         var result = await _authController.Login(loginUserDto);
@@ -399,7 +399,7 @@ public class AuthControllerTest
                 capturedCookieOptions = options;
             });
 
-        _authController = new AuthController(_userServiceMock.Object, _httpContextMock.Object);
+        _authController = new AuthController(_authServiceMock.Object, _httpContextMock.Object);
 
         _authController.Logout();
         
@@ -448,7 +448,7 @@ public class AuthControllerTest
         var exceptedResult = new LoginResponseDto { UserName = "loci", Roles = roles };
         _httpContextMock.Setup(context => context.HttpContext.User.Identity!.Name)
             .Returns("loci");
-        _userServiceMock.Setup(service => service.GetRolesAsync("loci"))
+        _authServiceMock.Setup(service => service.GetRolesAsync("loci"))
             .ReturnsAsync(roles);
 
         var result = await _authController.CheckAuthentication();
@@ -494,7 +494,7 @@ public class AuthControllerTest
         var emailDto = new EmailDto { Address = "email@email.com" };
         var requestResult = RequestPasswordChangeResult.Success(Guid.NewGuid().ToString());
 
-        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+        _authServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
             .ReturnsAsync(requestResult);
 
         var exceptedResult = new Result { Description = "Email with password change link sent." };
@@ -512,7 +512,7 @@ public class AuthControllerTest
         var emailDto = new EmailDto { Address = "email@email.com" };
         var requestResult = RequestPasswordChangeResult.WrongEmail();
 
-        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+        _authServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
             .ReturnsAsync(requestResult);
 
         var exceptedResult = new Result { Description = "Wrong email." };
@@ -529,7 +529,7 @@ public class AuthControllerTest
     {
         var emailDto = new EmailDto { Address = "email@email.com" };
 
-        _userServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
+        _authServiceMock.Setup(service => service.RequestPasswordChangeAsync(emailDto.Address))
             .ThrowsAsync(new Exception("Simulated exception"));
 
         var exceptedResult = new Result { Description = "An error occured on the server." };
@@ -556,7 +556,7 @@ public class AuthControllerTest
         };
         var changeForgotPasswordResult = ChangeForgotPasswordResult.Success();
 
-        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+        _authServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
             .ReturnsAsync(changeForgotPasswordResult);
 
         var exceptedResult = new Result { Description = "Password successfully changed." };
@@ -579,7 +579,7 @@ public class AuthControllerTest
         };
         var changeForgotPasswordResult = ChangeForgotPasswordResult.InvalidInput();
 
-        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+        _authServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
             .ReturnsAsync(changeForgotPasswordResult);
 
         var exceptedResult = new Result { Description = "Invalid credentials." };
@@ -601,7 +601,7 @@ public class AuthControllerTest
             Token = Guid.NewGuid().ToString()
         };
 
-        _userServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
+        _authServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
             .ThrowsAsync(new Exception("Simulated exception"));
 
         var exceptedResult = new Result { Description = "An error occured on the server." };
