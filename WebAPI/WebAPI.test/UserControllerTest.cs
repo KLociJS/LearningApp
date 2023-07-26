@@ -34,15 +34,18 @@ public class UserControllerTest
             new UserDto() { UserName = "user2" },
             new UserDto() { UserName = "user3" },
         };
+        var exceptedResponse = new GetUsersResponseDto() { UserDtos = userDtoList };
+        var exceptedResult = new GetUserResult(true) { Data = exceptedResponse };
 
         _mockUserService.Setup(service => service.GetUsers())
-            .ReturnsAsync(userDtoList);
+            .ReturnsAsync(exceptedResult);
 
         var result = await _userController.GetUsers();
         
         Assert.IsInstanceOf<OkObjectResult>(result);
         var okResult = result as OkObjectResult;
-        Assert.AreEqual(userDtoList, (okResult?.Value as GetUserResult)?.Data);
+        Assert.AreEqual(exceptedResponse.UserDtos, (okResult?.Value as GetUsersResponseDto)?.UserDtos);
+        Assert.AreEqual(exceptedResponse.Description, (okResult?.Value as GetUsersResponseDto)?.Description);
     }
 
     [Test]

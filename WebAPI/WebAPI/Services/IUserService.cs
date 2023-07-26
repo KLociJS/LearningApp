@@ -6,7 +6,7 @@ namespace WebAPI.Services;
 
 public interface IUserService
 {
-    Task<List<UserDto>> GetUsers();
+    Task<GetUserResult> GetUsers();
     Task<DeleteUserResult> DeleteUserById(string id);
     Task<ChangeRolesResult> ChangeRole(string userId, UserRolesDto rolesDto);
 }

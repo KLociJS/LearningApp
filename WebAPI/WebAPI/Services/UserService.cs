@@ -18,14 +18,13 @@ public class UserService : IUserService
         _roleManager = roleManager;
     }
 
-    public async Task<List<UserDto>> GetUsers()
+    public async Task<GetUserResult> GetUsers()
     {
         try
         {
             var users = await _userManager.Users.Include(user=>user.Roles).ToListAsync();
             var userDtoList = GetUserDtoList(users);
-
-            return userDtoList;
+            return GetUserResult.Success(userDtoList);
         }
         catch (Exception e)
         {
@@ -90,7 +89,7 @@ public class UserService : IUserService
             Id = u.Id.ToString(),
             UserName = u.UserName,
             Email = u.Email,
-            Roles = roles.Where(r=>u.Roles.Select(ru=>ru.RoleId).Contains(r.Id)).Select(rs=>rs.Name).ToList()
+            Roles = roles.Where(r=>u.Roles.Select(ru=>ru.RoleId).Contains(r.Id)).Select(rn=>rn.Name).ToList()
         }).ToList();
     }
 }

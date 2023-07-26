@@ -29,9 +29,8 @@ public class UserController : ControllerBase
     {
         try
         {
-            var userDtoList = await _userService.GetUsers();
-            var result = new GetUserResult() { Data = userDtoList };
-            return Ok(result);
+            var getUsersResult = await _userService.GetUsers();
+            return Ok(getUsersResult.Data);
         }
         catch (Exception e)
         {
