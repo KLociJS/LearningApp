@@ -29,7 +29,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var getUsersResult = await _userService.GetUsers();
+            var getUsersResult = await _userService.GetUsersAsync();
             return Ok(getUsersResult.Data);
         }
         catch (Exception e)
@@ -45,7 +45,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var deletionResult = await _userService.DeleteUserById(id);
+            var deletionResult = await _userService.DeleteUserByIdAsync(id);
             if (deletionResult.Succeeded)
             {
                 return Ok(deletionResult.Data);

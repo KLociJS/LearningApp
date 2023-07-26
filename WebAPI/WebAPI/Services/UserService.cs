@@ -18,7 +18,7 @@ public class UserService : IUserService
         _roleManager = roleManager;
     }
 
-    public async Task<GetUserResult> GetUsers()
+    public async Task<GetUserResult> GetUsersAsync()
     {
         try
         {
@@ -33,7 +33,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<DeleteUserResult> DeleteUserById(string id)
+    public async Task<DeleteUserResult> DeleteUserByIdAsync(string id)
     {
         try
         {

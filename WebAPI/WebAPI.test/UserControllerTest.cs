@@ -25,6 +25,7 @@ public class UserControllerTest
         _userController = new UserController(_mockUserService.Object);
     }
 
+    #region GetUsers
     [Test]
     public async Task GetUsers_ReturnsUserDtoList()
     {
@@ -37,7 +38,7 @@ public class UserControllerTest
         var exceptedResponse = new GetUsersResponseDto() { UserDtos = userDtoList };
         var exceptedResult = new GetUserResult(true) { Data = exceptedResponse };
 
-        _mockUserService.Setup(service => service.GetUsers())
+        _mockUserService.Setup(service => service.GetUsersAsync())
             .ReturnsAsync(exceptedResult);
 
         var result = await _userController.GetUsers();
@@ -51,7 +52,7 @@ public class UserControllerTest
     [Test]
     public async Task GetUsers_ServerError_ReturnsStatusCode500()
     {
-        _mockUserService.Setup(service => service.GetUsers())
+        _mockUserService.Setup(service => service.GetUsersAsync())
             .Throws<Exception>();
         var exceptedResult = new Result { Description = "An error occured on the server." };
 
@@ -61,4 +62,11 @@ public class UserControllerTest
         var errorResult = result as ObjectResult;
         Assert.AreEqual(exceptedResult.Description, (errorResult?.Value as Result)?.Description);
     }
+    #endregion
+
+    #region DeleteUser
+
+    
+
+    #endregion
 }
