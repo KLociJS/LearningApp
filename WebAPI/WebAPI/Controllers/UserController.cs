@@ -50,6 +50,13 @@ public class UserController : ControllerBase
             {
                 return Ok(deletionResult.Data);
             }
+
+            if (deletionResult.Data?.ErrorType == ErrorType.Server)
+            {
+                var result = new Result { Description = "An error occured on the server." };
+                return StatusCode(500, result);
+            }
+            
             return NotFound(deletionResult.Data);
         }
         catch (Exception e)

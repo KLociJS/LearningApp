@@ -40,15 +40,20 @@ public class UserService : IUserService
             var user = await _userManager.FindByIdAsync(id);
             if (user != null)
             {
-                await _userManager.DeleteAsync(user);
-                return DeleteUserResult.Success();
+                var deleteResult = await _userManager.DeleteAsync(user);
+                if (deleteResult.Succeeded)
+                {
+                    return DeleteUserResult.Success();
+                }
+
+                return DeleteUserResult.ServerError();
             }
             return DeleteUserResult.UserNotFound();
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw new Exception("An error occured on the server");
         }
     }
 
