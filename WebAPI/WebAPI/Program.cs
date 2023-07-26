@@ -1,5 +1,8 @@
+using System.Net;
+using System.Net.Mime;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -135,6 +138,22 @@ builder.Services.AddSwaggerGen(option =>
 
 
 var app = builder.Build();
+
+//exception handling
+app.UseExceptionHandler(appError =>
+{
+    appError.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = MediaTypeNames.Text.Plain;
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if(contextFeature != null)
+        { 
+            Console.WriteLine($"Something went wrong: {contextFeature.Error}");
+            await context.Response.WriteAsync(contextFeature.Error.Message);
+        }
+    });
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
