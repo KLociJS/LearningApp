@@ -66,7 +66,45 @@ public class UserControllerTest
 
     #region DeleteUser
 
+    [Test]
+    public async Task DeleteUser_UserFound_ReturnsOkResult()
+    {
+        var exceptedResult = DeleteUserResult.Success();
+        _mockUserService.Setup(service => service.DeleteUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(exceptedResult);
+        
+        var result = await _userController.DeleteUserById("1");
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (okResult?.Value as Result)?.Description);
+    }
     
+    [Test]
+    public async Task DeleteUser_UserNotFound_ReturnsNotfound()
+    {
+        var exceptedResult = DeleteUserResult.UserNotFound();
+        _mockUserService.Setup(service => service.DeleteUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(exceptedResult);
 
+        var result = await _userController.DeleteUserById("1");
+        Assert.IsInstanceOf<NotFoundObjectResult>(result);
+        var notFoundResult = result as NotFoundObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (notFoundResult?.Value as Result)?.Description);
+    }
+
+    [Test]
+    public async Task DeleteUser_ServerError_ReturnsStatusCode500()
+    {
+        _mockUserService.Setup(service => service.DeleteUserByIdAsync(It.IsAny<string>()))
+            .Throws<Exception>();
+        var exceptedResult = new Result { Description = "An error occured on the server." };
+
+        var result = await _userController.DeleteUserById("1");
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var serverErrorResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (serverErrorResult?.Value as Result)?.Description);
+    }
     #endregion
+
+    
 }
