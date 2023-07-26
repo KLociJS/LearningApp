@@ -24,7 +24,6 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    [SuppressMessage("ReSharper.DPA", "DPA0006: Large number of DB commands", MessageId = "count: 100")]
     public async Task<ActionResult<List<UserDto>>> GetUsers()
     {
         try

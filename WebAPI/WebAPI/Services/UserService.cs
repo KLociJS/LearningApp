@@ -10,17 +10,19 @@ namespace WebAPI.Services;
 public class UserService : IUserService
 {
     private readonly UserManager<AppUser> _userManager;
-    
-    public UserService(UserManager<AppUser> userManager)
+    private readonly RoleManager<IdentityRole<Guid>> _roleManager;
+
+    public UserService(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
     }
 
     public async Task<List<UserDto>> GetUsers()
     {
         try
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.Users.Include(user=>user.Roles).ToListAsync();
             var userDtoList = GetUserDtoList(users);
 
             return userDtoList;
@@ -81,12 +83,14 @@ public class UserService : IUserService
 
     private List<UserDto> GetUserDtoList(List<AppUser> users)
     {
+        var roles = _roleManager.Roles.ToList();
+
         return users.Select(u => new UserDto
         {
             Id = u.Id.ToString(),
             UserName = u.UserName,
             Email = u.Email,
-            Roles = _userManager.GetRolesAsync(u).Result.ToList()
+            Roles = roles.Where(r=>u.Roles.Select(ru=>ru.RoleId).Contains(r.Id)).Select(rs=>rs.Name).ToList()
         }).ToList();
     }
 }

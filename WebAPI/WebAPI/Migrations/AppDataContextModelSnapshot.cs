@@ -332,7 +332,7 @@ namespace WebAPI.Migrations
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.AppUser", null)
-                        .WithMany()
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -384,6 +384,8 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.AppUser", b =>
                 {
                     b.Navigation("Articles");
+
+                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
