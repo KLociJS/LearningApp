@@ -52,7 +52,7 @@ public class UserService : IUserService
         }
     }
 
-    public async Task<ChangeRolesResult> ChangeRole(string userId, UserRolesDto rolesDto)
+    public async Task<ChangeRolesResult> ChangeRoleAsync(string userId, UserRolesDto rolesDto)
     {
         try
         {

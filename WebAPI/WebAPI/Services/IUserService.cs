@@ -8,5 +8,5 @@ public interface IUserService
 {
     Task<GetUserResult> GetUsersAsync();
     Task<DeleteUserResult> DeleteUserByIdAsync(string id);
-    Task<ChangeRolesResult> ChangeRole(string userId, UserRolesDto rolesDto);
+    Task<ChangeRolesResult> ChangeRoleAsync(string userId, UserRolesDto rolesDto);
 }

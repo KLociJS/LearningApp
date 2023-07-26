@@ -114,7 +114,7 @@ public class UserControllerTest
         var userRolesDto = new UserRolesDto();
         var exceptedResult = ChangeRolesResult.Success();
 
-        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+        _mockUserService.Setup(service => service.ChangeRoleAsync(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
             .ReturnsAsync(exceptedResult);
 
         var result = await _userController.ChangeRole("", userRolesDto);
@@ -130,7 +130,7 @@ public class UserControllerTest
         var userRolesDto = new UserRolesDto();
         var exceptedResult = ChangeRolesResult.UserNotFound();
 
-        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+        _mockUserService.Setup(service => service.ChangeRoleAsync(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
             .ReturnsAsync(exceptedResult);
 
         var result = await _userController.ChangeRole("", userRolesDto);
@@ -146,7 +146,7 @@ public class UserControllerTest
         var userRolesDto = new UserRolesDto();
         var exceptedResult = ChangeRolesResult.ServerError();
 
-        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+        _mockUserService.Setup(service => service.ChangeRoleAsync(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
             .ReturnsAsync(exceptedResult);
 
         var result = await _userController.ChangeRole("", userRolesDto);
@@ -163,7 +163,7 @@ public class UserControllerTest
         var userRolesDto = new UserRolesDto();
         var exceptedResult = new Result { Description = "An error occured on the server" };
 
-        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+        _mockUserService.Setup(service => service.ChangeRoleAsync(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
             .Throws<Exception>();
 
         var result = await _userController.ChangeRole("", userRolesDto);

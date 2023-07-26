@@ -65,7 +65,7 @@ public class UserController : ControllerBase
     {
         try
         {
-            var changeRoleResult = await _userService.ChangeRole(userId,rolesDto);
+            var changeRoleResult = await _userService.ChangeRoleAsync(userId,rolesDto);
             if (changeRoleResult.Succeeded)
             {
                 return Ok(changeRoleResult.Data);
