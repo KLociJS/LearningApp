@@ -15,9 +15,9 @@ export default function Users() {
       credentials: 'include'
     })
     .then(res=>res.json())
-    .then(data=>{
-        console.log(data)
-        setUsers(data)
+    .then(res=>{
+        console.log(res)
+        setUsers(res.data)
         setIsLoaded(true)
     })
     .catch(err=>console.log(err))

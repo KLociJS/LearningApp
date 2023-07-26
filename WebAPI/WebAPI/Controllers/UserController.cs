@@ -7,6 +7,7 @@ using WebAPI.Models;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.ResponseDto;
+using WebAPI.Models.ResultModels;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
@@ -24,12 +25,13 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<UserDto>>> GetUsers()
+    public async Task<IActionResult> GetUsers()
     {
         try
         {
             var userDtoList = await _userService.GetUsers();
-            return Ok(userDtoList);
+            var result = new GetUserResult() { Data = userDtoList };
+            return Ok(result);
         }
         catch (Exception e)
         {
