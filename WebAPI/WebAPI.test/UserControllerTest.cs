@@ -93,6 +93,19 @@ public class UserControllerTest
     }
 
     [Test]
+    public async Task DeleteUser_CouldNotDeleteValidUser_ReturnsServerError500()
+    {
+        var exceptedResult = DeleteUserResult.ServerError();
+        _mockUserService.Setup(service => service.DeleteUserByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(exceptedResult);
+        
+        var result = await _userController.DeleteUserById("1");
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var errorResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (errorResult?.Value as Result)?.Description);
+    }
+    
+    [Test]
     public async Task DeleteUser_ServerError_ReturnsStatusCode500()
     {
         _mockUserService.Setup(service => service.DeleteUserByIdAsync(It.IsAny<string>()))

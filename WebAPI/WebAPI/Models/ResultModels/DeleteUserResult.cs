@@ -21,7 +21,7 @@ public class DeleteUserResult
     }
     public static DeleteUserResult ServerError()
     {
-        var result = new Result() { Description = "An error occured on the server", ErrorType = ErrorType.Server};
+        var result = new Result() { Description = "An error occured on the server.", ErrorType = ErrorType.Server};
         return new DeleteUserResult() { Succeeded = false, Data = result };
     }
 }
