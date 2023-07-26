@@ -105,6 +105,74 @@ public class UserControllerTest
         Assert.AreEqual(exceptedResult.Description, (serverErrorResult?.Value as Result)?.Description);
     }
     #endregion
+    
+    #region ChangeRole
 
+    [Test]
+    public async Task ChangeRole_ValidUserAndRoles_ReturnsOkResult()
+    {
+        var userRolesDto = new UserRolesDto();
+        var exceptedResult = ChangeRolesResult.Success();
+
+        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+            .ReturnsAsync(exceptedResult);
+
+        var result = await _userController.ChangeRole("", userRolesDto);
+        
+        Assert.IsInstanceOf<OkObjectResult>(result);
+        var okResult = result as OkObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (okResult?.Value as Result)?.Description);
+    }
+
+    [Test]
+    public async Task ChangeRole_UserNotFound_ReturnsNotFound()
+    {
+        var userRolesDto = new UserRolesDto();
+        var exceptedResult = ChangeRolesResult.UserNotFound();
+
+        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+            .ReturnsAsync(exceptedResult);
+
+        var result = await _userController.ChangeRole("", userRolesDto);
+        
+        Assert.IsInstanceOf<NotFoundObjectResult>(result);
+        var okResult = result as NotFoundObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (okResult?.Value as Result)?.Description);
+    }
+
+    [Test]
+    public async Task ChangeRole_RoleManagerError_ReturnsStatusCode500()
+    {
+        var userRolesDto = new UserRolesDto();
+        var exceptedResult = ChangeRolesResult.ServerError();
+
+        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+            .ReturnsAsync(exceptedResult);
+
+        var result = await _userController.ChangeRole("", userRolesDto);
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var okResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Data?.Description, (okResult?.Value as Result)?.Description);
+        
+    }
+
+    [Test]
+    public async Task ChangeRole_ServerError_ReturnsStatusCode500()
+    {
+        var userRolesDto = new UserRolesDto();
+        var exceptedResult = new Result { Description = "An error occured on the server" };
+
+        _mockUserService.Setup(service => service.ChangeRole(It.IsAny<string>(), It.IsAny<UserRolesDto>()))
+            .Throws<Exception>();
+
+        var result = await _userController.ChangeRole("", userRolesDto);
+        
+        Assert.IsInstanceOf<ObjectResult>(result);
+        var okResult = result as ObjectResult;
+        Assert.AreEqual(exceptedResult.Description, (okResult?.Value as Result)?.Description);
+        
+    }
+    #endregion
     
 }
