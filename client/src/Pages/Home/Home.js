@@ -7,7 +7,7 @@ export default function Home() {
   console.log(user)
 
   useEffect(()=>{
-    fetch('https://localhost:7120/api/Test',{
+    fetch('http://localhost:5000/api/Test',{
       credentials: "include"
     })
     .then(res=>res.json())

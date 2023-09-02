@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { changeRole } from '_Constants'
+
 import './RolesModalContent.css'
 
 export default function RolesModalContent({user,setUsers,setShow}) {
@@ -16,7 +18,7 @@ export default function RolesModalContent({user,setUsers,setShow}) {
 
     const handleSubmit = () => {
         console.log(roles)
-        fetch(`https://localhost:7120/api/User/ChangeRole/${user.id}`,{
+        fetch(`${changeRole}${user.id}`,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",

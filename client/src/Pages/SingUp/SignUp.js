@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 
+import { register } from '_Constants'
+
 import  { 
   UserNameInputWithValidation,
   PasswordInputWithValidation,
@@ -64,7 +66,7 @@ export default function SingUp() {
       password
     }
 
-    fetch('https://localhost:7120/api/Auth/Register', {
+    fetch( register , {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

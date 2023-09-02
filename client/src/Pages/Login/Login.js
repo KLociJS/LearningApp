@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react'
 
+import { login } from '_Constants'
+
 import {  PasswordInput, Input, Loading } from 'Components'
 import { AuthCard } from 'Components'
 
@@ -26,7 +28,7 @@ export default function Login() {
     e.preventDefault()
     const userCredentials = {userName,password}
 
-    fetch('https://localhost:7120/api/Auth/login', {
+    fetch(`${login}`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

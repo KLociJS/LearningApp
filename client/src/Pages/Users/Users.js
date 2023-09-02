@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
 import './Users.css'
+
+import { getUsers, deleteUser } from '_Constants'
+
 import Modal from '../../Components/Modal/Modal'
 import RolesModalContent from './RolesModal/RolesModalContent'
 import { Loading } from 'Components'
@@ -11,7 +14,7 @@ export default function Users() {
   const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(()=>{
-    fetch('https://localhost:7120/api/User',{
+    fetch( getUsers ,{
       credentials: 'include'
     })
     .then(res=>res.json())
@@ -24,7 +27,7 @@ export default function Users() {
   },[])
 
   const handleUserDelete = (id) => {
-    fetch(`https://localhost:7120/api/User/Delete/${id}`,{
+    fetch(`${deleteUser}${id}`,{
       method: 'DELETE',
       credentials: 'include'
     })
