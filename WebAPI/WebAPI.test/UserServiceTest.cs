@@ -10,6 +10,7 @@ using Moq;
 using NUnit.Framework;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResultModels;
 using WebAPI.Services;
 
@@ -100,9 +101,127 @@ public class UserServiceTest
 
     #endregion
 
+    #region ChangeRoleAsync
+
+    [Test]
+    public async Task ChangeRoleAsync_UserNotFound_ReturnsUserNotFoundChangeRoleResult()
+    {
+        var userRolesDto = new UserRolesDto();
+        _mockUserManager.Setup(service => service.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync((AppUser)null!);
+        
+        var exceptedResult = ChangeRolesResult.UserNotFound();
+        var result = await _userService.ChangeRoleAsync("", userRolesDto);
+        
+        Assert.IsInstanceOf<ChangeRolesResult>(result);
+        Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
+        Assert.AreEqual(exceptedResult.Data?.Description, result.Data?.Description);
+    }
+
+    [Test]
+    public async Task ChangeRoleAsync_couldNotRemoveRoles_ReturnsServerErrorChangeRoleResult()
+    {
+        var userRolesDto = new UserRolesDto();
+        var appUser = new AppUser();
+        var roles = new List<string>();
+        var removeRolesResult = IdentityResult.Failed();
+        
+        _mockUserManager.Setup(service => service.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(appUser);
+        _mockUserManager.Setup(service => service.GetRolesAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(roles);
+        _mockUserManager.Setup(service =>
+                service.RemoveFromRolesAsync(It.IsAny<AppUser>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(removeRolesResult);
+
+        var exceptedResult = ChangeRolesResult.ServerError();
+        var result = await _userService.ChangeRoleAsync("", userRolesDto);
+        
+        Assert.IsInstanceOf<ChangeRolesResult>(result);
+        Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
+        Assert.AreEqual(exceptedResult.Data?.Description, result.Data?.Description);
+    }
+
+    [Test]
+    public void ChangeRoleAsync_ServerError_ThrowsException()
+    {
+        var userRolesDto = new UserRolesDto();
+        _mockUserManager.Setup(service => service.FindByIdAsync(It.IsAny<string>()))
+            .Throws<Exception>();
+
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.ChangeRoleAsync("", userRolesDto));
+        Assert.AreEqual("An error occured on the server.", exception?.Message);
+    }
+
+    [Test]
+    public async Task ChangeRoleAsync_ValidUser_ReturnsSuccessfulChangeRoleResult()
+    {
+        var userRolesDto = new UserRolesDto();
+        var appUser = new AppUser();
+        var roles = new List<string>();
+        var successIdentityResult = IdentityResult.Success;
+        
+        _mockUserManager.Setup(service => service.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(appUser);
+        _mockUserManager.Setup(service => service.GetRolesAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(roles);
+        _mockUserManager.Setup(service =>
+                service.RemoveFromRolesAsync(It.IsAny<AppUser>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(successIdentityResult);
+        _mockUserManager.Setup(service => service.AddToRolesAsync(It.IsAny<AppUser>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(successIdentityResult);
+
+        var exceptedResult = ChangeRolesResult.Success();
+        var result = await _userService.ChangeRoleAsync("", userRolesDto);
+        
+        Assert.IsInstanceOf<ChangeRolesResult>(result);
+        Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
+        Assert.AreEqual(exceptedResult.Data?.Description, result.Data?.Description);
+    }
+
+    [Test]
+    public async Task ChangeRoleAsync_CouldNotAddRoles_ReturnsServerErrorChangeRoleResult()
+    {
+        var userRolesDto = new UserRolesDto();
+        var appUser = new AppUser();
+        var roles = new List<string>();
+        var successIdentityResult = IdentityResult.Success;
+        var failedIdentityResult = IdentityResult.Failed();
+        
+        _mockUserManager.Setup(service => service.FindByIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(appUser);
+        _mockUserManager.Setup(service => service.GetRolesAsync(It.IsAny<AppUser>()))
+            .ReturnsAsync(roles);
+        _mockUserManager.Setup(service =>
+                service.RemoveFromRolesAsync(It.IsAny<AppUser>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(successIdentityResult);
+        _mockUserManager.Setup(service => service.AddToRolesAsync(It.IsAny<AppUser>(), It.IsAny<IEnumerable<string>>()))
+            .ReturnsAsync(failedIdentityResult);
+
+        var exceptedResult = ChangeRolesResult.ServerError();
+        var result = await _userService.ChangeRoleAsync("", userRolesDto);
+        
+        Assert.IsInstanceOf<ChangeRolesResult>(result);
+        Assert.AreEqual(exceptedResult.Succeeded,result.Succeeded);
+        Assert.AreEqual(exceptedResult.Data?.Description, result.Data?.Description);
+    }
+
+
+    #endregion
+
     #region GetUsersAsync
 
     [Test]
+    public async Task GetUsersAsync_ServerError_ThrowsException()
+    {
+        _mockUserManager.Setup(service => service.Users)
+            .Throws<Exception>();
+        var exception = Assert.ThrowsAsync<Exception>(async () => await _userService.GetUsersAsync());
+        Assert.AreEqual("An error occured on the server.", exception?.Message);
+    }
+    
+    //integration test
+    // usdbcontext inmemory
     public async Task GetUsersAsync_ReturnsGetUserResult()
     {
         var user1Id = Guid.NewGuid();
@@ -128,12 +247,11 @@ public class UserServiceTest
         var users = new List<AppUser> { user1, user2 }.AsQueryable();
         
         var roles = new List<IdentityRole<Guid>>() { userRole }.AsQueryable();
-
-        _mockUserManager.Setup(service => service.Users)
+        _mockUserStore.As<IQueryableUserStore<AppUser>>().Setup(s => s.Users)
             .Returns(users);
-        _mockRoleManager.Setup(service => service.Roles)
+        _mockRoleStore.As<IQueryableRoleStore<IdentityRole<Guid>>>().Setup(s => s.Roles)
             .Returns(roles);
-        
+
         var userDtoList = new List<UserDto>()
         {
             new UserDto() {Email = "", Id = user1Id.ToString(), UserName = "user1", Roles = new List<string>(){ "User" }},

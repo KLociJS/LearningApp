@@ -29,7 +29,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw new Exception("An error occured on the server.");
         }
     }
 
@@ -68,8 +68,8 @@ public class UserService : IUserService
                 var removeRolesResult = await _userManager.RemoveFromRolesAsync(user,userRoles);
                 if (removeRolesResult.Succeeded)
                 {
-                    var result = await _userManager.AddToRolesAsync(user, rolesDto.Roles);
-                    if (result.Succeeded)
+                    var addRolesResult = await _userManager.AddToRolesAsync(user, rolesDto.Roles);
+                    if (addRolesResult.Succeeded)
                     {
                         return ChangeRolesResult.Success();
                     }
@@ -81,7 +81,7 @@ public class UserService : IUserService
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
+            throw new Exception("An error occured on the server.");
         }
     }
 
