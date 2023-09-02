@@ -1,5 +1,8 @@
-import { Loading } from 'Components'
 import React, { useEffect, useState } from 'react'
+
+import { confirmEmail } from '_Constants'
+
+import { Loading } from 'Components'
 import { useSearchParams } from 'react-router-dom'
 
 export default function ConfirmEmail() {
@@ -12,7 +15,7 @@ export default function ConfirmEmail() {
     console.log('token: ', token);
 
     useEffect(()=>{
-        fetch(`https://localhost:7120/api/Auth/confirmEmail?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`)
+        fetch(`${confirmEmail}?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`)
         .then(res=>{
             if(res.ok){
                 return res.json()

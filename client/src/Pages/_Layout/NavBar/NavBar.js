@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
+
+import { logout } from '_Constants'
 
 import { LuBrainCircuit } from 'react-icons/lu'
 import { FaBars, FaTimes } from 'react-icons/fa'
@@ -20,7 +22,7 @@ export default function NavBar() {
     const { setUser } = useAuth()
 
     const handleLogout = () => {
-        fetch('https://localhost:7120/api/Auth/logout', { credentials: 'include' })
+        fetch( logout , { credentials: 'include' })
         .then(res=>{
             if(res.ok){
                 return res.json()

@@ -1,5 +1,7 @@
+import { checkAuth } from "_Constants"
+
 export default function checkAuthentication(setUser,setIsAuthenticationDone) {
-    fetch('https://localhost:7120/api/Auth/check-authentication', {
+    fetch( checkAuth , {
       credentials: 'include'
     })
     .then(res => {

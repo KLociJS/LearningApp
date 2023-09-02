@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+
+import { requestPasswordChange } from '_Constants'
+
 import { AuthCard, EmailInputWithValidation, PasswordInputWithValidation } from 'Components'
 import { FiLock } from 'react-icons/fi'
 import { emailValidator, passwordValidator } from 'Utility/ValidatorMethods'
@@ -41,7 +44,7 @@ export default function ForgotPassword() {
             token
         }
 
-        fetch('https://localhost:7120/api/Auth/reset-password',{
+        fetch( requestPasswordChange ,{
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
