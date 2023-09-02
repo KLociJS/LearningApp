@@ -11,6 +11,7 @@ using User.Management.Service.Models;
 using User.Management.Service.Services;
 using WebAPI.Contexts;
 using WebAPI.Models;
+using WebAPI.SeedData;
 using WebAPI.Services;
 using WebAPI.Utility;
 
@@ -172,17 +173,17 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Seed roles and admin user 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var services = scope.ServiceProvider;
-//     
-//     var context = services.GetRequiredService<AppDataContext>();
-//     context.Database.Migrate();
-//
-//     var userManager = services.GetRequiredService<UserManager<AppUser>>();
-//     var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-//
-//     await SeedData.Init(userManager, roleManager, context);
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    
+    var context = services.GetRequiredService<AppDataContext>();
+    context.Database.Migrate();
+
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+
+    await SeedData.Init(userManager, roleManager);
+}
 
 app.Run();

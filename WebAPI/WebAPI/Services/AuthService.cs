@@ -202,7 +202,6 @@ public class AuthService : IAuthService
             Email = email,
             UserName = userName,
             SecurityStamp = Guid.NewGuid().ToString(),
-            RefreshToken = Guid.NewGuid().ToString()
         };
     }
     

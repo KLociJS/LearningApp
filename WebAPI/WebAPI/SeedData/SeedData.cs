@@ -6,15 +6,26 @@ namespace WebAPI.SeedData;
 
 public class SeedData
 {
-    
-    public static async Task Init(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager, IdentityDbContext<AppUser, IdentityRole<Guid>, Guid> context)
+    public static async Task Init(UserManager<AppUser> userManager, RoleManager<IdentityRole<Guid>> roleManager)
     {
-        await CreateRole("Admin", roleManager);
-        await CreateRole("Moderator", roleManager);
-        await CreateRole("Author", roleManager);
-        await CreateRole("User", roleManager);
+        if (!roleManager.Roles.Any())
+        {
+            await CreateRole("Admin", roleManager);
+            await CreateRole("Moderator", roleManager);
+            await CreateRole("Author", roleManager);
+            await CreateRole("User", roleManager);
+        }
 
-        await CreateUser("kisznerlorant21@gmail.com", "MySecretPassword123!", "Admin", roleManager, userManager);
+        if (!userManager.Users.Any())
+        {
+            var adminUser = new AppUser()
+            {
+                UserName = "Admin",
+                Email = "LapAdmin@lap.com"
+            };
+            await userManager.CreateAsync(adminUser, "Abcd@1234");
+            await userManager.AddToRolesAsync(adminUser, new[] { "Admin", "Moderator", "Author", "User" });
+        }
     }
 
 
@@ -42,12 +53,12 @@ public class SeedData
         }
     }
 
-    private static async Task CreateUser(string email, string password, string roleName, RoleManager<IdentityRole<Guid>> roleManager, UserManager<AppUser> userManager)
+    private static async Task CreateUser(string userName, string email, string password, string roleName, RoleManager<IdentityRole<Guid>> roleManager, UserManager<AppUser> userManager)
     {
         // Create the admin user
         var adminUser = new AppUser()
         {
-            UserName = email,
+            UserName = userName,
             Email = email
         };
 
