@@ -1,7 +1,77 @@
 import useAuth from 'Hooks/useAuth'
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
+import { MarkdownPreview } from 'Components'
+import { MarkdownTextArea } from 'Components'
+import { Link } from 'react-router-dom'
+
+const dummyData = {
+  articles:[
+    {name:"article name", id:1},
+    {name:"article name", id:2},
+    {name:"article name", id:3}
+  ],
+  categories: [
+    {
+      name: "category name",
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            name: "subcategory",
+             articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            name: "subcategory",
+             articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+              
+    }]
+}
+const Article = ({name,id}) => {
+  return <Link to ={id}>{name}</Link>
+}
 
 export default function Home() {
+  const [markdown, setMarkdown] = useState('')
   const { user } = useAuth()
 
   console.log(user)
@@ -16,6 +86,9 @@ export default function Home() {
   },[])
   
   return (
-    <div>a</div>
+    <div className='editor-container'>
+      <MarkdownTextArea setMarkdown={setMarkdown} markdown={markdown} />
+      <MarkdownPreview markdown={markdown} />
+    </div>
   )
 }
