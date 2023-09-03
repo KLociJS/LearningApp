@@ -4,7 +4,7 @@ export default function ArtilceLink({articles}) {
   return (
     <>
       { articles.map(a=> 
-        (<li key={a.id}><NavLink to={`${a.id}`}>{a.name}</NavLink></li>)
+        (<li className='article-li' key={a.id}><NavLink className='article-link' to={`${a.id}`}>{a.name}</NavLink></li>)
       )}
     </>
   )

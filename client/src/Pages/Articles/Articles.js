@@ -42,6 +42,209 @@ const dummyData = {
     },
     {
       name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "béla",
+      id:1,
+      articles:[
+        {name:"article name", id:4},
+        {name:"article name", id:5},
+        {name:"article name", id:6}
+      ],
+      subcategories:[
+          { 
+            id:1,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          },
+          { 
+            id:2,
+            name: "subcategory", 
+            articles: [
+              {name:"article name", id:7},
+              {name:"article name", id:8},
+              {name:"article name", id:9}
+            ]
+          }
+      ]
+    },
+    {
+      name: "category name",
       id:2,
       articles:[
         {name:"article name", id:4},
@@ -75,11 +278,12 @@ const dummyData = {
 export default function Articles() {
     const { id } = useParams()
   return (
-    <main className='article-page-container'>
-        <Sidebar content={dummyData} />
-        <section className='article-container'>
-            <Outlet />
-        </section>
-    </main>
+    <>
+      <Sidebar content={dummyData} />
+      <section className='article-container'>
+          <Outlet />
+      </section>
+    </>
+    
   )
 }
