@@ -37,8 +37,8 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./WebAPI/WebAPI
-          file: ./WebAPI/WebAPI/Dockerfile
+          context: ./WebAPI
+          file: ./WebAPI/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/learningappapi:latest
   buildui:
