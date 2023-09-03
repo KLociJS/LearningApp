@@ -8,7 +8,6 @@ export default function Layout() {
     <>
       <NavBar />
       <Outlet />
-      <div className='footer'></div>
     </>
   )
 }
