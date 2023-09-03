@@ -10,6 +10,8 @@ import PasswordInput from "./Input/PasswordInput/Passwordinput"
 import EmailInputWithValidation from "./Input/EmailInputWithValidation/EmailInputWithValidation"
 import UserNameInputWithValidation from "./Input/UserNameInputWithValidation/UserNameInputWithValidation"
 import Loading from "./LoadingComponent/Loading"
+import MarkdownPreview from "./MarkdownEditor/MarkdownPreview/MarkdownPreview"
+import MarkdownTextArea from "./MarkdownEditor/TextInput/MarkdownTextArea"
 
 
 export { 
@@ -25,4 +27,6 @@ export {
     UserNameInputWithValidation,
     PasswordInput,
     Loading,
+    MarkdownTextArea,
+    MarkdownPreview,
 }
