@@ -28,9 +28,11 @@ import {
 } from "Pages"
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
+
 import checkAuthentication from "Utility/checkAuthentication";
-import ArticleLanding from "Pages/Articles/ArticleLanding/ArticleLanding";
-import Article from "Pages/Articles/Article/Article";
+
+import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
+import Article from "Pages/Articles/Components/Article/Article";
 
 
 const router = createBrowserRouter(

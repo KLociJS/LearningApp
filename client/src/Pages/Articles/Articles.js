@@ -2,7 +2,7 @@ import { Outlet, useParams } from 'react-router-dom'
 
 import './Articles.css'
 
-import Sidebar from './Sidebar/Sidebar'
+import Sidebar from './Components/Sidebar/Sidebar'
 import { useState } from 'react'
 
 const dummyData = {
