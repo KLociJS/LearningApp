@@ -16,6 +16,7 @@
   min-height: calc(100vh - 180px);
 }
 
+
   @media screen and (max-width: 960px) {
     .container{
       padding: 0;
@@ -109,8 +110,4 @@
   height: 80vh;
 }
 
-.footer{
-  height: 100px;
-  background-color: var(--primary);
-}
 
