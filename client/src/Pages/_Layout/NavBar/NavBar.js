@@ -6,6 +6,7 @@ import { logout } from '_Constants'
 import { LuBrainCircuit } from 'react-icons/lu'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { AiOutlineHome, AiOutlineUserAdd, AiOutlineLogin } from 'react-icons/ai'
+import { BiNotepad } from 'react-icons/bi'
 
 
 import './NavBar.css'
@@ -52,6 +53,14 @@ export default function NavBar() {
                                 <div className='centered-label'>
                                     <AiOutlineHome className='mobile-icon' size={16}/>
                                     Home
+                                </div>
+                            </NavLink>
+                        </li>
+                        <li className='nav-item'>
+                            <NavLink to='/article' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                                <div className='centered-label'>
+                                        <BiNotepad className='mobile-icon' size={16}/>
+                                        My Notes
                                 </div>
                             </NavLink>
                         </li>
