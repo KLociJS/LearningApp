@@ -1,9 +1,11 @@
 import React from 'react'
-import { Outlet, useParams } from 'react-router-dom'
-import Sidebar from '../Sidebar/Sidebar'
+import { useParams } from 'react-router-dom'
 
 export default function Article() {
     const { id } = useParams()
+    console.log(id)
+    console.log(id)
+
   return (
     <>{id}</>
   )
