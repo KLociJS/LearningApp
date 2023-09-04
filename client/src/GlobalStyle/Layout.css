@@ -9,7 +9,13 @@
     padding-right: 50px;
     padding-left: 50px;
 }
-  
+
+.main-container{
+  display: flex;
+  margin-top: 80px;
+  min-height: calc(100vh - 180px);
+}
+
   @media screen and (max-width: 960px) {
     .container{
       padding: 0;
