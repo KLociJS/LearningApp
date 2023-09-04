@@ -6,7 +6,7 @@ import { MdOutlinePostAdd } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 
 export default function Sidebar({ content }) {
-  
+  console.log(content)
   return (
     <aside className='sidebar'>
         <Link to='/create-article' className='create-article'>

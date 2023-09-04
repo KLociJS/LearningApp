@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.ResponseDto;
+using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Models.ResultModels;
 
 namespace WebAPI.Services;
@@ -19,6 +21,32 @@ public class ArticleService : IArticleService
         _context = context;
     }
 
+    public async Task<GetSidebarContentResult> GetSidebarContent()
+    {
+        var articlesWithoutCategory = _context.Articles
+            .Where(a => a.Category == null)
+            .Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id})
+            .ToList();
+
+        var categories = _context.Categories
+            .Select(c => new SidebarCategoryDto()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Articles = c.Articles.Where(a=>a.SubCategory==null).Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList(),
+                Subcategories = c.SubCategories.Select(s=>new SidebarSubCategoryDto()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Articles = s.Articles.Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList()
+                }).ToList()
+            })
+            .ToList();
+        
+        var result = new SidebarContentDto() { Articles = articlesWithoutCategory, Categories = categories };
+
+        return new GetSidebarContentResult() { Data = result, Succeeded = true, Message = "" };
+    }
 
     public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string userName)
     {

@@ -18,6 +18,13 @@ public class ArticleController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetSidebarContent()
+    {
+        var result = await _articleService.GetSidebarContent();
+        return Ok(result.Data);
+    }
+
     [Authorize(Roles = "User")]
     [HttpPost]
     public async Task<IActionResult> PostArticle(PostArticleDto postArticleDto)

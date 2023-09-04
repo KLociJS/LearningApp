@@ -10,8 +10,10 @@ export default function CreateArticle() {
 
     const postArticle = () => {
         const article = {
-            title: 'Testticle',
-            markdown
+            title: 'has both',
+            markdown,
+            category: 'test2',
+            subcategory: 'test'
         }
 
         fetch('http://localhost:5000/api/Article',{
