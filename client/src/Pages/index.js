@@ -7,6 +7,7 @@ import Users from "./Users/Users";
 import UnAuthorized from "./UnAuthorized/UnAuthorized";
 import ConfirmEmail from "./ConfirmEmail/ConfirmEmail";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import Articles from "./Articles/Articles";
 
 export {
     Layout,
@@ -18,4 +19,5 @@ export {
     UnAuthorized,
     ConfirmEmail,
     ForgotPassword,
+    Articles,
 }
