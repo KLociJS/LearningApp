@@ -1,8 +1,41 @@
+/**** Article ****/
+
 .article-container {
     width: 80vw;
     height: 200vh;
 
     padding: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.article-header{
+    display: flex;
+    width: 100%;
+}
+.action-btn{
+    margin-left: auto;
+    display: flex;
+    gap: 1rem;
+}
+.delete-icon{
+    color: var(--danger);
+    cursor: pointer;
+}
+.edit-icon{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.article-title{
+    font-size: 2rem;
+    color: var(--primary);
+}
+.article-info{
+    font-size: 0.75rem;
+    color: var(--shadow);
 }
 
 /* Sidebar */

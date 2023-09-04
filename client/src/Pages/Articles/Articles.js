@@ -3,10 +3,17 @@ import { Outlet, useParams } from 'react-router-dom'
 import './Articles.css'
 
 import Sidebar from './Sidebar/Sidebar'
+import { useState } from 'react'
 
 const dummyData = {
   articles:[
-    {name:"article name", id:1},
+    {
+      id:1,
+      name:"Basics of Cascade Style Sheet",
+      creator: "Loci",
+      createdAt: new Date(),
+      markdown: `# Title      \n## secondary title    \n \`\`\` js console.log('asdf');\`\`\``
+    },
     {name:"article name", id:2},
     {name:"article name", id:3}
   ],
@@ -277,13 +284,14 @@ const dummyData = {
 
 export default function Articles() {
     const { id } = useParams()
-  return (
-    <>
-      <Sidebar content={dummyData} />
-      <section className='article-container'>
-          <Outlet />
-      </section>
-    </>
-    
-  )
+    const [article,setArticle] = useState(dummyData.articles[0])
+    return (
+      <>
+        <Sidebar content={dummyData} />
+        <section className='article-container'>
+            <Outlet context={{article}}/>
+        </section>
+      </>
+      
+    )
 }

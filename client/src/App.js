@@ -38,6 +38,10 @@ const router = createBrowserRouter(
         <Route path="/" element={<Layout />}>
             <Route element={<RequireRoles allowedRoles={['User']} />}>
                 <Route index element={<Home />} />
+                <Route path="article" element={<Articles />}>
+                    <Route index element={<ArticleLanding />} />
+                    <Route path=":id" element={<Article />} />
+                </Route>
             </Route>
             <Route element={<RequireRoles allowedRoles={['Admin']} />}>
                 <Route path="users" element={<Users />} />
@@ -47,10 +51,6 @@ const router = createBrowserRouter(
                 <Route path="signup" element={<SingUp />} />
                 <Route path="reset-password" element={<ResetPassword />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
-            </Route>
-            <Route path="article" element={<Articles />}>
-                <Route index element={<ArticleLanding />} />
-                <Route path=":id" element={<Article />} />
             </Route>
             <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />
