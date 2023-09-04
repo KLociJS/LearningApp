@@ -13,6 +13,7 @@
 .main-container{
   display: flex;
   min-height: calc(100vh - 160px);
+  flex-wrap: wrap;
 }
   
   @media screen and (max-width: 960px) {

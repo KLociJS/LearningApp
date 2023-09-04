@@ -1,0 +1,16 @@
+.controls{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.save-icon{
+    font-size: 2rem;
+    color: var(--primary);
+}
+.back-icon{
+    font-size: 2rem;
+    color: var(--primary);
+}

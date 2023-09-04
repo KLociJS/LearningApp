@@ -7,9 +7,10 @@
     /*color*/
 }
 
-.editor-container>textarea{
-    width: 50%;
-    height: 100%;
+.main-container>textarea{
+    width: 48%;
+    height: calc(100vh - 160px);
+    margin: 1rem;
     resize: none;
     overflow-y: scroll;
     padding: 0.5rem;
@@ -19,16 +20,16 @@
     font-weight: 200;
 }
 
-.editor-container>textarea:focus{
+.main-container>textarea:focus{
     outline: 2px solid var(--accent);
 }
 
 /* Hide scrollbar */
 
-.editor-container>textarea::-webkit-scrollbar, .editor-preview::-webkit-scrollbar {
+.main-container>textarea::-webkit-scrollbar, .editor-preview::-webkit-scrollbar {
     display: none;
 }
-.editor-container>textarea, .editor-preview {
+.main-container>textarea, .editor-preview {
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
@@ -36,7 +37,7 @@
 }
 
 .editor-preview{
-    width: 50%;
+    width: 48%;
     height: 100%;
     overflow-y: scroll;
     padding: 0.5rem;
