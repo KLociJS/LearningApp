@@ -7,8 +7,8 @@
 }
 
 .save-icon{
-    font-size: 2rem;
-    color: var(--primary);
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
 }
 .back-icon{
     font-size: 2rem;

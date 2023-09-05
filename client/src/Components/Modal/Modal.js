@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import './Modal.css'
 
-export default function Modal({ children, modalButtonText }) {
+export default function Modal({ children, modalButtonText, icon }) {
     const [show, setShow] = useState(false)
 
     return (
@@ -10,20 +10,14 @@ export default function Modal({ children, modalButtonText }) {
             {show ? 
             <>
                 <button className='secondary-button'>
-                    {modalButtonText}
+                    {modalButtonText}{icon}
                 </button>
-                <div 
-                    className='modal-container'
-                    onClick={()=>setShow(false)}
-                >
+                <div className='modal-container' onClick={()=>setShow(false)}>
                     {React.cloneElement(children, { setShow })}
                 </div>  
             </> :
-            <button 
-                className='secondary-button'
-                onClick={() => setShow(true)}
-            >
-                {modalButtonText}
+            <button className='secondary-button' onClick={() => setShow(true)}>
+                {modalButtonText}{icon}
             </button>
             }
         </>
