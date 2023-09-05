@@ -10,6 +10,7 @@ export default function Sidebar({ content }) {
   return (
     <aside className='sidebar'>
         <Link to='/create-article' className='create-article'>
+          New Note
           <MdOutlinePostAdd  className='add-icon'/>
         </Link>
         <ul className='category-list'>

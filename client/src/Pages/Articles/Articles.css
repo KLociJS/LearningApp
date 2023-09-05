@@ -68,11 +68,21 @@
 }
 
 .add-icon{
-    font-size: 3rem;
-    color: var(--green);
+    font-size: 1.5rem;
 }
 .create-article{
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+    padding: 0.2rem;
+    text-decoration: none;
+    color: var(--primary);
+}
+.create-article:hover{
+    color: var(--secondary);
+    background-color: var(--primary);
 }
 
 .subcategory-list{
