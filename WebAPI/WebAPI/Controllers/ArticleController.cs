@@ -41,6 +41,21 @@ public class ArticleController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "User")]
+    [HttpDelete("delete-article/{id}")]
+    public async Task<IActionResult> DeleteArticle(Guid id)
+    {
+        var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+        
+        var deletionResult = await _articleService.DeleteArticle(id, userName);
+        
+        if (!deletionResult.Succeded)
+        {
+            return BadRequest(new { deletionResult.Message });
+        }
+
+        return Ok(new { deletionResult.Message });
+    }
 
     [Authorize(Roles = "User")]
     [HttpGet("sidebar-content")]

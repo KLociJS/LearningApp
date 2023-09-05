@@ -26,3 +26,12 @@
     position: absolute;
     
 }
+
+.modal-header{
+    color: var(--primary);
+    font-size: 2rem;
+    text-align: center;
+}
+.modal-header.warning{
+    color: var(--danger)
+}

@@ -24,6 +24,7 @@ const changeRole = `${userController}/ChangeRole/`
 // Article
 const postArticleUrl = `${articleController}/add-article`
 const getArticleById = `${articleController}/get-article/`
+const deleteArticle = `${articleController}/delete-article/`
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
@@ -42,4 +43,5 @@ export {
     postArticleUrl,
     getSidebarContentUrl,
     getArticleById,
+    deleteArticle,
 }

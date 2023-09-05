@@ -62,8 +62,53 @@ public class ArticleService : IArticleService
 
         return GetArticleByIdResult.Succeed(articleDto);
     }
-    
-    
+    public async Task<DeleteArticleResult> DeleteArticle(Guid id, string? userName)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null)
+        {
+            return DeleteArticleResult.UserNotFound();
+        }
+
+        var articleToDelete = await _context.Articles
+            .Include(a=>a.Category)
+            .Include(a=>a.SubCategory)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
+        if (articleToDelete == null)
+        {
+            DeleteArticleResult.ArticleNotFound();
+        }
+
+        Category? category = null;
+        SubCategory? subCategory = null;
+
+        if (articleToDelete!.Category != null)
+        {
+            category = await _context.Categories.FirstOrDefaultAsync(c => c == articleToDelete.Category);
+            if (articleToDelete.SubCategory != null)
+            {
+                subCategory = await _context.SubCategories.FirstOrDefaultAsync(s => s == articleToDelete.SubCategory);
+            }
+        }
+        
+        _context.Articles.Remove(articleToDelete!);
+
+        if (category!=null && category.Articles.Count <= 1)
+        {
+            _context.Categories.Remove(category);
+        }
+
+        if (subCategory != null && subCategory.Articles.Count <= 1)
+        {
+            _context.SubCategories.Remove(subCategory);
+        }
+
+        
+        await _context.SaveChangesAsync();
+        
+        return DeleteArticleResult.Succeed();
+    }
     public async Task<GetSidebarContentResult> GetSidebarContent(string? userName)
     {
         try
@@ -105,7 +150,6 @@ public class ArticleService : IArticleService
             throw;
         }
     }
-
     public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string? userName)
     {
         try
@@ -193,4 +237,5 @@ public class ArticleService : IArticleService
             throw new Exception("Server error.");
         }
     }
+    
 }
