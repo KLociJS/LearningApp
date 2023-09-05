@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { postArticleUrl } from '_Constants/fetchUrl'
+
 import { RiSave2Line } from 'react-icons/ri'
 import { Input } from 'Components'
 
@@ -16,7 +18,7 @@ export default function ArticleForm({ markdown, setShow }){
             subcategory: subcategory === '' ? null : subcategory
         }
 
-        fetch('http://localhost:5000/api/Article',{
+        fetch( postArticleUrl ,{
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
