@@ -38,7 +38,7 @@ export default function Article() {
             <p className='article-info'>Created by {article.author} at {article.createdAt.slice(0,10)}</p>
           </div>
           <div className='action-btn'>
-            <Link to='' className='secondary-button'>
+            <Link to={`/update-article/${id}`} className='secondary-button'>
               <AiOutlineEdit className='edit-icon'/>
             </Link>
             <Modal icon={<RiDeleteBinLine className='delete-icon'/>}>

@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
 
+[Authorize(Roles = "User")]
 [Route("api/[controller]")]
 [ApiController]
 public class ArticleController : ControllerBase
@@ -17,8 +19,7 @@ public class ArticleController : ControllerBase
         _articleService = articleService;
         _httpContextAccessor = httpContextAccessor;
     }
-
-    [Authorize(Roles = "User")]
+    
     [HttpGet("get-article/{id}")]
     public async Task<IActionResult> GetArticleById(Guid id)
     {
@@ -40,8 +41,7 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured on the server.");
         }
     }
-
-    [Authorize(Roles = "User")]
+    
     [HttpDelete("delete-article/{id}")]
     public async Task<IActionResult> DeleteArticle(Guid id)
     {
@@ -56,8 +56,7 @@ public class ArticleController : ControllerBase
 
         return Ok(new { deletionResult.Message });
     }
-
-    [Authorize(Roles = "User")]
+    
     [HttpGet("sidebar-content")]
     public async Task<IActionResult> GetSidebarContent()
     {
@@ -80,8 +79,7 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured on the server.");
         }
     }
-
-    [Authorize(Roles = "User")]
+    
     [HttpPost("add-article")]
     public async Task<IActionResult> PostArticle(PostArticleDto postArticleDto)
     {
@@ -102,5 +100,20 @@ public class ArticleController : ControllerBase
             Console.WriteLine(e);
             return StatusCode(500, "An error occured on the server.");
         }
+    }
+
+    [HttpPut("update-article/{id}")]
+    public async Task<IActionResult> UpdateArticle(Guid id, UpdateArticleDto updateArticleDto)
+    {
+        var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+
+        var updateArticleResult = await _articleService.UpdateArticle(id, userName, updateArticleDto);
+
+        if (!updateArticleResult.Succeeded)
+        {
+            return BadRequest(new { updateArticleResult.Message });
+        }
+
+        return Ok(new { updateArticleResult.Data });
     }
 }

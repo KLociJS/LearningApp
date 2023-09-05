@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Articles, ConfirmEmail, CreateArticle, ForgotPassword, Layout } from "Pages"
+import { Articles, ConfirmEmail, CreateArticle, ForgotPassword, Layout, UpdateArticle } from "Pages"
 
 //Pages
 import {
@@ -45,6 +45,7 @@ const router = createBrowserRouter(
                     <Route path=":id" element={<Article />} />
                 </Route>
                 <Route path="create-article" element={<CreateArticle />} />
+                <Route path="update-article/:id" element={<UpdateArticle />} />
             </Route>
             <Route element={<RequireRoles allowedRoles={['Admin']} />}>
                 <Route path="users" element={<Users />} />

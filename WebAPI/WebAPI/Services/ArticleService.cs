@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Models.ResultModels;
@@ -237,5 +238,57 @@ public class ArticleService : IArticleService
             throw new Exception("Server error.");
         }
     }
-    
+
+    public async Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null)
+        {
+            return UpdateArticleResult.UserNotFound();
+        }
+
+        var articleToUpdate = await _context.Articles
+            .Include(a=>a.SubCategory)
+            .Include(a=>a.Category)
+            .FirstOrDefaultAsync(a => a.Id == id);
+        
+        if (articleToUpdate == null)
+        {
+            return UpdateArticleResult.ArticleNotFound();
+        }
+        
+        articleToUpdate.UpdatedAt = DateTime.Now.ToUniversalTime();
+        if (updateArticleDto.Markdown != null)
+        {
+            articleToUpdate.Markdown = updateArticleDto.Markdown;
+        }
+
+        if (updateArticleDto.Title != null)
+        {
+            articleToUpdate.Title = updateArticleDto.Title;
+        }
+
+        await _context.SaveChangesAsync();
+
+        var updatedArticleDto = new ArticleDto()
+        {
+            Author = user.UserName,
+            CreatedAt = articleToUpdate.CreatedAt,
+            Id = articleToUpdate.Id,
+            Markdown = articleToUpdate.Markdown,
+            Title = articleToUpdate.Title,
+            UpdatedAt = articleToUpdate.UpdatedAt
+        };
+        if (articleToUpdate.Category != null)
+        {
+            updatedArticleDto.Category = articleToUpdate.Category.Name;
+        }
+
+        if (articleToUpdate.SubCategory != null)
+        {
+            updatedArticleDto.SubCategory = articleToUpdate.SubCategory.Name;
+        }
+        
+        return UpdateArticleResult.Succeed(updatedArticleDto);
+    }
 }

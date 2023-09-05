@@ -1,4 +1,5 @@
 using WebAPI.Models.RequestDtos;
+using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Models.ResultModels;
 using WebAPI.Models.ResultModels.ArticleResult;
 
@@ -10,4 +11,5 @@ public interface IArticleService
     Task<GetSidebarContentResult> GetSidebarContent(string? userName);
     Task<GetArticleByIdResult> GetArticleById(Guid id, string? userName);
     Task<DeleteArticleResult> DeleteArticle(Guid id, string? userName);
+    Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto);
 }
