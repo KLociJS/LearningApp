@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Articles, ConfirmEmail, ForgotPassword, Layout } from "Pages"
+import { Articles, ConfirmEmail, CreateArticle, ForgotPassword, Layout, UpdateArticle } from "Pages"
 
 //Pages
 import {
@@ -28,9 +28,11 @@ import {
 } from "Pages"
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
+
 import checkAuthentication from "Utility/checkAuthentication";
-import ArticleLanding from "Pages/Articles/ArticleLanding/ArticleLanding";
-import Article from "Pages/Articles/Article/Article";
+
+import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
+import Article from "Pages/Articles/Components/Article/Article";
 
 
 const router = createBrowserRouter(
@@ -42,6 +44,8 @@ const router = createBrowserRouter(
                     <Route index element={<ArticleLanding />} />
                     <Route path=":id" element={<Article />} />
                 </Route>
+                <Route path="create-article" element={<CreateArticle />} />
+                <Route path="update-article/:id" element={<UpdateArticle />} />
             </Route>
             <Route element={<RequireRoles allowedRoles={['Admin']} />}>
                 <Route path="users" element={<Users />} />

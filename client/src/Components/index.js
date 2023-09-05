@@ -10,6 +10,7 @@ import PasswordInput from "./Input/PasswordInput/Passwordinput"
 import EmailInputWithValidation from "./Input/EmailInputWithValidation/EmailInputWithValidation"
 import UserNameInputWithValidation from "./Input/UserNameInputWithValidation/UserNameInputWithValidation"
 import Loading from "./LoadingComponent/Loading"
+import ArticleForm from "./ArticleForm/ArticleForm"
 
 
 export { 
@@ -25,4 +26,5 @@ export {
     UserNameInputWithValidation,
     PasswordInput,
     Loading,
+    ArticleForm,
 }

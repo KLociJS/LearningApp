@@ -41,6 +41,7 @@ builder.Services.AddDbContext<AppDataContext>( options =>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IHttpContextAccessorWrapper, HttpContextAccessorWrapper>();
 
 // Add identity core

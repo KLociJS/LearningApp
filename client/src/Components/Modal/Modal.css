@@ -1,5 +1,5 @@
 .modal-container{
-    position: absolute;
+    position: fixed;
     top:0;
     left:0;
     z-index: 1000;
@@ -25,4 +25,13 @@
 .modal-close-btn{
     position: absolute;
     
+}
+
+.modal-header{
+    color: var(--primary);
+    font-size: 2rem;
+    text-align: center;
+}
+.modal-header.warning{
+    color: var(--danger)
 }
