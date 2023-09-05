@@ -22,10 +22,11 @@ const deleteUser = `${userController}/Delete/`
 const changeRole = `${userController}/ChangeRole/`
 
 // Article
-const postArticleUrl = `${articleController}`
+const postArticleUrl = `${articleController}/add-article`
+const getArticleById = `${articleController}/get-article/`
 
 //Sidebar
-const getSidebarContentUrl = `${articleController}`
+const getSidebarContentUrl = `${articleController}/sidebar-content`
 
 export {
     register,
@@ -40,4 +41,5 @@ export {
     changeRole,
     postArticleUrl,
     getSidebarContentUrl,
+    getArticleById,
 }

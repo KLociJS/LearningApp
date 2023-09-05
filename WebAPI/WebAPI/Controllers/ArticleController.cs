@@ -18,7 +18,28 @@ public class ArticleController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
+    [Authorize(Roles = "User")]
+    [HttpGet("get-article/{id}")]
+    public async Task<IActionResult> GetArticleById(Guid id)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+            var getArticleResult = await _articleService.GetArticleById(id, userName);
 
+            if (!getArticleResult.Succeeded)
+            {
+                return BadRequest(new { getArticleResult.Message });
+            }
+
+            return Ok(new { getArticleResult.Data, getArticleResult.Message });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
 
 
     [Authorize(Roles = "User")]
@@ -46,7 +67,7 @@ public class ArticleController : ControllerBase
     }
 
     [Authorize(Roles = "User")]
-    [HttpPost]
+    [HttpPost("add-article")]
     public async Task<IActionResult> PostArticle(PostArticleDto postArticleDto)
     {
         try

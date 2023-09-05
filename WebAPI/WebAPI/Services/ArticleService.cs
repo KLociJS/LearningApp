@@ -7,6 +7,7 @@ using WebAPI.Models.RequestDtos;
 using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Models.ResultModels;
+using WebAPI.Models.ResultModels.ArticleResult;
 
 namespace WebAPI.Services;
 
@@ -21,7 +22,48 @@ public class ArticleService : IArticleService
         _context = context;
     }
 
+    public async Task<GetArticleByIdResult> GetArticleById(Guid id, string? userName)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
 
+        if (user == null)
+        {
+            return GetArticleByIdResult.UserNotFound();
+        }
+
+        var article = await _context.Articles.FirstOrDefaultAsync(a => a.Id == id && a.Author == user);
+        if (article == null)
+        {
+            return GetArticleByIdResult.ArticleNotFound();
+        }
+
+        var articleDto = new ArticleDto()
+        {
+            Id = article.Id,
+            Title = article.Title,
+            Author = article.Author.UserName,
+            Markdown = article.Markdown,
+            CreatedAt = article.CreatedAt
+        };
+
+        if (article.Category != null)
+        {
+            articleDto.Category = article.Category.Name;
+            if (article.SubCategory != null)
+            {
+                articleDto.SubCategory = article.SubCategory.Name;
+            }
+        }
+
+        if (article.UpdatedAt != null)
+        {
+            articleDto.CreatedAt = article.CreatedAt;
+        }
+
+        return GetArticleByIdResult.Succeed(articleDto);
+    }
+    
+    
     public async Task<GetSidebarContentResult> GetSidebarContent(string? userName)
     {
         try
@@ -64,7 +106,7 @@ public class ArticleService : IArticleService
         }
     }
 
-    public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string userName)
+    public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string? userName)
     {
         try
         {
