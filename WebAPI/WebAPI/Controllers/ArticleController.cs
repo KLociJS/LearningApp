@@ -18,11 +18,31 @@ public class ArticleController : ControllerBase
         _httpContextAccessor = httpContextAccessor;
     }
 
-    [HttpGet]
+
+
+
+    [Authorize(Roles = "User")]
+    [HttpGet("sidebar-content")]
     public async Task<IActionResult> GetSidebarContent()
     {
-        var result = await _articleService.GetSidebarContent();
-        return Ok(result.Data);
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+            var result = await _articleService.GetSidebarContent(userName);
+
+            if (result.Succeeded)
+            {
+                return Ok(result.Data);
+            }
+
+            return Unauthorized(new { result.Message });
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
     }
 
     [Authorize(Roles = "User")]
@@ -39,7 +59,7 @@ public class ArticleController : ControllerBase
                 return Ok(postArticleResult.Data);
             }
 
-            return BadRequest(new { postArticleResult.Message });
+            return Unauthorized(new { postArticleResult.Message });
         }
         catch (Exception e)
         {

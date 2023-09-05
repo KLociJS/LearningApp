@@ -6,5 +6,5 @@ namespace WebAPI.Services;
 public interface IArticleService
 { 
     Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string userName);
-    Task<GetSidebarContentResult> GetSidebarContent();
+    Task<GetSidebarContentResult> GetSidebarContent(string? userName);
 }

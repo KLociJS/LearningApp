@@ -21,31 +21,47 @@ public class ArticleService : IArticleService
         _context = context;
     }
 
-    public async Task<GetSidebarContentResult> GetSidebarContent()
+
+    public async Task<GetSidebarContentResult> GetSidebarContent(string? userName)
     {
-        var articlesWithoutCategory = _context.Articles
-            .Where(a => a.Category == null)
-            .Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id})
-            .ToList();
-
-        var categories = _context.Categories
-            .Select(c => new SidebarCategoryDto()
+        try
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user == null)
             {
-                Id = c.Id,
-                Name = c.Name,
-                Articles = c.Articles.Where(a=>a.SubCategory==null).Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList(),
-                Subcategories = c.SubCategories.Select(s=>new SidebarSubCategoryDto()
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Articles = s.Articles.Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList()
-                }).ToList()
-            })
-            .ToList();
-        
-        var result = new SidebarContentDto() { Articles = articlesWithoutCategory, Categories = categories };
+                return GetSidebarContentResult.UserNotFound();
+            }
+            
+            var articlesWithoutCategory = _context.Articles
+                .Where(a => a.Category == null && a.Author==user)
+                .Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id})
+                .ToList();
 
-        return new GetSidebarContentResult() { Data = result, Succeeded = true, Message = "" };
+            var categories = _context.Categories
+                .Select(c => new SidebarCategoryDto()
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Articles = c.Articles.Where(a=>a.SubCategory==null).Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList(),
+                    Subcategories = c.SubCategories.Select(s=>new SidebarSubCategoryDto()
+                    {
+                        Id = s.Id,
+                        Name = s.Name,
+                        Articles = s.Articles.Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList()
+                    }).ToList()
+                })
+                .ToList();
+            
+            var result = new SidebarContentDto() { Articles = articlesWithoutCategory, Categories = categories };
+
+            return GetSidebarContentResult.Succeed(result);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string userName)
