@@ -74,6 +74,8 @@ public class ArticleService : IArticleService
         var articleToDelete = await _context.Articles
             .Include(a=>a.Category)
             .Include(a=>a.SubCategory)
+            .Include(a=>a.Category!.Articles)
+            .Include(a=>a.SubCategory!.Articles)
             .FirstOrDefaultAsync(a => a.Id == id);
 
         if (articleToDelete == null)
