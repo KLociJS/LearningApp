@@ -6,29 +6,28 @@ import { AiOutlineEdit } from 'react-icons/ai'
 import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownPreview'
 import { Modal } from 'Components'
 import DeleteArticleModal from './Components/DeleteArticleModal/DeleteArticleModal'
+import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton'
 
 export default function Article() {
     const { id } = useParams()
     const [article,setArticle] = useState(null)
-
+    const [isLoading, setIsLoading] = useState(true)
+    
     useEffect(()=>{
+      setIsLoading(true)
       fetch(`${getArticleById}${id}`,{credentials:'include'})
       .then(res=>res.json())
       .then(res=>{
-        console.log(res)
         setArticle(res.data)
+        setIsLoading(false)
       })
       .catch(console.log)
+      
     },[id])
     
-    const deleteNote = () => {
-      console.log('delete')
-    }
-    const editNote = () => {
-      console.log('edit')
-    }
-
-    if(article===null) return
+    if(isLoading){
+      return <ArticleSkeleton />
+    } 
 
     return (
       <>
