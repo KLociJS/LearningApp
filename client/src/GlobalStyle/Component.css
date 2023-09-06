@@ -43,6 +43,11 @@
   cursor: pointer;
 }
 
+.secondary-button:disabled,.secondary-button:disabled:hover{
+  border: 1px solid var(--primary-disabled);
+  color:var(--primary-disabled);
+}
+
 .warning-button{
   padding: 0.5rem 2rem;
 
