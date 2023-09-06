@@ -13,7 +13,10 @@
 .main-container{
   display: flex;
   min-height: calc(100vh - 160px);
-  flex-wrap: wrap;
+  width: 100%;
+  max-width: 1300px;
+  margin-right: auto;
+  margin-left: auto;
 }
   
   @media screen and (max-width: 960px) {
