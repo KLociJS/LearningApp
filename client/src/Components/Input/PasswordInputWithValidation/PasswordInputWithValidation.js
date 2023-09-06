@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Input from '../Input'
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 
-export default function PasswordInputWithValidation({ inputValue, setInputValue, error, setError }) {
+export default function PasswordInputWithValidation({ inputValue, setInputValue, error, setError, isDisabled }) {
     const [showPassword, setShowPassword] = useState(false)
 
     useEffect(()=>{
@@ -18,6 +18,7 @@ export default function PasswordInputWithValidation({ inputValue, setInputValue,
                 setInputValue={setInputValue}
                 hasError={error}
                 label='Password'
+                isDisabled={isDisabled}
             />
             {showPassword ? 
                 <AiOutlineEye 

@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import Input from "../Input"
 
-export default function UserNameInputWithValidation({ inputValue, setInputValue, setError, error }) {
+export default function UserNameInputWithValidation({ inputValue, setInputValue, setError, error, isDisabled }) {
 
     useEffect(()=>{
         setError('')
@@ -14,6 +14,7 @@ export default function UserNameInputWithValidation({ inputValue, setInputValue,
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 hasError={error}
+                isDisabled={isDisabled}
             />
             {error && <p className='error-msg align-start'>{error}</p>}
         </>

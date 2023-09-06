@@ -8,7 +8,8 @@
     border: 1px solid #002147;
     border-radius: 5px;
     padding: 0.5rem 0.5rem;
-    width: 100%
+    width: 100%;
+    color: var(--primary);
 }
 
 .input-control:disabled{
