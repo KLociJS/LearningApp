@@ -16,6 +16,7 @@ export default function ForgotPassword() {
     const [passwordError, setPasswordError] = useState('')
 
     const [error,setError] = useState('')
+    const [isDisabled,setIsDisabled] = useState(false)
 
     const [queryParams] = useSearchParams()
     const token = queryParams.get('token')
@@ -24,6 +25,7 @@ export default function ForgotPassword() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setIsDisabled(true)
 
         const isPasswordValid = passwordValidator(password)
         if(!isPasswordValid){
@@ -58,9 +60,11 @@ export default function ForgotPassword() {
             throw res
         })
         .then(()=>{
+            setIsDisabled(false)
             navigate('/login')
         })
         .catch(err=>{
+            setIsDisabled(false)
             if(err instanceof Response){
                 err.json()
                 .then(err=>{
@@ -81,15 +85,17 @@ export default function ForgotPassword() {
                 setInputValue={setEmail}
                 error={emailError} 
                 setError={setEmailError}
+                isDisabled={isDisabled}
             />
             <PasswordInputWithValidation
                 inputValue={password}
                 setInputValue={setPassword}
                 error={passwordError}
                 setError={setPasswordError}
+                isDisabled={isDisabled}
             />
             {error && <p className='error-msg align start'>{error}</p>}
-            <button className='primary-button'>
+            <button className='primary-button' disabled={isDisabled}>
                 Change password
             </button>
         </AuthCard>
