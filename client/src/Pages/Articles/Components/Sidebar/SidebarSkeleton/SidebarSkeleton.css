@@ -3,7 +3,7 @@
 .sidebar-skeleton-link,
 .sidebar-skeleton-subcategory{
     animation: skeleton 1s ease infinite alternate;
-    background-color: #e6e6e6;
+    background-color: var(--skeleton);
     border-radius: 10px;
     height: 2rem;
 }
