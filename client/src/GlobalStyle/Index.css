@@ -1,6 +1,7 @@
 :root {
   --primary: #002147;
   --primary-2: #002147f1;
+  --primary-disabled: #002147bd;
   --secondary: #FBFBFF;
   --danger: red;
   --accent: #FF9900;
