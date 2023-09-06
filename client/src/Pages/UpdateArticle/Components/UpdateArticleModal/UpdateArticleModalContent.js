@@ -8,9 +8,12 @@ import { useParams } from 'react-router-dom'
 
 export default function UpdateArticleModalContent({ markdown, title, setShow }){
     const [newTitle, setNewTitle] = useState(title)
+    const [isDisabled, setIsDisabled] = useState(false)
+
     const { id } = useParams()
 
     const updateArticle = () => {
+        setIsDisabled(true)
         const article = {
             title:newTitle,
             markdown
@@ -26,20 +29,39 @@ export default function UpdateArticleModalContent({ markdown, title, setShow }){
         })
         .then(res=>res.json())
         .then(data=>{
+            setIsDisabled(false)
             setShow(false)
             console.log(data)
         })
-        .catch(err=>console.log(err))
+        .catch(err=>{
+            setIsDisabled(false)
+            console.log(err)
+        })
     }
 
     return (
         <section className='modal' onClick={e=>e.stopPropagation()}>
-            <Input label='Title' inputValue={newTitle} setInputValue={setNewTitle} />
-            <button className='secondary-button mt-1' onClick={updateArticle}>
+            <Input 
+                label='Title'
+                inputValue={newTitle}
+                setInputValue={setNewTitle} 
+                isDisabled={isDisabled}
+            />
+            <button 
+                className='secondary-button mt-1'
+                onClick={updateArticle}
+                disabled={isDisabled}
+            >
                 Save 
                 <RiSave2Line className='save-icon'/>
             </button>
-            <button onClick={e=>setShow(false)} className='secondary-button center mt-1'>Close</button>
+            <button 
+                onClick={()=>setShow(false)}
+                className='secondary-button center mt-1'
+                disabled={isDisabled}
+            >
+                Close
+            </button>
         </section>
     )
 }
