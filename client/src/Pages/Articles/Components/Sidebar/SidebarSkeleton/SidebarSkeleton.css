@@ -1,0 +1,33 @@
+.sidebar-skeleton-button,
+.sidebar-skeleton-category,
+.sidebar-skeleton-link,
+.sidebar-skeleton-subcategory{
+    animation: skeleton 1s ease infinite alternate;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    height: 2rem;
+}
+
+@keyframes skeleton {
+    to{
+        opacity: 0.5;
+    }
+}
+
+.sidebar-skeleton-button{
+    width: 6rem;
+    margin: 0 0 1.25rem auto;
+}
+
+.sidebar-skeleton-category{
+    margin-top: 0.75rem;
+}
+
+.sidebar-skeleton-link{
+    margin: 0.75rem 0 0 2rem;
+}
+
+.sidebar-skeleton-subcategory{
+    margin: 0.75rem 0 0 1rem;
+}
+
