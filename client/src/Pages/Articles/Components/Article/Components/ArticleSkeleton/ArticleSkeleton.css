@@ -1,0 +1,49 @@
+.article-skeleton-header-container{
+    display: flex;
+}
+
+.article-skeleton-title,.markdown-skeleton-title{
+    height: 2rem;
+    width: min(16rem, 30vw);
+}
+.article-skeleton-info{
+    height: 1.5rem;
+    width: min(10rem, 20vw);
+    margin-top: 0.75rem;
+}
+
+.article-skeleton-button-container{
+    margin-left: auto;
+    display: flex;
+    gap: 1rem;
+}
+
+.article-skeleton-button{
+    width: 2rem;
+    height: 2rem;
+}
+
+.markdown-skeleton-title{
+    margin-top: 2rem;
+}
+.markdown-skeleton-text{
+    margin-top: 0.75rem;
+    width: 100%;
+    height: 20rem;
+}
+
+.article-skeleton-title,
+.article-skeleton-info,
+.article-skeleton-button,
+.markdown-skeleton-title,
+.markdown-skeleton-text{
+    background-color: var(--skeleton);
+    border-radius: 10px;
+    animation: skeleton 1s ease infinite alternate;
+}
+
+@keyframes skeleton {
+    to{
+        opacity: 0.5;
+    }
+}

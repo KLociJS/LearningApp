@@ -14,10 +14,13 @@ export default function ResetPassword() {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
+  const [isDisabled, setIsDisabled] = useState(false)
+
   const navigate = useNavigate()
 
   const handleResetPassword = (e) => {
     e.preventDefault()
+    setIsDisabled(true)
 
     const isEmailValid = emailValidator(email)
 
@@ -41,9 +44,11 @@ export default function ResetPassword() {
       }
     })
     .then(()=>{
+      setIsDisabled(false)
       navigate('/login')
     })
     .catch(err=>{
+      setIsDisabled(false)
       if(err instanceof Response){
         err.json()
         .then(err=>{
@@ -69,7 +74,7 @@ export default function ResetPassword() {
         />
         {error && <p>{error}</p>}
         <Link to='/login' className='link align-end'>Back to login</Link>
-        <button className='primary-button mt-2' type='submit'>Send email</button>
+        <button className='primary-button mt-2' type='submit' disabled={isDisabled}>Send email</button>
       </AuthCard>
     </main>
   </>

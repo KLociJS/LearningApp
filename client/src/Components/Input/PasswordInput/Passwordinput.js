@@ -2,13 +2,14 @@ import { useState } from 'react'
 import Input from '../Input'
 import { AiOutlineEyeInvisible, AiOutlineEye } from 'react-icons/ai'
 
-export default function PasswordInput({ inputValue, setInputValue}) {
+export default function PasswordInput({ inputValue, setInputValue, isDisabled}) {
     const [showPassword, setShowPassword] = useState(false)
     
   return (
     <>
         <div className='password-input'>
             <Input 
+                isDisabled={isDisabled}
                 type={showPassword ? 'text' : 'password'}
                 inputValue={inputValue}
                 setInputValue={setInputValue}

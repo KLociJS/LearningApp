@@ -7,6 +7,7 @@ const Input = ({
   setInputValue,
   hasError,
   type, 
+  isDisabled = false
 }) => {
   const [isFocused, setIsFocused] = useState(false)
 
@@ -17,13 +18,15 @@ const Input = ({
   };
 
   const isActive = isFocused || inputValue ? 'active' : ''
+  const disabled = isDisabled ? 'disabled' : ''
 
   return (
         <div className={`input-group ${hasError ? 'error' : ''}`}>
-            <label className={`input-label ${isActive}`}>
+            <label className={`input-label ${isActive} ${disabled}`}>
                 {label}
             </label>
             <input
+                disabled={isDisabled}
                 type={type || 'text'}
                 value={inputValue}
                 className="input-control"

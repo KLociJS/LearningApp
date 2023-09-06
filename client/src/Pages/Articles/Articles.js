@@ -10,6 +10,7 @@ import Sidebar from './Components/Sidebar/Sidebar'
 
 export default function Articles() {
     const [sidebarContent, setSidebarContent] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(()=>{
       fetch( getSidebarContentUrl ,{
@@ -21,16 +22,15 @@ export default function Articles() {
         })
         .then(res=>res.json())
         .then(data=>{
-          console.log(data)
           setSidebarContent(data)
-          console.log(data)
+          setIsLoading(false)
         })
         .catch(err=>console.log(err))
     },[])
 
     return (
       <>
-        <Sidebar sidebarContent={sidebarContent}/>
+        <Sidebar sidebarContent={sidebarContent} isLoading={isLoading}/>
         <section className='article-container'>
             <Outlet context={{setSidebarContent}}/>
         </section>

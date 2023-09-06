@@ -1,10 +1,13 @@
 :root {
   --primary: #002147;
   --primary-2: #002147f1;
+  --primary-disabled: #002147bd;
   --secondary: #FBFBFF;
   --danger: red;
   --accent: #FF9900;
   --shadow:#8f8f8f;
+  --skeleton: #e6e6e6;
+  --skeleton-dark: #c4c4c4;
   --green: #007e00;
 }
 
