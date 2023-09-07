@@ -11,6 +11,7 @@ import EmailInputWithValidation from "./Input/EmailInputWithValidation/EmailInpu
 import UserNameInputWithValidation from "./Input/UserNameInputWithValidation/UserNameInputWithValidation"
 import Loading from "./LoadingComponent/Loading"
 import ArticleForm from "./ArticleForm/ArticleForm"
+import MarkdownEditor from "./MarkdownEditor/MarkdownEditor"
 
 
 export { 
@@ -27,4 +28,5 @@ export {
     PasswordInput,
     Loading,
     ArticleForm,
+    MarkdownEditor
 }
