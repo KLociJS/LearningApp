@@ -31,6 +31,8 @@ export default function SingUp() {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
+  const [isDisabled, setIsDisabled] = useState(false)
+
   const [error, setError] = useState('')
 
   const navigate = useNavigate()
@@ -42,6 +44,7 @@ export default function SingUp() {
     setEmailError('')
     setPasswordError('')
     setError('')
+    setIsDisabled(true)
   
     let userNameValidState = userNameValidator(userName)
     if(!userNameValidState){
@@ -82,9 +85,11 @@ export default function SingUp() {
       }
     })
     .then(()=>{
+      setIsDisabled(false)
       navigate('/login')
     })
     .catch(error=>{
+      setIsDisabled(false)
       if (error instanceof Response) {
         error.json().then(errorData => {
           console.log(errorData);
@@ -113,22 +118,25 @@ export default function SingUp() {
             setInputValue={setUserName}
             error={userNameError}
             setError={setUserNameError}
+            isDisabled={isDisabled}
           />
           <PasswordInputWithValidation
             inputValue={password}
             setInputValue={setPassword}
             error={passwordError}
             setError={setPasswordError}
+            isDisabled={isDisabled}
           />
           <EmailInputWithValidation 
             inputValue={email}
             setInputValue={setEmail}
             error={emailError}
             setError={setEmailError}
+            isDisabled={isDisabled}
           />
 
           {error && <p key={error} className='error-msg align-start'>{error}</p>}
-          <button className='primary-button mt-2' type='submit'>SignUp</button>
+          <button className='primary-button mt-2' type='submit' disabled={isDisabled}>SignUp</button>
         </AuthCard>
       </main>
     </>

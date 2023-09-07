@@ -6,7 +6,8 @@ import { getUsers, deleteUser } from '_Constants'
 
 import Modal from '../../Components/Modal/Modal'
 import RolesModalContent from './RolesModal/RolesModalContent'
-import { Loading } from 'Components'
+import UsersSkeleton from './Components/UsersSkeleton'
+
 
 export default function Users() {
 
@@ -48,7 +49,7 @@ export default function Users() {
   }
 
   if(!isLoaded){
-    return <Loading />
+    return <UsersSkeleton />
   }
 
   return (

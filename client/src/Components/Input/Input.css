@@ -8,7 +8,18 @@
     border: 1px solid #002147;
     border-radius: 5px;
     padding: 0.5rem 0.5rem;
-    width: 100%
+    width: 100%;
+    color: var(--primary);
+}
+
+.input-control:disabled{
+    border-color: var(--primary-disabled);
+    color: var(--primary-disabled);
+    -webkit-text-fill-color: var(--primary-disabled);
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px var(--secondary) inset;
+    -webkit-text-fill-color: #002147;
 }
 
 .input-control:focus{
@@ -25,6 +36,9 @@
     font-size: 1rem;
     transition: transform 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms;
     pointer-events: none;
+}
+.input-label.disabled{
+    color: var(--primary-disabled);
 }
   
 .input-label.active {
