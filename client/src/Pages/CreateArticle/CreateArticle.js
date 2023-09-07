@@ -1,26 +1,22 @@
 import { useState } from 'react'
 
-import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownPreview'
-import MarkdownTextArea from 'Components/MarkdownEditor/TextInput/MarkdownTextArea'
-
 import './CreateArticle.css'
 
 import { RiSave2Line } from 'react-icons/ri'
 
-import { ArticleForm, Modal } from 'Components'
+import { ArticleForm, MarkdownEditor, Modal } from 'Components'
 
 export default function CreateArticle() {
     const [markdown, setMarkdown] = useState('')
 
     return (
-        <>
+        <div className='editor-page-container'>
             <section className='controls'>
                 <Modal modalButtonText='Save' icon={<RiSave2Line className='save-icon'/>}>
                     <ArticleForm markdown={markdown}/>
                 </Modal>
             </section>
-            <MarkdownTextArea markdown={markdown} setMarkdown={setMarkdown} />
-            <MarkdownPreview markdown={markdown} />
-        </>
+            <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown}/>
+        </div>
     )
 }
