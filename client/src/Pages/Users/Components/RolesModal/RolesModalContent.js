@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { changeRole } from '_Constants'
 
-import './RolesModalContent.css'
+import './Modal.css'
 
 export default function RolesModalContent({user,setUsers,setShow}) {
     const [roles,setRoles] = useState([])
