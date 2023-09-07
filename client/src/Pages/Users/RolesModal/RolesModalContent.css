@@ -1,8 +1,0 @@
-.role-inputs{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.role-inputs div label{
-    margin-left: 0.5rem;
-}

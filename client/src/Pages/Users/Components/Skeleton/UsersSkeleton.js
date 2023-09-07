@@ -1,5 +1,6 @@
 import './UsersSkeleton.css'
 
+
 export default function UsersSkeleton() {
   return (
     <div className='skeleton-table-container'>
