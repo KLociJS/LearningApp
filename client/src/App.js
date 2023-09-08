@@ -29,7 +29,7 @@ import {
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
 
-import checkAuthentication from "Utility/checkAuthentication";
+import { checkAuthentication } from "Api";
 
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import Article from "Pages/Articles/Components/Article/Article";
