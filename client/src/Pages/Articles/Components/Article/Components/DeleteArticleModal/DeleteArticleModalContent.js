@@ -1,7 +1,7 @@
 import { deleteArticle } from "_Constants/fetchUrl"
 import { useNavigate, useOutletContext } from "react-router-dom"
 
-export default function DeleteArticleModal({id, setShow}) {
+export default function DeleteArticleModalConatent({id, setShow}) {
 
     const navigate = useNavigate()
     const { setSidebarContent } = useOutletContext()
