@@ -7,6 +7,7 @@ import usePostArticle from "./usePostArticle"
 import useRequestPasswordChange from "./useRequestPasswordChange"
 import useLogin from "./useLogin"
 import useRequesPasswordReset from "./useRequesPasswordReset"
+import useSignUp from "./useSignUp"
 
 export{
     useAuth,
@@ -18,4 +19,5 @@ export{
     useRequestPasswordChange,
     useLogin,
     useRequesPasswordReset,
+    useSignUp,
 }
