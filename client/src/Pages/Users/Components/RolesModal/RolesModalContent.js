@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
-
-import { changeRole } from '_Constants'
-
 import './Modal.css'
+import { useUpdateRoles } from 'Hooks'
 
 export default function RolesModalContent({user,setUsers,setShow}) {
-    const [roles,setRoles] = useState([])
-    const [error, setError] = useState([])
+    const {
+        roles,
+        setRoles,
+        error,
+        setError,
+        handleSubmit
+    } = useUpdateRoles(setShow)
 
     const handleChange = (role) => {
         if(roles.includes(role)){
@@ -14,43 +16,6 @@ export default function RolesModalContent({user,setUsers,setShow}) {
         }else{
             setRoles(roles=>[...roles, role])
         }
-    }
-
-    const handleSubmit = () => {
-        console.log(roles)
-        fetch(`${changeRole}${user.id}`,{
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: JSON.stringify({roles})
-        })
-        .then(response=>{
-            if (response.ok) {
-            return response.json()
-            } else {
-            throw response
-            }
-        })
-        .then(response=>{
-            console.log(response)
-            setUsers(users=>{
-                let updatedUser = users.find(u=>u.id===user.id)
-                user.roles=roles
-                return [...users.filter(u=>u.id!==user.id), updatedUser ]
-            })
-            setShow(false)
-        })
-        .catch(error=>{
-            if (error instanceof Response) {
-              error.json().then(errorData => {
-                console.log(errorData)
-              })
-            } else {
-              console.error('Error:', error)
-            }
-          })
     }
 
     return (
@@ -77,7 +42,7 @@ export default function RolesModalContent({user,setUsers,setShow}) {
                         <label htmlFor="user">User</label>
                     </div>
                 </div>
-                <button onClick={handleSubmit} className='primary-button center'>Save</button>
+                <button onClick={()=>handleSubmit(user,setUsers)} className='primary-button center'>Save</button>
                 <button onClick={e=>setShow(false)} className='secondary-button center mt-1'>Close</button>
 
             </div>
