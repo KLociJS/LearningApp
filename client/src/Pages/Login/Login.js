@@ -2,15 +2,11 @@ import {  PasswordInput, Input } from 'Components'
 import { AuthCard } from 'Components'
 
 import { AiOutlineLogin } from 'react-icons/ai'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { useLogin } from 'Hooks'
 
 export default function Login() {
-  const location = useLocation()
-  const from = location.state?.from.pathname || '/'
-  const navigate = useNavigate()
-
   const {
     userName,
     setUserName,
@@ -20,7 +16,7 @@ export default function Login() {
     setError,
     isDisabled,
     handleLogin
-  } = useLogin(navigate, from)
+  } = useLogin()
 
   return (
     <>

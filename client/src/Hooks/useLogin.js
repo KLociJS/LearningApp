@@ -1,12 +1,17 @@
-import {useState} from 'react'
+import { useState } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import useAuth from './useAuth'
 
 import { login } from '_Constants'
 
-export default function useLogin(navigate, from) {
+export default function useLogin() {
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState([])
+
+    const location = useLocation()
+    const from = location.state?.from.pathname || '/'
+    const navigate = useNavigate()
   
     const [isDisabled, setIsDisabled] = useState(false)
   
