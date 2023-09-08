@@ -62,25 +62,11 @@
     outline: none;
 }
 
-/* Hide scrollbar */
-
-.editor-container>textarea::-webkit-scrollbar, .editor-preview::-webkit-scrollbar {
-    display: none;
-}
-.editor-container>textarea, .editor-preview {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
-}
-
 /* Markdown preview */
 
 .editor-preview{
     flex-grow: 1;
     flex-basis: 50%;
-    height: calc(100vh - 233px);
-    overflow-y: scroll;
     padding: 0.5rem;
 }
 .editor-container>.editor-preview{
