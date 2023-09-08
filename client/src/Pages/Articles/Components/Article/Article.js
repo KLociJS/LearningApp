@@ -1,5 +1,3 @@
-import {useState, useEffect} from 'react'
-import { getArticleById } from '_Constants/fetchUrl'
 import { Link, useParams } from 'react-router-dom'
 import { RiDeleteBinLine} from 'react-icons/ri'
 import { AiOutlineEdit } from 'react-icons/ai'
@@ -8,23 +6,11 @@ import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownP
 import DeleteArticleModalContent from './Components/DeleteArticleModal/DeleteArticleModalContent'
 import Modal from './Components/DeleteArticleModal/Modal'
 import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton'
+import { useGetArticle } from 'Hooks'
 
 export default function Article() {
     const { id } = useParams()
-    const [article,setArticle] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-    
-    useEffect(()=>{
-      setIsLoading(true)
-      fetch(`${getArticleById}${id}`,{credentials:'include'})
-      .then(res=>res.json())
-      .then(res=>{
-        setArticle(res.data)
-        setIsLoading(false)
-      })
-      .catch(console.log)
-      
-    },[id])
+    const { article, isLoading } = useGetArticle(id)
     
     if(isLoading){
       return <ArticleSkeleton />
