@@ -10,7 +10,13 @@ import { useGetArticle } from 'Hooks'
 
 export default function Article() {
     const { id } = useParams()
-    const { article, isLoading } = useGetArticle(id)
+    const { 
+      markdown,  
+      title, 
+      createdAt,
+      author,
+      isLoading 
+    } = useGetArticle(id)
     
     if(isLoading){
       return <ArticleSkeleton />
@@ -20,8 +26,8 @@ export default function Article() {
       <>
         <section className='article-header'>
           <div>
-            <h1 className='article-title'>{article.title}</h1>
-            <p className='article-info'>Created by {article.author} at {article.createdAt.slice(0,10)}</p>
+            <h1 className='article-title'>{title}</h1>
+            <p className='article-info'>Created by {author} at {createdAt.slice(0,10)}</p>
           </div>
           <div className='action-btn'>
             <Link to={`/update-article/${id}`}>
@@ -32,7 +38,7 @@ export default function Article() {
             </Modal>
           </div>
         </section>
-        <MarkdownPreview markdown={article.markdown}/>
+        <MarkdownPreview markdown={markdown}/>
       </>
     )
 }

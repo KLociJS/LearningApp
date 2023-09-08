@@ -8,7 +8,7 @@ import { MarkdownEditor, Modal } from 'Components'
 import ArticleForm from './ArticleForm/ArticleForm'
 
 export default function CreateArticle() {
-    const [markdown, setMarkdown] = useState('')
+    const [markdown, setMarkdown] = useState()
 
     return (
         <div className='editor-page-container'>

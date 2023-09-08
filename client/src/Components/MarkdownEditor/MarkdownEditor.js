@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import { useRef } from 'react'
 import MarkdownTextArea from './TextInput/MarkdownTextArea'
 import MarkdownPreview from './MarkdownPreview/MarkdownPreview'
 import { AiOutlineLink } from 'react-icons/ai'
