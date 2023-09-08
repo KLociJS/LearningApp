@@ -6,6 +6,7 @@ import useConfirmEmail from "./useConfirmEmail"
 import usePostArticle from "./usePostArticle"
 import useRequestPasswordChange from "./useRequestPasswordChange"
 import useLogin from "./useLogin"
+import useRequesPasswordReset from "./useRequesPasswordReset"
 
 export{
     useAuth,
@@ -16,4 +17,5 @@ export{
     usePostArticle,
     useRequestPasswordChange,
     useLogin,
+    useRequesPasswordReset,
 }

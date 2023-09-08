@@ -23,7 +23,7 @@ import {
     Home,
     Login,
     SingUp,
-    ResetPassword,
+    RequesPasswordReset,
     Users,
 } from "Pages"
 
@@ -53,7 +53,7 @@ const router = createBrowserRouter(
             <Route element={<UnauthenticatedRoute />}>
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SingUp />} />
-                <Route path="reset-password" element={<ResetPassword />} />
+                <Route path="reset-password" element={<RequesPasswordReset />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
             </Route>
             <Route path="confirm-email" element={<ConfirmEmail />} />
