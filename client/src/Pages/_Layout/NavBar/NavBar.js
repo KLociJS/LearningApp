@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-import { logout } from '_Constants'
-
 import { LuBrainCircuit } from 'react-icons/lu'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { AiOutlineHome, AiOutlineUserAdd, AiOutlineLogin } from 'react-icons/ai'
