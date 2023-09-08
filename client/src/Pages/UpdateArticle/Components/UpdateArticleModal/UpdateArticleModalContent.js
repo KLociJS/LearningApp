@@ -1,43 +1,14 @@
-import { useState } from 'react'
-
-import { updateArticleUrl } from '_Constants/fetchUrl'
-
 import { RiSave2Line } from 'react-icons/ri'
 import { Input } from 'Components'
-import { useParams } from 'react-router-dom'
+import { useUpdateArticle } from 'Hooks'
 
 export default function UpdateArticleModalContent({ markdown, title, setShow }){
-    const [newTitle, setNewTitle] = useState(title)
-    const [isDisabled, setIsDisabled] = useState(false)
-
-    const { id } = useParams()
-
-    const updateArticle = () => {
-        setIsDisabled(true)
-        const article = {
-            title:newTitle,
-            markdown
-        }
-
-        fetch( `${updateArticleUrl}${id}` ,{
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: JSON.stringify(article)
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            setIsDisabled(false)
-            setShow(false)
-            console.log(data)
-        })
-        .catch(err=>{
-            setIsDisabled(false)
-            console.log(err)
-        })
-    }
+    const {
+        updateArticle,
+        newTitle,
+        setNewTitle,
+        isDisabled
+    } = useUpdateArticle(title,markdown,setShow)
 
     return (
         <section className='modal' onClick={e=>e.stopPropagation()}>
