@@ -5,6 +5,7 @@ import useGetArticle from "./useGetArticle"
 import useConfirmEmail from "./useConfirmEmail"
 import usePostArticle from "./usePostArticle"
 import useRequestPasswordChange from "./useRequestPasswordChange"
+import useLogin from "./useLogin"
 
 export{
     useAuth,
@@ -14,4 +15,5 @@ export{
     useConfirmEmail,
     usePostArticle,
     useRequestPasswordChange,
+    useLogin,
 }
