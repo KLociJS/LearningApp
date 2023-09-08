@@ -1,52 +1,19 @@
-import React, { useEffect, useState } from 'react'
-
 import './Users.css'
-
-import { getUsers, deleteUser } from '_Constants'
 
 import Modal from './Components/RolesModal/Modal'
 import RolesModalContent from './Components/RolesModal/RolesModalContent'
 import UsersSkeleton from './Components/Skeleton/UsersSkeleton'
+import { deleteUserFetch } from 'Api'
+import { useGetUsers } from 'Hooks'
 
 
 export default function Users() {
 
-  const [users, setUsers] = useState([])
-  const [isLoaded, setIsLoaded] = useState(false)
-
-  useEffect(()=>{
-    fetch( getUsers ,{
-      credentials: 'include'
-    })
-    .then(res=>res.json())
-    .then(data=>{
-        console.log(data)
-        setUsers(data.userDtos)
-        setIsLoaded(true)
-    })
-    .catch(err=>console.log(err))
-  },[])
-
-  const handleUserDelete = (id) => {
-    fetch(`${deleteUser}${id}`,{
-      method: 'DELETE',
-      credentials: 'include'
-    })
-    .then(response=>{
-      if (response.ok) {
-        return response.json()
-      } else {
-        throw response
-      }
-    })
-    .then(r=>{
-      setUsers(users=>users.filter(u=>u.id!==id))
-    })
-    .catch(error=>{
-      error.json()
-      .then(msg=>console.log(msg))
-    })
-  }
+  const {
+    users,
+    setUsers,
+    isLoaded
+  } = useGetUsers()
 
   if(!isLoaded){
     return <UsersSkeleton />
@@ -74,7 +41,7 @@ export default function Users() {
                       <Modal modalButtonText='Edit role'>
                         <RolesModalContent user={u} setUsers={setUsers} />
                       </Modal>
-                      <button onClick={()=>handleUserDelete(u.id)} className='warning-button ml-2'>
+                      <button onClick={()=>deleteUserFetch(u.id)} className='warning-button ml-2'>
                         Delete
                       </button>
                     </div>

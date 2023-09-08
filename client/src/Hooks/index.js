@@ -10,6 +10,7 @@ import useRequesPasswordReset from "./useRequesPasswordReset"
 import useSignUp from "./useSignUp"
 import useUpdateArticle from "./useUpdateArticle"
 import useUpdateRoles from "./useUpdateRoles"
+import useGetUsers from "./useGetUsers"
 
 export{
     useAuth,
@@ -24,4 +25,5 @@ export{
     useSignUp,
     useUpdateArticle,
     useUpdateRoles,
+    useGetUsers,
 }
