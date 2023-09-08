@@ -11,7 +11,7 @@ import { BiNotepad } from 'react-icons/bi'
 
 import './NavBar.css'
 import { AuthBasedRender, RoleBasedRender } from 'Components'
-import useAuth from 'Hooks/useAuth'
+import { useLogout } from 'Hooks'
 
 
 export default function NavBar() {
@@ -20,21 +20,7 @@ export default function NavBar() {
     const closeMobileMenu = () => setIsOpen(false)
     const handleClick = () => setIsOpen(!isOpen)
 
-    const { setUser } = useAuth()
-
-    const handleLogout = () => {
-        fetch( logout , { credentials: 'include' })
-        .then(res=>{
-            if(res.ok){
-                return res.json()
-            }
-            throw res
-        })
-        .then(()=>{
-            setUser(null)
-        })
-        .catch(console.log)
-    }
+    const { handleLogout } = useLogout()
 
     return (
         <nav className='navbar'>
