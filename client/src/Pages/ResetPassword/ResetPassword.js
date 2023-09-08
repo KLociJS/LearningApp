@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { resetPassword } from '_Constants'
+import { requestPasswordChange } from '_Constants'
 
 import { EmailInputWithValidation } from 'Components'
 import { AuthCard } from 'Components'
@@ -29,7 +29,7 @@ export default function ResetPassword() {
       return
     }
 
-    fetch( resetPassword ,{
+    fetch( requestPasswordChange ,{
       method: 'POST',
       headers: {
         'content-type': 'application/json'

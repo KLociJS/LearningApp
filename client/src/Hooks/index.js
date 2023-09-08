@@ -4,6 +4,7 @@ import useGetSidebarContent from "./useGetSidebarContent"
 import useGetArticle from "./useGetArticle"
 import useConfirmEmail from "./useConfirmEmail"
 import usePostArticle from "./usePostArticle"
+import useRequestPasswordChange from "./useRequestPasswordChange"
 
 export{
     useAuth,
@@ -12,4 +13,5 @@ export{
     useGetArticle,
     useConfirmEmail,
     usePostArticle,
+    useRequestPasswordChange,
 }
