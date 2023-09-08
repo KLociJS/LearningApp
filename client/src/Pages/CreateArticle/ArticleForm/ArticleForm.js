@@ -1,45 +1,18 @@
-import { useState } from 'react'
-
-import { postArticleUrl } from '_Constants/fetchUrl'
-
 import { RiSave2Line } from 'react-icons/ri'
 import { Input } from 'Components'
+import { usePostArticle } from 'Hooks'
 
 export default function ArticleForm({ markdown, setShow }){
-    const [category, setCategory] = useState('')
-    const [subcategory, setSubcategory] = useState('')
-    const [title, setTitle] = useState('')
-
-    const [isDisabled, setIsDisabled] = useState(false)
-
-    const postArticle = () => {
-        setIsDisabled(true)
-        const article = {
-            title,
-            markdown,
-            category: category === '' ? null : category,
-            subcategory: subcategory === '' ? null : subcategory
-        }
-
-        fetch( postArticleUrl ,{
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: JSON.stringify(article)
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            setIsDisabled(false)
-            setShow(false)
-            console.log(data)
-        })
-        .catch(err=>{
-            setIsDisabled(false)
-            console.log(err)
-        })
-    }
+    const { 
+        postArticle, 
+        isDisabled, 
+        setTitle, 
+        setCategory, 
+        setSubcategory,
+        category,
+        subcategory,
+        title
+    } = usePostArticle(markdown, setShow)
 
     return (
         <section className='modal' onClick={e=>e.stopPropagation()}>
