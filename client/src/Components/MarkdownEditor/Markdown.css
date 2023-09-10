@@ -75,20 +75,21 @@
     flex-basis: 50%;
     padding: 0.5rem;
     height: 100%;
-    overflow-y: scroll;
+   
 }
 .editor-container>.editor-preview{
     border: 1px solid var(--primary);
     border-left: none;
     border-radius: 0 0 5px 0;
+    overflow-y: scroll;
 }
 
 /* Hide scrollbar */
 
-.editor-container>textarea::-webkit-scrollbar, .editor-container .editor-preview::-webkit-scrollbar {
+.editor-container>textarea::-webkit-scrollbar, .editor-container>.editor-preview::-webkit-scrollbar {
     display: none;
 }
-.editor-container>textarea, .editor-container .editor-preview {
+.editor-container>textarea, .editor-container>.editor-preview {
     -ms-overflow-style: none;
     /* IE and Edge */
     scrollbar-width: none;
@@ -246,4 +247,8 @@ blockquote>p{
 }
 .link-style:hover{
     cursor: pointer;
+}
+
+.artilce-landing-ul{
+    margin: 1.5rem 0 0 2rem;
 }
