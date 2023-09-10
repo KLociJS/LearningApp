@@ -41,6 +41,13 @@
     border-left: 1px solid var(--primary);
 }
 
+.markdown-tool-icon.last{
+    margin-left: auto;
+}
+.markdown-tool-icon.last.active{
+    border-color: var(--primary);
+}
+
 /* Textarea */
 
 .editor-container>textarea{
@@ -231,3 +238,12 @@ blockquote>p{
     display: flex;
 }
 
+/* Editor helper */
+
+.link-style{
+    text-decoration: underline;
+    color: blue;
+}
+.link-style:hover{
+    cursor: pointer;
+}
