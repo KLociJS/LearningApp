@@ -1,15 +1,8 @@
 import { AuthCard, EmailInputWithValidation, PasswordInputWithValidation } from 'Components'
 import { FiLock } from 'react-icons/fi'
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useRequestPasswordChange } from 'Hooks'
 
-export default function ForgotPassword() {
-
-    const [queryParams] = useSearchParams()
-    const token = queryParams.get('token')
-
-    const navigate = useNavigate()
-
+export default function RequestPasswordChange() {
     const { 
         handleSubmit, 
         email, 
@@ -22,11 +15,11 @@ export default function ForgotPassword() {
         setPasswordError,
         isDisabled,
         error
-    } = useRequestPasswordChange(token, navigate)
+    } = useRequestPasswordChange()
 
     return (
         
-        <AuthCard icon={FiLock} heading='Reset Password' onSubmit={handleSubmit}>
+        <AuthCard icon={FiLock} heading='Change password' onSubmit={handleSubmit}>
             <EmailInputWithValidation 
                 inputValue={email}
                 setInputValue={setEmail}
@@ -42,7 +35,7 @@ export default function ForgotPassword() {
                 isDisabled={isDisabled}
             />
             {error && <p className='error-msg align start'>{error}</p>}
-            <button className='primary-button' disabled={isDisabled}>
+            <button className='primary-button mt-1' disabled={isDisabled}>
                 Change password
             </button>
         </AuthCard>

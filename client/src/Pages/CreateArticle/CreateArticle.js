@@ -5,7 +5,7 @@ import './CreateArticle.css'
 import { RiSave2Line } from 'react-icons/ri'
 
 import { MarkdownEditor, Modal } from 'Components'
-import ArticleForm from './ArticleForm/ArticleForm'
+import PostArticleForm from './PostArticleForm/PostArticleForm'
 
 export default function CreateArticle() {
     const [markdown, setMarkdown] = useState()
@@ -14,7 +14,7 @@ export default function CreateArticle() {
         <div className='editor-page-container'>
             <section className='controls'>
                 <Modal modalButtonText='Save' icon={<RiSave2Line className='save-icon'/>}>
-                    <ArticleForm markdown={markdown}/>
+                    <PostArticleForm markdown={markdown}/>
                 </Modal>
             </section>
             <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown}/>

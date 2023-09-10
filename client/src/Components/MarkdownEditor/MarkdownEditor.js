@@ -1,12 +1,18 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
+
 import MarkdownTextArea from './TextInput/MarkdownTextArea'
 import MarkdownPreview from './MarkdownPreview/MarkdownPreview'
+import MarkdownHelp from './MarkdownHelp/MarkdownHelp'
+
 import { AiOutlineLink } from 'react-icons/ai'
 import { PiImage } from 'react-icons/pi'
 import { BsTypeBold, BsTypeItalic, BsCodeSlash, BsBlockquoteLeft } from 'react-icons/bs'
 import { LuHeading1, LuHeading2, LuHeading3 } from 'react-icons/lu'
+import { IoHelpOutline } from 'react-icons/io5'
+
 
 export default function MarkdownEditor({markdown, setMarkdown}) {
+    const [showHelp, setShowHelp] = useState(false)
 
     const textAreaRef = useRef(null)
 
@@ -54,10 +60,12 @@ export default function MarkdownEditor({markdown, setMarkdown}) {
         const newText = insertAtCurseor(textAreaRef, '# ')
         setMarkdown(newText)
     }
+
     const addH2 = () => {
         const newText = insertAtCurseor(textAreaRef, '## ')
         setMarkdown(newText)
     }
+
     const addH3 = () => {
         const newText = insertAtCurseor(textAreaRef, '### ')
         setMarkdown(newText)
@@ -89,9 +97,10 @@ export default function MarkdownEditor({markdown, setMarkdown}) {
                 <div className='markdown-tool-separator'></div>
                 <AiOutlineLink className='markdown-tool-icon' onClick={addLink}/>
                 <PiImage className='markdown-tool-icon' onClick={addImage}/>
+                <IoHelpOutline className={`markdown-tool-icon last ${showHelp ? 'active' : ''}`} onClick={()=>setShowHelp(s=>!s)}/>
             </section>
             <MarkdownTextArea markdown={markdown} setMarkdown={setMarkdown} textAreaRef={textAreaRef}/>
-            <MarkdownPreview markdown={markdown} />
+            {showHelp ? <MarkdownHelp /> : <MarkdownPreview markdown={markdown} />}
         </div>
     )
 }

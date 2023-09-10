@@ -12,11 +12,15 @@ export default function deleteUserFetch(id,setUsers) {
         throw response
         }
     })
-    .then(r=>{
+    .then(()=>{
         setUsers(users=>users.filter(u=>u.id!==id))
     })
     .catch(error=>{
-        error.json()
-        .then(msg=>console.log(msg))
+        if(error instanceof Response){
+            error.json()
+            .then(msg=>console.log(msg))
+        }else{
+            console.log(error)
+        }
     })    
 }

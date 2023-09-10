@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { passwordValidator, emailValidator } from 'Utility/ValidatorMethods'
 import { resetPassword } from '_Constants'
 
-export default function useRequestPasswordChange(token,navigate) {
+export default function useRequestPasswordChange() {
     const [email, setEmail] = useState('')
     const [emailError,setEmailError] = useState('')
 
@@ -11,6 +12,11 @@ export default function useRequestPasswordChange(token,navigate) {
 
     const [error,setError] = useState('')
     const [isDisabled,setIsDisabled] = useState(false)
+
+    const [queryParams] = useSearchParams()
+    const token = queryParams.get('token')
+
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -59,8 +65,7 @@ export default function useRequestPasswordChange(token,navigate) {
             if(err instanceof Response){
                 err.json()
                 .then(err=>{
-                    const errors = err.map(e=>e.description)
-                    setError(errors.join(', '))
+                    setError(err.description)
                 })
             }else{
                 console.log(err)

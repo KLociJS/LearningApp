@@ -7,13 +7,15 @@ const Input = ({
   setInputValue,
   hasError,
   type, 
-  isDisabled = false
+  isDisabled = false,
+  setError
 }) => {
   const [isFocused, setIsFocused] = useState(false)
 
   const handleFocus = () => setIsFocused(true)
   const handleBlur = () => setIsFocused(false)
   const handleChange = (e) => {
+    if(setError) setError('')
     setInputValue(e.target.value)
   };
 

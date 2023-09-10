@@ -43,8 +43,8 @@ export default function useRequesPasswordReset(navigate) {
         if(err instanceof Response){
           err.json()
           .then(err=>{
-              const errors = err.map(e=>e.description)
-              setError(errors.join(', '))
+            console.log(err)
+              setError(err.description)
           })
         }else{
           console.log(err)

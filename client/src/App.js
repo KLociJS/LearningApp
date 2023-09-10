@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Articles, ConfirmEmail, CreateArticle, ForgotPassword, Layout, UpdateArticle } from "Pages"
+import { Layout } from "Pages"
 
 //Pages
 import {
@@ -25,6 +25,11 @@ import {
     SingUp,
     RequesPasswordReset,
     Users,
+    Articles,
+    ConfirmEmail,
+    CreateArticle,
+    RequestPasswordChange,
+    UpdateArticle
 } from "Pages"
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
@@ -39,6 +44,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route element={<RequireRoles allowedRoles={['User']} />}>
+                <Route path="confirm-email" element={<ConfirmEmail />} />   
                 <Route index element={<Home />} />
                 <Route path="article" element={<Articles />}>
                     <Route index element={<ArticleLanding />} />
@@ -54,9 +60,8 @@ const router = createBrowserRouter(
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SingUp />} />
                 <Route path="reset-password" element={<RequesPasswordReset />} />
-                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="forgot-password" element={<RequestPasswordChange />} />
             </Route>
-            <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />
         </Route>
     )

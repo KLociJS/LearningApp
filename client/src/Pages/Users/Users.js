@@ -41,7 +41,7 @@ export default function Users() {
                       <Modal modalButtonText='Edit role'>
                         <RolesModalContent user={u} setUsers={setUsers} />
                       </Modal>
-                      <button onClick={()=>deleteUserFetch(u.id)} className='warning-button ml-2'>
+                      <button onClick={()=>deleteUserFetch(u.id, setUsers)} className='warning-button ml-2'>
                         Delete
                       </button>
                     </div>
