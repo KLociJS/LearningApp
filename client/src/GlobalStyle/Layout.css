@@ -33,6 +33,10 @@
     align-self: flex-start;
   }
 
+  .align-right{
+    margin-left: auto;
+  }
+
   /* Align */
 
   .center{

@@ -2,16 +2,25 @@ import { useState } from 'react'
 
 import { updateArticleUrl } from '_Constants/fetchUrl'
 
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 export default function useUpdateArticle(title,markdown,setShow) {
     const [newTitle, setNewTitle] = useState(title)
+    const [titleError, setTitleError] = useState()
     const [isDisabled, setIsDisabled] = useState(false)
 
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const updateArticle = () => {
         setIsDisabled(true)
+
+        if(newTitle===''){
+            setTitleError('Title is required')
+            setIsDisabled(false)
+            return
+        }
+
         const article = {
             title:newTitle,
             markdown
@@ -26,10 +35,10 @@ export default function useUpdateArticle(title,markdown,setShow) {
             body: JSON.stringify(article)
         })
         .then(res=>res.json())
-        .then(data=>{
+        .then(()=>{
             setIsDisabled(false)
             setShow(false)
-            console.log(data)
+            navigate(`/article/${id}`)
         })
         .catch(err=>{
             setIsDisabled(false)
@@ -41,6 +50,8 @@ export default function useUpdateArticle(title,markdown,setShow) {
         updateArticle,
         newTitle,
         setNewTitle,
-        isDisabled
+        isDisabled,
+        titleError,
+        setTitleError
     }
 }
