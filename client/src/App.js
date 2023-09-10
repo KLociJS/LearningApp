@@ -39,6 +39,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route element={<RequireRoles allowedRoles={['User']} />}>
+                <Route path="confirm-email" element={<ConfirmEmail />} />   
                 <Route index element={<Home />} />
                 <Route path="article" element={<Articles />}>
                     <Route index element={<ArticleLanding />} />
@@ -56,7 +57,6 @@ const router = createBrowserRouter(
                 <Route path="reset-password" element={<RequesPasswordReset />} />
                 <Route path="forgot-password" element={<ForgotPassword />} />
             </Route>
-            <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />
         </Route>
     )
