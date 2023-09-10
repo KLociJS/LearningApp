@@ -28,7 +28,6 @@ export default function RequesPasswordReset() {
           error={error} 
           setError={setError} 
         />
-        {error && <p>{error}</p>}
         <Link to='/login' className='link align-end'>Back to login</Link>
         <button className='primary-button mt-2' type='submit' disabled={isDisabled}>Send email</button>
       </AuthCard>

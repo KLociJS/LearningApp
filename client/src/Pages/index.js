@@ -6,7 +6,7 @@ import SingUp from "./SingUp/SignUp"
 import Users from "./Users/Users"
 import UnAuthorized from "./UnAuthorized/UnAuthorized"
 import ConfirmEmail from "./ConfirmEmail/ConfirmEmail"
-import ForgotPassword from "./ForgotPassword/ForgotPassword"
+import RequestPasswordChange from "./RequestPasswordChange/RequestPasswordChange"
 import Articles from "./Articles/Articles"
 import CreateArticle from "./CreateArticle/CreateArticle"
 import UpdateArticle from "./UpdateArticle/UpdateArticle"
@@ -20,7 +20,7 @@ export {
     Users,
     UnAuthorized,
     ConfirmEmail,
-    ForgotPassword,
+    RequestPasswordChange,
     Articles,
     CreateArticle,
     UpdateArticle,
