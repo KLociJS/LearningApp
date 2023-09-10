@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import { postArticleUrl } from '_Constants/fetchUrl'
+import { useNavigate } from 'react-router-dom'
 
 export default function usePostArticle(markdown,setShow) {
     const [category, setCategory] = useState('')
     const [subcategory, setSubcategory] = useState('')
     const [title, setTitle] = useState('')
+    const [titleError,setTitleError] = useState('')
 
     const [isDisabled, setIsDisabled] = useState(false)
+
+    const navigate = useNavigate()
 
     const postArticle = () => {
         setIsDisabled(true)
@@ -15,6 +19,12 @@ export default function usePostArticle(markdown,setShow) {
             markdown,
             category: category === '' ? null : category,
             subcategory: subcategory === '' ? null : subcategory
+        }
+
+        if(title===''){
+            setTitleError('Title is required')
+            setIsDisabled(false)
+            return
         }
 
         fetch( postArticleUrl ,{
@@ -29,7 +39,7 @@ export default function usePostArticle(markdown,setShow) {
         .then(data=>{
             setIsDisabled(false)
             setShow(false)
-            console.log(data)
+            navigate(`/article/${data.id}`)
         })
         .catch(err=>{
             setIsDisabled(false)
@@ -37,5 +47,16 @@ export default function usePostArticle(markdown,setShow) {
         })
     }
 
-    return { postArticle, isDisabled, setTitle, setCategory, setSubcategory, category, subcategory, title }
+    return { 
+        postArticle,
+        isDisabled,
+        setTitle,
+        setCategory,
+        setSubcategory,
+        category, 
+        subcategory, 
+        title, 
+        titleError, 
+        setTitleError 
+    }
 }
