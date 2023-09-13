@@ -27,5 +27,12 @@ App is about learning by explaining certain topics in an expert manner and shari
 trial account with dummy data: username: trial password:Trial-1234
 
 ### Usage:
-**Images coming soon**
+#### Notes page:
+![](https://i.imgur.com/KTjCE5D.png)
+
+#### Editor page:
+![](https://i.imgur.com/vxddXpn.png)
+
+#### Saving articles:
+![](https://i.imgur.com/7RVk6dx.png)
 
