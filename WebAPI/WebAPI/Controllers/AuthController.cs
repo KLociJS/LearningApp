@@ -88,10 +88,11 @@ namespace WebAPI.Controllers
                 {
                     _httpContextAccessor.HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
                     {
-                        SameSite = SameSiteMode.None,
+                        SameSite = SameSiteMode.Lax,
                         Expires = DateTimeOffset.Now.AddDays(14),
                         IsEssential = true,
-                        Secure = true,
+                        Secure = false,
+                        Domain = "52.57.115.197",
                         HttpOnly = true
                     });
 
