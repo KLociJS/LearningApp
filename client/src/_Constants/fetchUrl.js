@@ -1,5 +1,5 @@
 ///// Api url
-const apiUrl = 'http://localhost:5000/api/'
+const apiUrl = `${process.env.REACT_APP_API_URI}api/`
 
 //// Controller urls
 const authController = `${apiUrl}Auth`

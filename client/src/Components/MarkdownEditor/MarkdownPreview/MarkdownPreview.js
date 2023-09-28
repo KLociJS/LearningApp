@@ -7,7 +7,8 @@ import remarkGfm from 'remark-gfm'
 
 // Syntax higlighter
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import dark from 'react-syntax-highlighter/dist/esm/styles/prism/vs-dark'
+import dark from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus'
+
 
 export default function MarkdownPreview({ markdown }) {
   return (
