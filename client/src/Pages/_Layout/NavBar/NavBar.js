@@ -74,7 +74,7 @@ export default function NavBar() {
                         <NavLink to='/signup' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
                             <div className='centered-label'>
                                 <AiOutlineUserAdd className='mobile-icon' size={16}/>
-                                Singup
+                                Signup
                             </div>
                         </NavLink>
                         </li>
