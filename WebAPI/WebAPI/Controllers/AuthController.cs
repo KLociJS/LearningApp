@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IHttpContextAccessorWrapper _httpContextAccessor;
-        public AuthController( IAuthService authService, IHttpContextAccessorWrapper httpContextAccessor)
+        public AuthController( IAuthService authService, IHttpContextAccessorWrapper httpContextAccessor, IConfiguration configuration)
         {
             _authService = authService;
             _httpContextAccessor = httpContextAccessor;
@@ -86,13 +86,14 @@ namespace WebAPI.Controllers
 
                 if (authResult.Succeeded)
                 {
+                    var domain = GetCookieDomainBasedOnEnvironment();
                     _httpContextAccessor.HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
                     {
                         SameSite = SameSiteMode.Lax,
                         Expires = DateTimeOffset.Now.AddDays(14),
                         IsEssential = true,
                         Secure = false,
-                        Domain = "52.57.115.197",
+                        Domain = domain,
                         HttpOnly = true
                     });
 
@@ -201,6 +202,12 @@ namespace WebAPI.Controllers
                 return StatusCode(500, new  Result { Description = "An error occured on the server." });
             }
 
+        }
+        
+        private string GetCookieDomainBasedOnEnvironment()
+        {
+            string environment = Environment.GetEnvironmentVariable("ENVIRONMENT");
+            return environment == "production" ? "52.57.115.197" : "localhost";
         }
         
     }
