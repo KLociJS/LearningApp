@@ -123,10 +123,11 @@ namespace WebAPI.Controllers
             {
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
                 {
-                    SameSite = SameSiteMode.None,
+                    SameSite = SameSiteMode.Lax,
                     Expires = DateTimeOffset.Now.AddDays(-1),
                     IsEssential = true,
-                    Secure = true,
+                    Secure = false,
+                    Domain = "52.57.115.197",
                     HttpOnly = true
                 });
                 return Ok(new Result { Description = "Logged out."});
