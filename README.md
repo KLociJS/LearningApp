@@ -23,8 +23,8 @@ App is about learning by explaining certain topics in an expert manner and shari
 - Article advanced search
 
 ### Live website:
-**url coming soon**
-trial account with dummy data: username: trial password:Trial-1234
+[visit live](http://52.57.115.197/login)
+
 
 ### Usage:
 #### Notes page:
