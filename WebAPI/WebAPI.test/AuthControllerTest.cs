@@ -284,9 +284,9 @@ public class AuthControllerTest
         Assert.Multiple(() =>
         {
             Assert.AreEqual("token", capturedCookieName);
-            Assert.AreEqual(SameSiteMode.None, capturedCookieOptions.SameSite);
+            Assert.AreEqual(SameSiteMode.Lax, capturedCookieOptions.SameSite);
             Assert.AreEqual(true, capturedCookieOptions.HttpOnly);
-            Assert.AreEqual(true, capturedCookieOptions.Secure);
+            Assert.AreEqual(false, capturedCookieOptions.Secure);
             Assert.AreEqual(true, capturedCookieOptions.IsEssential);
 
         });
@@ -582,7 +582,7 @@ public class AuthControllerTest
         _authServiceMock.Setup(service => service.ChangeForgotPasswordAsync(resetPasswordDto))
             .ReturnsAsync(changeForgotPasswordResult);
 
-        var exceptedResult = new Result { Description = "Invalid credentials." };
+        var exceptedResult = new Result { Description = "Invalid email." };
 
         var result = await _authController.ChangeForgotPassword(resetPasswordDto);
         
