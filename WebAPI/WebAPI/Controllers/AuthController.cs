@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IHttpContextAccessorWrapper _httpContextAccessor;
-        public AuthController( IAuthService authService, IHttpContextAccessorWrapper httpContextAccessor, IConfiguration configuration)
+        public AuthController( IAuthService authService, IHttpContextAccessorWrapper httpContextAccessor)
         {
             _authService = authService;
             _httpContextAccessor = httpContextAccessor;
@@ -207,8 +207,8 @@ namespace WebAPI.Controllers
         
         private string GetCookieDomainBasedOnEnvironment()
         {
-            string environment = Environment.GetEnvironmentVariable("ENVIRONMENT");
-            return environment == "production" ? "52.57.115.197" : "localhost";
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return environment == "Development" ? "localhost" : "52.57.115.197";
         }
         
     }
