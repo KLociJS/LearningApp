@@ -122,13 +122,14 @@ namespace WebAPI.Controllers
         {
             try
             {
+                var domain = GetCookieDomainBasedOnEnvironment();
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
                 {
                     SameSite = SameSiteMode.Lax,
                     Expires = DateTimeOffset.Now.AddDays(-1),
                     IsEssential = true,
                     Secure = false,
-                    Domain = "52.57.115.197",
+                    Domain = domain,
                     HttpOnly = true
                 });
                 return Ok(new Result { Description = "Logged out."});
