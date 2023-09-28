@@ -1,47 +1,31 @@
-import React, { useEffect, useState } from 'react'
-
-import { confirmEmail } from '_Constants'
-
 import { Loading } from 'Components'
 import { useSearchParams } from 'react-router-dom'
+import { useConfirmEmail } from 'Hooks'
+import { BiError } from 'react-icons/bi'
+
+import './ConfirmEmail.css'
 
 export default function ConfirmEmail() {
     const [searchParams] = useSearchParams()
     const email = searchParams.get('email')
     const token = searchParams.get('token')
-    const [isLoaded, setIsLoaded] = useState(false)
 
-    console.log('email: ', email)
-    console.log('token: ', token);
-
-    useEffect(()=>{
-        fetch(`${confirmEmail}?email=${encodeURIComponent(email)}&token=${encodeURIComponent(token)}`)
-        .then(res=>{
-            if(res.ok){
-                return res.json()
-            }
-            throw res
-        })
-        .then(()=>{
-            setIsLoaded(true)
-        })
-        .catch((err)=>{
-
-            if(err instanceof Response){
-                err.json()
-                .then(err=>console.log(err))
-            }else{
-                console.log(err)
-            }
-        })
-
-    },[email, token])
+    const { error, isLoaded } = useConfirmEmail(email,token)
 
     if(!isLoaded){
         return <Loading />
     }
 
     return (
-        <div> {email}, {token}</div>
+        <>
+            {error ? 
+            <div className='full-width-container'>
+                <BiError className='error-icon'/>
+                <div>
+                    <h1 className='heading-2'>Sorry, something went wrong!</h1>
+                    <p className='paragraph-light'>Try again later.</p>
+                </div>
+            </div> : <div></div>}
+        </>
     )
 }

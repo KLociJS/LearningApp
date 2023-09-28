@@ -33,6 +33,10 @@
     align-self: flex-start;
   }
 
+  .align-right{
+    margin-left: auto;
+  }
+
   /* Align */
 
   .center{
@@ -91,25 +95,13 @@
     height: 80vh;
 }
 
-/* Table */
-
-.table-container{
-  z-index: 1;
-  width: 100%;
-  max-width: 1300px;
-  margin-right: auto;
-  margin-left: auto;
-  padding-right: 50px;
-  padding-left: 50px;
-
-  display: flex;
-}
 
 .full-width-container{
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80vh;
+  width: 100%;
 }
 
 

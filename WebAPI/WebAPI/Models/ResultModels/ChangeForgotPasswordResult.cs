@@ -21,7 +21,7 @@ public class ChangeForgotPasswordResult
 
     public static ChangeForgotPasswordResult InvalidInput()
     {
-        var result = new Result { Description = "Invalid credentials." };
+        var result = new Result { Description = "Invalid email." };
         return new ChangeForgotPasswordResult(false) { Data = result };
     }
 

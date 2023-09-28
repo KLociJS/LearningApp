@@ -1,26 +1,26 @@
-import Layout from "./_Layout/Layout";
-import Home from "./Home/Home";
-import Login from "./Login/Login";
-import ResetPassword from "./ResetPassword/ResetPassword";
-import SingUp from "./SingUp/SignUp";
-import Users from "./Users/Users";
-import UnAuthorized from "./UnAuthorized/UnAuthorized";
-import ConfirmEmail from "./ConfirmEmail/ConfirmEmail";
-import ForgotPassword from "./ForgotPassword/ForgotPassword";
-import Articles from "./Articles/Articles";
-import CreateArticle from "./CreateArticle/CreateArticle";
-import UpdateArticle from "./UpdateArticle/UpdateArticle";
+import Layout from "./_Layout/Layout"
+import Home from "./Home/Home"
+import Login from "./Login/Login"
+import RequesPasswordReset from "./ResetPassword/RequesPasswordReset"
+import SingUp from "./SingUp/SignUp"
+import Users from "./Users/Users"
+import UnAuthorized from "./UnAuthorized/UnAuthorized"
+import ConfirmEmail from "./ConfirmEmail/ConfirmEmail"
+import RequestPasswordChange from "./RequestPasswordChange/RequestPasswordChange"
+import Articles from "./Articles/Articles"
+import CreateArticle from "./CreateArticle/CreateArticle"
+import UpdateArticle from "./UpdateArticle/UpdateArticle"
 
 export {
     Layout,
     Home,
     Login,
-    ResetPassword,
+    RequesPasswordReset,
     SingUp,
     Users,
     UnAuthorized,
     ConfirmEmail,
-    ForgotPassword,
+    RequestPasswordChange,
     Articles,
     CreateArticle,
     UpdateArticle,

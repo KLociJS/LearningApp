@@ -263,11 +263,16 @@ namespace WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Categories");
                 });
@@ -278,6 +283,9 @@ namespace WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("CategoryID")
                         .HasColumnType("uuid");
 
@@ -286,6 +294,8 @@ namespace WebAPI.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("CategoryID");
 
@@ -366,13 +376,32 @@ namespace WebAPI.Migrations
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Category", b =>
+                {
+                    b.HasOne("WebAPI.Models.AppUser", "Author")
+                        .WithMany("Categories")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
+                });
+
             modelBuilder.Entity("WebAPI.Models.SubCategory", b =>
                 {
+                    b.HasOne("WebAPI.Models.AppUser", "Author")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebAPI.Models.Category", "Category")
                         .WithMany("SubCategories")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
 
                     b.Navigation("Category");
                 });
@@ -381,7 +410,11 @@ namespace WebAPI.Migrations
                 {
                     b.Navigation("Articles");
 
+                    b.Navigation("Categories");
+
                     b.Navigation("Roles");
+
+                    b.Navigation("SubCategories");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>

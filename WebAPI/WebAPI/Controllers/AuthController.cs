@@ -86,12 +86,14 @@ namespace WebAPI.Controllers
 
                 if (authResult.Succeeded)
                 {
+                    var domain = GetCookieDomainBasedOnEnvironment();
                     _httpContextAccessor.HttpContext.Response.Cookies.Append("token", authResult.Token, new CookieOptions()
                     {
-                        SameSite = SameSiteMode.None,
+                        SameSite = SameSiteMode.Lax,
                         Expires = DateTimeOffset.Now.AddDays(14),
                         IsEssential = true,
-                        Secure = true,
+                        Secure = false,
+                        Domain = domain,
                         HttpOnly = true
                     });
 
@@ -120,12 +122,14 @@ namespace WebAPI.Controllers
         {
             try
             {
+                var domain = GetCookieDomainBasedOnEnvironment();
                 _httpContextAccessor.HttpContext.Response.Cookies.Append("token", "", new CookieOptions()
                 {
-                    SameSite = SameSiteMode.None,
+                    SameSite = SameSiteMode.Lax,
                     Expires = DateTimeOffset.Now.AddDays(-1),
                     IsEssential = true,
-                    Secure = true,
+                    Secure = false,
+                    Domain = domain,
                     HttpOnly = true
                 });
                 return Ok(new Result { Description = "Logged out."});
@@ -199,6 +203,12 @@ namespace WebAPI.Controllers
                 return StatusCode(500, new  Result { Description = "An error occured on the server." });
             }
 
+        }
+        
+        private string GetCookieDomainBasedOnEnvironment()
+        {
+            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            return environment == "Development" ? "localhost" : "52.57.115.197";
         }
         
     }

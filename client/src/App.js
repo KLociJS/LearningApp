@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Articles, ConfirmEmail, CreateArticle, ForgotPassword, Layout, UpdateArticle } from "Pages"
+import { Layout } from "Pages"
 
 //Pages
 import {
@@ -23,13 +23,18 @@ import {
     Home,
     Login,
     SingUp,
-    ResetPassword,
+    RequesPasswordReset,
     Users,
+    Articles,
+    ConfirmEmail,
+    CreateArticle,
+    RequestPasswordChange,
+    UpdateArticle
 } from "Pages"
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
 
-import checkAuthentication from "Utility/checkAuthentication";
+import { checkAuthentication } from "Api";
 
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import Article from "Pages/Articles/Components/Article/Article";
@@ -39,6 +44,7 @@ const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
             <Route element={<RequireRoles allowedRoles={['User']} />}>
+                <Route path="confirm-email" element={<ConfirmEmail />} />   
                 <Route index element={<Home />} />
                 <Route path="article" element={<Articles />}>
                     <Route index element={<ArticleLanding />} />
@@ -53,10 +59,9 @@ const router = createBrowserRouter(
             <Route element={<UnauthenticatedRoute />}>
                 <Route path="login" element={<Login />} />
                 <Route path="signup" element={<SingUp />} />
-                <Route path="reset-password" element={<ResetPassword />} />
-                <Route path="forgot-password" element={<ForgotPassword />} />
+                <Route path="reset-password" element={<RequesPasswordReset />} />
+                <Route path="forgot-password" element={<RequestPasswordChange />} />
             </Route>
-            <Route path="confirm-email" element={<ConfirmEmail />} />
             <Route path='/unauthorized' element={<UnAuthorized />} />
         </Route>
     )

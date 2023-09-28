@@ -1,67 +1,46 @@
-import { useState } from 'react'
-
-import { updateArticleUrl } from '_Constants/fetchUrl'
-
 import { RiSave2Line } from 'react-icons/ri'
 import { Input } from 'Components'
-import { useParams } from 'react-router-dom'
+import { useUpdateArticle } from 'Hooks'
 
 export default function UpdateArticleModalContent({ markdown, title, setShow }){
-    const [newTitle, setNewTitle] = useState(title)
-    const [isDisabled, setIsDisabled] = useState(false)
-
-    const { id } = useParams()
-
-    const updateArticle = () => {
-        setIsDisabled(true)
-        const article = {
-            title:newTitle,
-            markdown
-        }
-
-        fetch( `${updateArticleUrl}${id}` ,{
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: 'include',
-            body: JSON.stringify(article)
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            setIsDisabled(false)
-            setShow(false)
-            console.log(data)
-        })
-        .catch(err=>{
-            setIsDisabled(false)
-            console.log(err)
-        })
-    }
+    const {
+        updateArticle,
+        newTitle,
+        setNewTitle,
+        isDisabled,
+        titleError,
+        setTitleError
+    } = useUpdateArticle(title,markdown,setShow)
 
     return (
         <section className='modal' onClick={e=>e.stopPropagation()}>
+            <h1 className='heading-1'>Update article</h1>
             <Input 
                 label='Title'
                 inputValue={newTitle}
                 setInputValue={setNewTitle} 
                 isDisabled={isDisabled}
+                hasError={titleError}
+                setError={setTitleError}
             />
-            <button 
-                className='secondary-button mt-1'
-                onClick={updateArticle}
-                disabled={isDisabled}
-            >
-                Save 
-                <RiSave2Line className='save-icon'/>
-            </button>
-            <button 
-                onClick={()=>setShow(false)}
-                className='secondary-button center mt-1'
-                disabled={isDisabled}
-            >
-                Close
-            </button>
+            {titleError ? <p className='error-msg'>{titleError}</p> : null}
+            <div className='button-container mt-1'>
+                <button 
+                    className='secondary-button'
+                    onClick={updateArticle}
+                    disabled={isDisabled}
+                >
+                    Save 
+                    <RiSave2Line className='save-icon'/>
+                </button>
+                <button 
+                    onClick={()=>setShow(false)}
+                    className='secondary-button align-right'
+                    disabled={isDisabled}
+                >
+                    Close
+                </button>
+            </div>
         </section>
     )
 }

@@ -18,6 +18,7 @@ using WebAPI.Utility;
 var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+builder.WebHost.ConfigureKestrel(options => options.ListenLocalhost(5000));
 
 var configuration = builder.Configuration;
 
@@ -27,7 +28,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
         policy  =>
         {
-            policy.WithOrigins("http://localhost:3000")
+            policy.WithOrigins("http://localhost:3000", "http://172.17.0.4:80", "*")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();

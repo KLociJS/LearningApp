@@ -35,3 +35,9 @@
 .modal-header.warning{
     color: var(--danger)
 }
+
+.button-container{
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
