@@ -153,6 +153,7 @@
 }
 pre div {
     border-radius: 15px !important;
+    background-color: var(--primary)!important;
 }
 pre div * {
     font-size: 1rem;
