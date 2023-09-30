@@ -26,6 +26,7 @@ const postArticleUrl = `${articleController}/add-article`
 const getArticleById = `${articleController}/get-article/`
 const deleteArticle = `${articleController}/delete-article/`
 const updateArticleUrl = `${articleController}/update-article/`
+const publishArticle = `${articleController}/publish-article/`
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
@@ -46,4 +47,5 @@ export {
     getArticleById,
     deleteArticle,
     updateArticleUrl,
+    publishArticle,
 }
