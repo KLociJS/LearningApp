@@ -320,6 +320,8 @@ public class ArticleService : IArticleService
         articleToPublish.Description = publishArticleDto.Description;
         articleToPublish.Tags = await GetTagsAsync(publishArticleDto.Tags);
 
+        await _context.SaveChangesAsync();
+
         return PublishArticleResult.Succeed();
     }
 
