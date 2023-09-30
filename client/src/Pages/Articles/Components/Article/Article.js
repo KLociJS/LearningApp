@@ -1,12 +1,14 @@
 import { Link, useParams } from 'react-router-dom'
 import { RiDeleteBinLine} from 'react-icons/ri'
-import { AiOutlineEdit } from 'react-icons/ai'
+import { AiOutlineEdit, AiOutlineShareAlt } from 'react-icons/ai'
 import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownPreview'
 
 import DeleteArticleModalContent from './Components/DeleteArticleModal/DeleteArticleModalContent'
 import Modal from './Components/DeleteArticleModal/Modal'
 import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton'
 import { useGetArticle } from 'Hooks'
+import PublishArticleModalContent from './Components/PublishArticleModal/PublishArticleModalContent'
+import { RoleBasedRender } from 'Components'
 
 export default function Article() {
     const { id } = useParams()
@@ -16,7 +18,7 @@ export default function Article() {
       createdAt,
       author,
       isLoading 
-    } = useGetArticle(id)
+    } = useGetArticle()
     
     if(isLoading){
       return <ArticleSkeleton />
@@ -30,6 +32,11 @@ export default function Article() {
             <p className='article-info'>Created by {author} at {createdAt.slice(0,10)}</p>
           </div>
           <div className='action-btn'>
+            <RoleBasedRender allowedroles={['Author']}>
+              <Modal icon={<AiOutlineShareAlt className='share-icon'/>}>
+                <PublishArticleModalContent id={id} />
+              </Modal>
+            </RoleBasedRender>
             <Link to={`/update-article/${id}`}>
               <AiOutlineEdit className='edit-icon'/>
             </Link>

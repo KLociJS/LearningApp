@@ -39,7 +39,7 @@
     color: var(--danger);
     cursor: pointer;
 }
-.edit-icon{
+.edit-icon, .share-icon{
     color: var(--primary);
     cursor: pointer;
 }

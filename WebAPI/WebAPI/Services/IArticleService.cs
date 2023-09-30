@@ -12,4 +12,5 @@ public interface IArticleService
     Task<GetArticleByIdResult> GetArticleById(Guid id, string? userName);
     Task<DeleteArticleResult> DeleteArticle(Guid id, string? userName);
     Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto);
+    Task<PublishArticleResult> PublishArticle(Guid id, string? userName, PublishArticleDto publishArticleDto);
 }

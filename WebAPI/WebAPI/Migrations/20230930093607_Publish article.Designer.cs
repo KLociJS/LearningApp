@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebAPI.Contexts;
@@ -11,9 +12,10 @@ using WebAPI.Contexts;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(AppDataContext))]
-    partial class AppDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230930093607_Publish article")]
+    partial class Publisharticle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -263,21 +265,6 @@ namespace WebAPI.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
-                {
-                    b.Property<Guid>("ArticleId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TagId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ArticleId", "TagId");
-
-                    b.HasIndex("TagId");
-
-                    b.ToTable("ArticleTags", (string)null);
-                });
-
             modelBuilder.Entity("WebAPI.Models.Category", b =>
                 {
                     b.Property<Guid>("Id")
@@ -329,11 +316,16 @@ namespace WebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("ArticleId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("TagName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.ToTable("Tags");
                 });
@@ -412,25 +404,6 @@ namespace WebAPI.Migrations
                     b.Navigation("SubCategory");
                 });
 
-            modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
-                {
-                    b.HasOne("WebAPI.Models.Article", "Article")
-                        .WithMany()
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebAPI.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Tag");
-                });
-
             modelBuilder.Entity("WebAPI.Models.Category", b =>
                 {
                     b.HasOne("WebAPI.Models.AppUser", "Author")
@@ -461,6 +434,13 @@ namespace WebAPI.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Tag", b =>
+                {
+                    b.HasOne("WebAPI.Models.Article", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("ArticleId");
+                });
+
             modelBuilder.Entity("WebAPI.Models.AppUser", b =>
                 {
                     b.Navigation("Articles");
@@ -470,6 +450,11 @@ namespace WebAPI.Migrations
                     b.Navigation("Roles");
 
                     b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Article", b =>
+                {
+                    b.Navigation("Tags");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>

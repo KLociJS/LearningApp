@@ -299,4 +299,48 @@ public class ArticleService : IArticleService
         
         return UpdateArticleResult.Succeed(updatedArticleDto);
     }
+    public async Task<PublishArticleResult> PublishArticle(Guid id, string? userName, PublishArticleDto publishArticleDto)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null)
+        {
+            return PublishArticleResult.UserNotFound();
+        }
+
+        var articleToPublish = await _context.Articles
+            .Include(a=>a.Author)
+            .FirstOrDefaultAsync(a => a.Id == id && a.Author == user && a.Published!=true);
+
+        if (articleToPublish == null)
+        {
+            return PublishArticleResult.ArticleNotFound();
+        }
+
+        articleToPublish.Published = true;
+        articleToPublish.Description = publishArticleDto.Description;
+        articleToPublish.Tags = await GetTagsAsync(publishArticleDto.Tags);
+
+        await _context.SaveChangesAsync();
+
+        return PublishArticleResult.Succeed();
+    }
+
+    private async Task<List<Tag>> GetTagsAsync(List<string> tagStrings)
+    {
+        var tags = new List<Tag>();
+        foreach (var tagString in tagStrings)
+        {
+            var tag = await _context.Tags.FirstOrDefaultAsync(t => t.TagName.ToLower() == tagString);
+            if (tag == null)
+            {
+                tags.Add(new Tag(){TagName = tagString});
+            }
+            else
+            {
+                tags.Add(tag);
+            }
+        }
+
+        return tags;
+    }
 }
