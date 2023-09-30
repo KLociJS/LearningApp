@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.RequestDtos.ArticleRequestDto;
+using WebAPI.Models.ResponseDto;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
@@ -115,5 +116,20 @@ public class ArticleController : ControllerBase
         }
 
         return Ok(new { updateArticleResult.Data });
+    }
+
+    [HttpPost("publish-article/{id}")]
+    public async Task<IActionResult> PublishArticle(Guid id, PublishArticleDto publishArticleDto)
+    {
+        var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+
+        var publishArticleResult = await _articleService.PublishArticle(id, userName, publishArticleDto);
+
+        if (!publishArticleResult.Succeeded)
+        {
+            return BadRequest(new Result() { Description = publishArticleResult.Message });
+        }
+
+        return Ok(new Result() { Description = publishArticleResult.Message });
     }
 }

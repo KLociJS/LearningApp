@@ -11,13 +11,17 @@ public class Article
     
     public AppUser Author { get; set; }
     public Guid AuthorId { get; set; }
-
+    
     public Category? Category { get; set; }
     public Guid? CategoryId { get; set; }
-
+    
     public SubCategory? SubCategory { get; set; }
     public Guid? SubCategoryId { get; set; }
-
+    
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public bool? Published { get; set; }
+    public string? Description { get; set; }
+    public List<Tag>? Tags { get; set; }
 }
