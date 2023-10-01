@@ -1,0 +1,16 @@
+.article-card{
+    flex-basis: 100%;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px var(--shadow);
+    padding: 1rem;
+}
+.article-card-title{
+    color: var(--primary);
+    padding-bottom: 0.5rem;
+}
+.article-card-description{
+    max-width: 75ch;
+}
+.article-card-footer{
+    
+}
