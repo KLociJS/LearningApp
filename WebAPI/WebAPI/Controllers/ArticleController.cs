@@ -132,4 +132,20 @@ public class ArticleController : ControllerBase
 
         return Ok(new Result() { Description = publishArticleResult.Message });
     }
+    
+    [AllowAnonymous]
+    [HttpGet("featured-articles")]
+    public async Task<IActionResult> GetFeaturedArticles()
+    {
+        try
+        {
+            var getFeaturedArticles = await _articleService.GetFeaturedArticles();
+            return Ok( new { Data = getFeaturedArticles });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
 }

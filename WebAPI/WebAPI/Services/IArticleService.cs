@@ -1,5 +1,6 @@
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.RequestDtos.ArticleRequestDto;
+using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Models.ResultModels;
 using WebAPI.Models.ResultModels.ArticleResult;
 
@@ -13,4 +14,5 @@ public interface IArticleService
     Task<DeleteArticleResult> DeleteArticle(Guid id, string? userName);
     Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto);
     Task<PublishArticleResult> PublishArticle(Guid id, string? userName, PublishArticleDto publishArticleDto);
+    Task<List<ArticleCardDto>> GetFeaturedArticles();
 }

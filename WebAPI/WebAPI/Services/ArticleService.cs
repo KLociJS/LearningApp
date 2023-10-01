@@ -1,3 +1,4 @@
+using MailKit.Search;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -324,7 +325,6 @@ public class ArticleService : IArticleService
 
         return PublishArticleResult.Succeed();
     }
-
     private async Task<List<Tag>> GetTagsAsync(List<string> tagStrings)
     {
         var tags = new List<Tag>();
@@ -342,5 +342,38 @@ public class ArticleService : IArticleService
         }
 
         return tags;
+    }
+
+    public async Task<List<ArticleCardDto>> GetFeaturedArticles()
+    {
+        try
+        {
+            var articles = await _context.Articles
+                .Where(a => a.Published == true)
+                .Include(a=>a.Author)
+                .Include(a=>a.Tags)
+                .OrderBy(a => a.CreatedAt)
+                .Take(8)
+                .ToListAsync();
+
+            var articleDtos = articles.Select(a => new ArticleCardDto()
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Description = a.Description!,
+                Author = a.Author.UserName,
+                CreatedAt = a.CreatedAt,
+                Tags = a.Tags!.Select(t=>t.TagName).ToList()
+            })
+                .ToList();
+            
+            return articleDtos;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

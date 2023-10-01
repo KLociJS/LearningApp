@@ -1,0 +1,28 @@
+.featured{
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    justify-content:left;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 10px;
+    padding: 1rem;
+    margin: 5rem 1rem 1rem;
+}
+
+.featured-label{
+    position: absolute;
+    left: 1.5rem;
+    top:-1rem;
+
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--primary);
+
+    padding: 0 0.5rem;
+
+    background-color: var(--secondary);
+}
+
+
