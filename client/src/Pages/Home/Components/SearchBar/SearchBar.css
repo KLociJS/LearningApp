@@ -1,0 +1,24 @@
+.searchbar-group {
+    position: relative;
+}
+
+.searchbar{
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+
+    border: 1px solid var(--primary)
+}
+
+.searchbar:focus{
+    outline: 1px solid var(--accent);
+    border: 1px solid transparent;
+}
+
+.search-icon{
+    font-size: 1.5rem;
+    color: var(--primary);
+    position: absolute;
+    right: 5px;
+    transform: translateY(-50%);
+    top: 50%;
+}
