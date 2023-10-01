@@ -1,11 +1,11 @@
 .featured{
     position: relative;
     display: flex;
-    align-items: baseline;
+    align-content: stretch;
     justify-content:left;
     flex-wrap: wrap;
     gap: 1rem;
-    border: 1px solid var(--primary);
+    border: 1px solid var(--shadow);
     border-radius: 10px;
     padding: 1rem;
     margin: 5rem 1rem 1rem;

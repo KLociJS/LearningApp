@@ -21,8 +21,6 @@ const getIconPosition = (squareWidth,numOfPoints,i, iconSize) => {
 
 const positions = Array(8).fill('').map((_,i)=>getIconPosition(200,8,i, 32))
 
-console.log(positions)
-
 export default function LandingAnimation() {
   return (
     <div className='hero-animation'>

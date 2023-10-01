@@ -7,15 +7,16 @@
 }
 
 .hero-animation{
-    margin-top: 10vh;
-    width: 30%;
+    margin: 15vh 0;
+    flex-basis: 30%;
 }
 .hero-content{
-    width: 70%;
+    margin: 15vh 0;
+    flex-basis: 70%;
 }
 
 .landing-h1{
-    margin: 10vh 1rem 0 1rem;
+    margin: 0 1rem;
     color: var(--primary);
     font-size: 2.5rem;
     font-weight: 400;
@@ -40,14 +41,16 @@
         flex-direction: column;
         align-items: center;
         justify-content:start;
+        flex-wrap: wrap;
     }
 
     .hero-animation{
-        margin-top: 3rem;
-        width: auto;
+        margin: 3rem 0;
+        flex-basis: 0;
     }
     .hero-content{
-        width: auto;
+        margin: 3rem 0;
+        flex-basis: 0;
     }
     
 }
@@ -58,12 +61,14 @@
         padding: 3rem 0 0 0;
     }
     .landing-h1{
-        font-size: 2rem;
-        text-align: center;
         margin: 1rem 1rem 0 1rem;
+        font-size: 2.2rem;
     }
-    .landing-p{
-        font-size: 1rem;
-        text-align: center;
+    .hero-animation{
+        margin: 2rem 0;
     }
+    .hero-content{
+        margin: 1rem 0;
+    }
+    
 }
