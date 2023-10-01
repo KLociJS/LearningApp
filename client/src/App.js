@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Layout } from "Pages"
+import { Layout, SharedArticle } from "Pages"
 
 //Pages
 import {
@@ -43,6 +43,7 @@ import Article from "Pages/Articles/Components/Article/Article";
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
+            <Route path="shared-article/:id" element={<SharedArticle />} />
             <Route element={<RequireRoles allowedRoles={['User']} />}>
                 <Route path="confirm-email" element={<ConfirmEmail />} />   
                 <Route index element={<Home />} />
