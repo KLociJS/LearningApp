@@ -1,0 +1,21 @@
+.article-card-skeleton{
+    height: 150px;
+    width: 30vw;
+    flex-basis: 49%;
+    border-radius: 10px;
+    background-color: var(--skeleton);
+    animation: skeleton 1s ease infinite alternate;
+}
+
+
+@media screen  and (max-width:900px){
+    .article-card-skeleton{
+        flex-basis: 100%;
+    }
+}
+
+@keyframes skeleton {
+    to{
+        opacity: 0.5;
+    }
+}

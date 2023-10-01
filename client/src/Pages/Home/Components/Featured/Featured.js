@@ -2,12 +2,12 @@ import { featuredArticle } from '_Constants/fetchUrl'
 import { useEffect, useState } from 'react'
 import ArticleCard from './Components/ArticleCard'
 import './Featured.css'
+import ArticleCardSkeleton from './Components/Components/ArticleCardSkeleton'
 
 export default function Featured() {
 
     const [articles,setArticles] = useState([])
     const [isLoading,setIsLoading] = useState(true)
-    console.log(articles)
 
     useEffect(()=>{
         fetch(featuredArticle)
@@ -18,7 +18,7 @@ export default function Featured() {
     },[])
 
     if(isLoading){
-        return null
+        return <ArticleCardSkeleton />
     }
 
     return (
