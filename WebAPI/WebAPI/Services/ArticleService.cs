@@ -382,6 +382,7 @@ public class ArticleService : IArticleService
             var articleSidebarResultDtos = await _context.Articles
                 .Include(a=>a.Author)
                 .Where(a => a.Title.ToLower().Contains(title.ToLower()) && a.Published == true)
+                .Take(10)
                 .Select(a => new ArticleSearchbarResultDto()
                 {
                     Title = a.Title, 
