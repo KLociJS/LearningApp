@@ -28,6 +28,7 @@ const deleteArticle = `${articleController}/delete-article/`
 const updateArticleUrl = `${articleController}/update-article/`
 const publishArticle = `${articleController}/publish-article/`
 const featuredArticle = `${articleController}/featured-articles`
+const searchArticle = `${articleController}/search-article`
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
@@ -50,4 +51,5 @@ export {
     updateArticleUrl,
     publishArticle,
     featuredArticle,
+    searchArticle,
 }

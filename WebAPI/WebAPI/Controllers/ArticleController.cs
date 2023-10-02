@@ -148,4 +148,20 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured on the server.");
         }
     }
+
+    [AllowAnonymous]
+    [HttpPost("search-article")]
+    public async Task<IActionResult> SearchArticle(string title)
+    {
+        try
+        {
+            var articleSidebarResultDtos = await _articleService.SearchArticle(title);
+            return Ok(new { Data = articleSidebarResultDtos });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
 }

@@ -343,7 +343,6 @@ public class ArticleService : IArticleService
 
         return tags;
     }
-
     public async Task<List<ArticleCardDto>> GetFeaturedArticles()
     {
         try
@@ -369,6 +368,29 @@ public class ArticleService : IArticleService
             
             return articleDtos;
 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<List<ArticleSearchbarResultDto>> SearchArticle(string title)
+    {
+        try
+        {
+            var articleSidebarResultDtos = await _context.Articles
+                .Include(a=>a.Author)
+                .Where(a => a.Title.ToLower().Contains(title.ToLower()) && a.Published == true)
+                .Select(a => new ArticleSearchbarResultDto()
+                {
+                    Title = a.Title, 
+                    Id = a.Id,
+                    CreatedAt = a.CreatedAt,
+                    Author = a.Author.UserName
+                })
+                .ToListAsync();
+            return articleSidebarResultDtos;
         }
         catch (Exception e)
         {

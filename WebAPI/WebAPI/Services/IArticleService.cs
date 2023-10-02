@@ -15,4 +15,5 @@ public interface IArticleService
     Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto);
     Task<PublishArticleResult> PublishArticle(Guid id, string? userName, PublishArticleDto publishArticleDto);
     Task<List<ArticleCardDto>> GetFeaturedArticles();
+    Task<List<ArticleSearchbarResultDto>> SearchArticle(string title);
 }
