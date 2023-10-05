@@ -10,6 +10,7 @@ using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Models.ResultModels;
 using WebAPI.Models.ResultModels.ArticleResult;
+using WebAPI.Models.ResultModels.SidebarContentResult;
 
 namespace WebAPI.Services;
 
@@ -397,6 +398,103 @@ public class ArticleService : IArticleService
         {
             Console.WriteLine(e);
             throw;
+        }
+    }
+    public async Task<GetArticleByIdResult> GetSharedArticleById(Guid id)
+    {
+        try
+        {
+            var article = await _context.Articles
+                .Include(a=>a.Author)
+                .FirstOrDefaultAsync(a => a.Id == id && a.Published == true);
+
+            if (article == null)
+            {
+                return GetArticleByIdResult.ArticleNotFound();
+            }
+
+            var articleDto = new ArticleDto()
+            {
+                Author = article.Author.UserName,
+                CreatedAt = article.CreatedAt,
+                Id = article.Id,
+                Markdown = article.Markdown,
+                Title = article.Title
+            };
+
+            if (article.UpdatedAt != null)
+            {
+                articleDto.UpdatedAt = article.UpdatedAt;
+            }
+            
+            return GetArticleByIdResult.Succeed(articleDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<GetPublishedArticleSidebarContentResult> GetSharedArticleSidebarContent(Guid id)
+    {
+        var articleToFind = await _context.Articles
+            .Include(a=>a.Category)
+            .Include(a=>a.SubCategory)
+            .Include(a=>a.SubCategory!.Articles)
+            .FirstOrDefaultAsync(a => a.Id == id && a.Published == true);
+    
+        if (articleToFind == null)
+        {
+            return GetPublishedArticleSidebarContentResult.ArticleNotPublished();
+        }
+        
+        if (articleToFind.SubCategory == null)
+        {
+            var sidebarContentDto = new SidebarContentDto()
+            {
+                Articles = new List<SidebarArticleDto>(),
+                Categories = new List<SidebarCategoryDto>()
+                {
+                    new SidebarCategoryDto()
+                    {
+                        Articles = articleToFind.Category.Articles
+                            .Select(a => new SidebarArticleDto() { Id = a.Id, Name = a.Title }).ToList(),
+                        Id = articleToFind.Category.Id,
+                        Name = articleToFind.Category.Name,
+                        Subcategories = new List<SidebarSubCategoryDto>()
+                    }
+                }
+            };
+            
+            return GetPublishedArticleSidebarContentResult.Succeed(sidebarContentDto);
+        }
+        else
+        {
+            var sidebarContentDto = new SidebarContentDto()
+            {
+                Articles = new List<SidebarArticleDto>(),
+                Categories = new List<SidebarCategoryDto>()
+                {
+                    new SidebarCategoryDto()
+                    {
+                        Articles = new List<SidebarArticleDto>(),
+                        Id = articleToFind.Category.Id,
+                        Name = articleToFind.Category.Name,
+                        Subcategories = articleToFind.Category.SubCategories.Select(sc => new SidebarSubCategoryDto()
+                        {
+                            Id = sc.Id,
+                            Name = sc.Name,
+                            Articles = sc.Articles
+                                .OrderBy(a=>a.Title)
+                                .Select(a => new SidebarArticleDto() { Id = a.Id, Name = a.Title })
+                                .ToList()
+                        }).ToList()
+                    }
+                }
+            };
+
+            return GetPublishedArticleSidebarContentResult.Succeed(sidebarContentDto);
         }
     }
 }

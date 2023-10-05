@@ -15,7 +15,7 @@ import './GlobalStyle/Component.css'
 import './GlobalStyle/Typography.css'
 
 //Layout
-import { Layout, SharedArticle } from "Pages"
+import { Layout } from "Pages"
 
 //Pages
 import {
@@ -26,6 +26,7 @@ import {
     RequesPasswordReset,
     ConfirmEmail,
     RequestPasswordChange,
+    SharedArticle,
 } from "Pages"
 
 

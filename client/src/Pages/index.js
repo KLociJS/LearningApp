@@ -10,7 +10,7 @@ import RequestPasswordChange from "./RequestPasswordChange/RequestPasswordChange
 import Articles from "./Articles/Articles"
 import CreateArticle from "./CreateArticle/CreateArticle"
 import UpdateArticle from "./UpdateArticle/UpdateArticle"
-import SharedArticle from "./Article/SharedArticle"
+import SharedArticle from "./SharedArticle/SharedArticle"
 
 export {
     Layout,
