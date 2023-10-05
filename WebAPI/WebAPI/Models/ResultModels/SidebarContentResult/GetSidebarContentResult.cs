@@ -17,4 +17,9 @@ public class GetSidebarContentResult
     {
         return new GetSidebarContentResult() { Succeeded = true, Message = "Article successfully added.", Data = sidebarContentDto };
     }
+
+    public static GetSidebarContentResult ArticleNotPublished()
+    {
+        return new GetSidebarContentResult() { Succeeded = false, Message = "Article is not published." };
+    }
 }
