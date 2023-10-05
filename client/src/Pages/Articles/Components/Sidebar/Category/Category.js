@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import ArtilceLink from '../ArticleLink/ArtilceLink'
 import SubCategory from '../SubCategory/SubCategory'
+import getCategoryState from './Utility/getCategoryState'
 
 import { IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io' 
 
 export default function Category({ category, linkTo }) {
-    const [isOpen, setIsOpen] = useState(false)
+    const { id } = useParams()
+    const [isOpen, setIsOpen] = useState(getCategoryState(category,id))
 
     if(!isOpen){
         return (

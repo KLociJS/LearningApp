@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+
 import ArtilceLink from '../ArticleLink/ArtilceLink'
+import getSubCategoryState from './Utility/getSubCategoryState'
 import { IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io' 
 
 export default function SubCategory({subcategory, linkTo}) {
-    const [isOpen, setIsOpen] = useState(false)
+    const { id } = useParams()
+    const [isOpen, setIsOpen] = useState(getSubCategoryState(subcategory,id))
 
+    
     if(!isOpen){
         return (
             <li className='category-li' onClick={()=>setIsOpen(true)}>
