@@ -29,7 +29,6 @@ export default function Article() {
         <section className='article-header'>
           <div>
             <h1 className='article-title'>{title}</h1>
-            <p className='article-info'>Created by {author} at {createdAt.slice(0,10)}</p>
           </div>
           <div className='action-btn'>
             <RoleBasedRender allowedroles={['Author']}>

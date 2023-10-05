@@ -14,7 +14,7 @@ export default function Articles() {
 
     return (
       <>
-        <Sidebar sidebarContent={sidebarContent} isLoading={isLoading}>
+        <Sidebar sidebarContent={sidebarContent} isLoading={isLoading} linkTo={'/article/'}>
           <Link to='/create-article' className='create-article-link'>
             New Note
             <MdOutlinePostAdd  className='add-icon'/>

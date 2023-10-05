@@ -8,7 +8,7 @@ import { MdKeyboardDoubleArrowRight, MdKeyboardDoubleArrowLeft, MdOutlinePostAdd
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
-export default function Sidebar({sidebarContent, isLoading, children}) {
+export default function Sidebar({sidebarContent, isLoading, children, linkTo}) {
 
   const [isOpen, setIsOpen] = useState(true)
 
@@ -27,8 +27,8 @@ export default function Sidebar({sidebarContent, isLoading, children}) {
       </div>
           {children}
           <ul className='category-list'>
-              {sidebarContent && sidebarContent.categories.map(c=>(<Category key={c.id} category={c} />))}
-              <ArtilceLink articles={sidebarContent?.articles || []} />
+              {sidebarContent.categories.map(c=>(<Category key={c.id} category={c} linkTo={linkTo}/>))}
+              <ArtilceLink articles={sidebarContent?.articles} linkTo={linkTo}/>
           </ul>
       </aside>
     </>

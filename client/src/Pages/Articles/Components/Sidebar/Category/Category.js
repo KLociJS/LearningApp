@@ -4,7 +4,7 @@ import SubCategory from '../SubCategory/SubCategory'
 
 import { IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io' 
 
-export default function Category({ category }) {
+export default function Category({ category, linkTo }) {
     const [isOpen, setIsOpen] = useState(false)
 
     if(!isOpen){
@@ -24,8 +24,8 @@ export default function Category({ category }) {
                 {category.name}
             </li>
             <ul className='subcategory-list'>
-                {category.subcategories.map(sub=>(<SubCategory key={sub.id} subcategory={sub}/>))}
-                <ArtilceLink articles={category.articles}/>
+                {category.subcategories.map(sub=>(<SubCategory key={sub.id} subcategory={sub} linkTo={linkTo}/>))}
+                <ArtilceLink articles={category.articles} linkTo={linkTo}/>
             </ul>
         </>
     )

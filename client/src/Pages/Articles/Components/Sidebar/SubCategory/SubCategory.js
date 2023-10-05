@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import ArtilceLink from '../ArticleLink/ArtilceLink'
 import { IoMdArrowDropright, IoMdArrowDropdown } from 'react-icons/io' 
 
-export default function SubCategory({subcategory}) {
+export default function SubCategory({subcategory, linkTo}) {
     const [isOpen, setIsOpen] = useState(false)
 
     if(!isOpen){
@@ -21,7 +21,7 @@ export default function SubCategory({subcategory}) {
                 {subcategory.name}
             </li>
             <ul className='article-list'>
-                <ArtilceLink articles={subcategory.articles} />
+                <ArtilceLink articles={subcategory.articles} linkTo={linkTo}/>
             </ul>
         </>
         
