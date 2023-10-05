@@ -8,7 +8,7 @@ import { MdKeyboardDoubleArrowRight, MdKeyboardDoubleArrowLeft, MdOutlinePostAdd
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
-export default function Sidebar({sidebarContent, isLoading}) {
+export default function Sidebar({sidebarContent, isLoading, children}) {
 
   const [isOpen, setIsOpen] = useState(true)
 
@@ -25,10 +25,7 @@ export default function Sidebar({sidebarContent, isLoading}) {
         <MdKeyboardDoubleArrowRight className='sidebar-icon' onClick={()=>setIsOpen(true)}/>
         }
       </div>
-          <Link to='/create-article' className='create-article-link'>
-            New Note
-            <MdOutlinePostAdd  className='add-icon'/>
-          </Link>
+          {children}
           <ul className='category-list'>
               {sidebarContent && sidebarContent.categories.map(c=>(<Category key={c.id} category={c} />))}
               <ArtilceLink articles={sidebarContent?.articles || []} />
