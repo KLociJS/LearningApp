@@ -232,9 +232,15 @@ namespace WebAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<string>("Markdown")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool?>("Published")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("SubCategoryId")
                         .HasColumnType("uuid");
@@ -255,6 +261,21 @@ namespace WebAPI.Migrations
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
+                {
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("ArticleId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("ArticleTags", (string)null);
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -300,6 +321,21 @@ namespace WebAPI.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("SubCategories");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("TagName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -374,6 +410,25 @@ namespace WebAPI.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("SubCategory");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
+                {
+                    b.HasOne("WebAPI.Models.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.Tag", "Tag")
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
