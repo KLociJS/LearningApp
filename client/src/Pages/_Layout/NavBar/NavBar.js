@@ -31,15 +31,15 @@ export default function NavBar() {
                     {isOpen ? <FaTimes /> : <FaBars />}
                 </div>
                 <ul className={isOpen ? "nav-menu active" : "nav-menu"}>
+                    <li className='nav-item'>
+                        <NavLink to='/' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
+                            <div className='centered-label'>
+                                <AiOutlineHome className='mobile-icon' size={16}/>
+                                Home
+                            </div>
+                        </NavLink>
+                    </li>
                     <RoleBasedRender allowedroles={['User']}>
-                        <li className='nav-item'>
-                            <NavLink to='/' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
-                                <div className='centered-label'>
-                                    <AiOutlineHome className='mobile-icon' size={16}/>
-                                    Home
-                                </div>
-                            </NavLink>
-                        </li>
                         <li className='nav-item'>
                             <NavLink to='/article' className={({isActive})=> 'nav-link' + (isActive ? " activated" : "")}>
                                 <div className='centered-label'>

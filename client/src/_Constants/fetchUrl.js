@@ -27,9 +27,13 @@ const getArticleById = `${articleController}/get-article/`
 const deleteArticle = `${articleController}/delete-article/`
 const updateArticleUrl = `${articleController}/update-article/`
 const publishArticle = `${articleController}/publish-article/`
+const featuredArticle = `${articleController}/featured-articles`
+const searchArticle = `${articleController}/search-article`
+const getSharedArticle = `${articleController}/shared-article/`
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
+const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`
 
 export {
     register,
@@ -48,4 +52,8 @@ export {
     deleteArticle,
     updateArticleUrl,
     publishArticle,
+    featuredArticle,
+    searchArticle,
+    getSharedArticle,
+    getSharedSidebarContent,
 }

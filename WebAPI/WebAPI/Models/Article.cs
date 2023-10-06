@@ -12,8 +12,8 @@ public class Article
     public AppUser Author { get; set; }
     public Guid AuthorId { get; set; }
     
-    public Category? Category { get; set; }
-    public Guid? CategoryId { get; set; }
+    public Category Category { get; set; }
+    public Guid CategoryId { get; set; }
     
     public SubCategory? SubCategory { get; set; }
     public Guid? SubCategoryId { get; set; }

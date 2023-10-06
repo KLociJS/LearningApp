@@ -1,0 +1,25 @@
+.landing-button{
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--primary);
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+.landing-button-icon{
+    font-size: 1.2rem;
+    color: var(--primary);
+    width: 0;
+    transition: 0.5s ease all;
+}
+.landing-button-icon.active{
+    width: 1rem;
+    transition: 0.5s ease all;
+}
+
+.landing-button:hover{
+    cursor: pointer;
+}

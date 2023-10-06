@@ -132,4 +132,78 @@ public class ArticleController : ControllerBase
 
         return Ok(new Result() { Description = publishArticleResult.Message });
     }
+    
+    [AllowAnonymous]
+    [HttpGet("featured-articles")]
+    public async Task<IActionResult> GetFeaturedArticles()
+    {
+        try
+        {
+            var getFeaturedArticles = await _articleService.GetFeaturedArticles();
+            return Ok( new { Data = getFeaturedArticles });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("search-article")]
+    public async Task<IActionResult> SearchArticle(string title)
+    {
+        try
+        {
+            var articleSidebarResultDtos = await _articleService.SearchArticle(title);
+            return Ok(new { Data = articleSidebarResultDtos });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("shared-article/{id}")]
+    public async Task<IActionResult> GetSharedArticleById(Guid id)
+    {
+        try
+        {
+            var getSharedArticleResult = await _articleService.GetSharedArticleById(id);
+            if (!getSharedArticleResult.Succeeded)
+            {
+                return NotFound();
+            }
+
+            return Ok(getSharedArticleResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("get-shared-article-sidebar-content/{id}")]
+    public async Task<IActionResult> GetSharedArticleSidebarContent(Guid id)
+    {
+        try
+        {
+            var sidebarContentResult = await _articleService.GetSharedArticleSidebarContent(id);
+            if (!sidebarContentResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(sidebarContentResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
 }
