@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { publishArticle } from '_Constants/fetchUrl'
+import { useParams } from 'react-router-dom'
 
-export default function usePublishArticle(id) {
+export default function usePublishArticle(setShow) {
+    const { id } = useParams()
     const [description, setDescription] = useState('')
     const [tags, setTags] = useState('')
 
@@ -20,7 +22,7 @@ export default function usePublishArticle(id) {
             body: JSON.stringify(article)
         })
         .then(res=>res.json())
-        .then(res=>console.log(res))
+        .then(_=>setShow(false))
         .catch(err=>console.log(err))
     }   
 

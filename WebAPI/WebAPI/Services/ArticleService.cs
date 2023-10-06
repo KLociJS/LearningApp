@@ -400,6 +400,50 @@ public class ArticleService : IArticleService
 
         return PublishArticleResult.Succeed();
     }
+
+    public async Task<UnPublishArticleResult> UnPublishArticle(Guid id, string? userName)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null)
+        {
+            return UnPublishArticleResult.UserNotFound();
+        }
+
+        var article = await _context.Articles.FirstOrDefaultAsync(a => a.Id == id && a.Author == user);
+        if (article == null)
+        {
+            return UnPublishArticleResult.ArticleNotFound();
+        }
+
+        article.Published = false;
+        await _context.SaveChangesAsync();
+        
+        return UnPublishArticleResult.Succeed();
+    }
+
+    public async Task<UpdatePublishedArticleResult> UpdatePublishedArticle(Guid id, string? userName,
+        PublishArticleDto publishArticleDto)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user == null)
+        {
+            return UpdatePublishedArticleResult.UserNotFound();
+        }
+
+        var article = await _context.Articles.FirstOrDefaultAsync(a => a.Author == user && a.Published == true);
+
+        if (article == null)
+        {
+            return UpdatePublishedArticleResult.ArticleNotFound();
+        }
+
+        article.Description = publishArticleDto.Description;
+        article.Tags = await GetTagsAsync(publishArticleDto.Tags);
+
+        await _context.SaveChangesAsync();
+
+        return UpdatePublishedArticleResult.Succeed();
+    }
     private async Task<List<Tag>> GetTagsAsync(List<string> tagStrings)
     {
         var tags = new List<Tag>();

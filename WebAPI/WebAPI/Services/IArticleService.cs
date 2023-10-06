@@ -22,4 +22,9 @@ public interface IArticleService
 
     Task<GetSidebarContentResult>
         UpdateCategory(string? userName, UpdateArticleCategoryDto updateArticleCategoryDto, Guid id);
+
+    Task<UpdatePublishedArticleResult> UpdatePublishedArticle(Guid id, string? userName,
+        PublishArticleDto publishArticleDto);
+
+    Task<UnPublishArticleResult> UnPublishArticle(Guid id, string? userName);
 }
