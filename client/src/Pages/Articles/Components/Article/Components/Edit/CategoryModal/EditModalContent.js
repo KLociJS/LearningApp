@@ -1,4 +1,5 @@
 import { Input } from "Components";
+import useSidebarContent from "Hooks/useSidebarContent";
 import { updateCategory } from "_Constants/fetchUrl";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -7,6 +8,8 @@ export default function EditModalContent({setShow}){
     const { id } = useParams()
     const [category, setCategory] = useState('')
     const [subCategory,setSubcategory] = useState('')
+
+    const { setSidebarContent } = useSidebarContent()
 
     const handleCategoryUpdate = () => {
         const categoryData = {
@@ -24,7 +27,7 @@ export default function EditModalContent({setShow}){
         })
         .then(res=>res.json())
         .then(res=>{
-            console.log(res)
+            setSidebarContent(res)
             setShow(false)
         })
         .catch(err=>console.log(err))
