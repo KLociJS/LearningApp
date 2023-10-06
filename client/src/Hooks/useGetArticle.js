@@ -9,6 +9,7 @@ export default function useGetArticle() {
     const [title, setTitle] = useState()
     const [author, setAuthor] = useState()
     const [createdAt, setCreatedAt] = useState()
+    const [isPublished, setIsPublished] = useState(false)
     
     const [isLoading, setIsLoading] = useState(true)
     
@@ -17,11 +18,11 @@ export default function useGetArticle() {
       fetch(`${getArticleById}${id}`,{credentials:'include'})
       .then(res=>res.json())
       .then(({data})=>{
-        console.log(data)
         setMarkdown(data.markdown)
         setTitle(data.title)
         setAuthor(data.author)
         setCreatedAt(data.createdAt)
+        setIsPublished(data.isPublished ? true : false)
         setIsLoading(false)
       })
       .catch(console.log)
@@ -35,6 +36,7 @@ export default function useGetArticle() {
       setTitle, 
       createdAt,
       author,
-      isLoading 
+      isLoading,
+      isPublished,
     }
 }
