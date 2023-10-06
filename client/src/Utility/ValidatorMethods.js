@@ -10,6 +10,6 @@ export function emailValidator(email){
 }
 
 export function passwordValidator(password){
-    let validPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.*(.).*\1)[a-zA-Z\d\W]{6,}$/
+    let validPassword = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{6,20}$/
     return validPassword.test(password)
 }
