@@ -1,10 +1,14 @@
 import { Link, useParams } from 'react-router-dom'
-import { AiOutlineEdit } from 'react-icons/ai'
+import { useState } from 'react'
+
 import './Edit.css'
-import  Modal from './Modal/Modal'
+
+import { AiOutlineEdit } from 'react-icons/ai'
+
+import  Modal from '../Modal/Modal'
 import ModalTriggerElement from './CategoryModal/ModalTriggerElement'
 import EditModalContent from './CategoryModal/EditModalContent'
-import { useState } from 'react'
+
 
 export default function Edit() {
     const { id } = useParams()
@@ -27,7 +31,6 @@ export default function Edit() {
                 null
             }
         </div>
-
     )
 }
 
