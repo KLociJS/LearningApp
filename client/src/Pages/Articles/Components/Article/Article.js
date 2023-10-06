@@ -9,14 +9,13 @@ import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton'
 import { useGetArticle } from 'Hooks'
 import PublishArticleModalContent from './Components/PublishArticleModal/PublishArticleModalContent'
 import { RoleBasedRender } from 'Components'
+import Edit from './Components/Edit/Edit'
 
 export default function Article() {
     const { id } = useParams()
     const { 
       markdown,  
       title, 
-      createdAt,
-      author,
       isLoading 
     } = useGetArticle()
     
@@ -36,9 +35,7 @@ export default function Article() {
                 <PublishArticleModalContent id={id} />
               </Modal>
             </RoleBasedRender>
-            <Link to={`/update-article/${id}`}>
-              <AiOutlineEdit className='edit-icon'/>
-            </Link>
+            <Edit/>
             <Modal icon={<RiDeleteBinLine className='delete-icon'/>}>
               <DeleteArticleModalContent id={id}/>
             </Modal>

@@ -206,4 +206,27 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured on the server.");
         }
     }
+
+    
+    [HttpPatch("update-category/{id}")]
+    public async Task<IActionResult> UpdateCategory(Guid id, UpdateArticleCategoryDto updateArticleCategoryDto)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+            var updateCategoryResult = await _articleService.UpdateCategory(userName, updateArticleCategoryDto, id);
+
+            if (!updateCategoryResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(updateCategoryResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
 }

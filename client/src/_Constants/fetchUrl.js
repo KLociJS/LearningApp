@@ -34,6 +34,7 @@ const getSharedArticle = `${articleController}/shared-article/`
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
 const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`
+const updateCategory = `${articleController}/update-category/`
 
 export {
     register,
@@ -56,4 +57,5 @@ export {
     searchArticle,
     getSharedArticle,
     getSharedSidebarContent,
+    updateCategory,
 }

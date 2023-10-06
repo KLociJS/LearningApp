@@ -1,0 +1,24 @@
+.edit-icon-container{
+    position: relative;
+}
+
+.icon-menu{
+    position: absolute;
+    right: 0;
+    padding:0.75rem 1rem;
+    border: 1px solid var(--primary);
+    border-radius: 5px;
+}
+
+.menu-item{
+    color: var(--primary);
+    text-decoration: none;
+    white-space: nowrap;
+    background-color: var(--secondary);
+    border: none;
+}
+
+.menu-item:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

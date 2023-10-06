@@ -34,7 +34,10 @@ public class ArticleService : IArticleService
             return GetArticleByIdResult.UserNotFound();
         }
 
-        var article = await _context.Articles.FirstOrDefaultAsync(a => a.Id == id && a.Author == user);
+        var article = await _context.Articles
+            .Include(a=>a.SubCategory)
+            .Include(a=>a.Category)
+            .FirstOrDefaultAsync(a => a.Id == id && a.Author == user);
         if (article == null)
         {
             return GetArticleByIdResult.ArticleNotFound();
@@ -46,7 +49,8 @@ public class ArticleService : IArticleService
             Title = article.Title,
             Author = article.Author.UserName,
             Markdown = article.Markdown,
-            CreatedAt = article.CreatedAt
+            CreatedAt = article.CreatedAt,
+            IsPublished = article.Published
         };
 
         if (article.Category != null)
@@ -90,15 +94,29 @@ public class ArticleService : IArticleService
 
         if (articleToDelete!.Category != null)
         {
-            category = await _context.Categories.FirstOrDefaultAsync(c => c == articleToDelete.Category);
+            category = await _context.Categories
+                .Include(c=>c.Articles)
+                .FirstOrDefaultAsync(c => c == articleToDelete.Category);
             if (articleToDelete.SubCategory != null)
             {
-                subCategory = await _context.SubCategories.FirstOrDefaultAsync(s => s == articleToDelete.SubCategory);
+                subCategory = await _context.SubCategories
+                    .Include(sc=>sc.Articles)
+                    .FirstOrDefaultAsync(s => s == articleToDelete.SubCategory);
             }
         }
         
         _context.Articles.Remove(articleToDelete!);
 
+        await RemoveEmptyCategories(category, subCategory);
+
+        await _context.SaveChangesAsync();
+        
+        
+        return DeleteArticleResult.Succeed();
+    }
+
+    private async Task RemoveEmptyCategories(Category? category, SubCategory? subCategory)
+    {
         if (category!=null && category.Articles.Count <= 1)
         {
             _context.Categories.Remove(category);
@@ -108,11 +126,8 @@ public class ArticleService : IArticleService
         {
             _context.SubCategories.Remove(subCategory);
         }
-
         
         await _context.SaveChangesAsync();
-        
-        return DeleteArticleResult.Succeed();
     }
     public async Task<GetSidebarContentResult> GetSidebarContent(string? userName)
     {
@@ -123,33 +138,10 @@ public class ArticleService : IArticleService
             {
                 return GetSidebarContentResult.UserNotFound();
             }
-            
-            var articlesWithoutCategory = _context.Articles
-                .Include(a=>a.Author)
-                .Where(a => a.Category == null && a.Author==user)
-                .Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id})
-                .ToList();
 
-            var categories = _context.Categories
-                .Include(c=>c.Author)
-                .Where(c=>c.Author==user)
-                .Select(c => new SidebarCategoryDto()
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    Articles = c.Articles.Where(a=>a.SubCategory==null).Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList(),
-                    Subcategories = c.SubCategories.Select(s=>new SidebarSubCategoryDto()
-                    {
-                        Id = s.Id,
-                        Name = s.Name,
-                        Articles = s.Articles.Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList()
-                    }).ToList()
-                })
-                .ToList();
-            
-            var result = new SidebarContentDto() { Articles = articlesWithoutCategory, Categories = categories };
+            var sidebarContentDto = await GetSidebarContentDto(user);
 
-            return GetSidebarContentResult.Succeed(result);
+            return GetSidebarContentResult.Succeed(sidebarContentDto);
 
         }
         catch (Exception e)
@@ -158,6 +150,82 @@ public class ArticleService : IArticleService
             throw;
         }
     }
+
+    public async Task<GetSidebarContentResult> UpdateCategory(string? userName, UpdateArticleCategoryDto updateArticleCategoryDto, Guid id)
+    {
+        var user = await _userManager.FindByNameAsync(userName);
+
+        if (user == null)
+        {
+            return GetSidebarContentResult.UserNotFound();
+        }
+
+        var article = await _context.Articles
+            .Include(a=>a.Category)
+            .Include(a=>a.SubCategory)
+            .Include(a=>a.Author)
+            .FirstOrDefaultAsync(a => a.Id == id && a.Author == user);
+
+        if (article == null)
+        {
+            return GetSidebarContentResult.ArticleNotFound();
+        }
+
+        Category? category = null;
+        SubCategory? subCategory = null;
+
+        if (article!.Category != null)
+        {
+            category = await _context.Categories.
+                Include(c=>c.Articles)
+                .FirstOrDefaultAsync(c => c == article.Category);
+            if (article.SubCategory != null)
+            {
+                subCategory = await _context.SubCategories
+                    .Include(sc=>sc.Articles)
+                    .FirstOrDefaultAsync(s => s == article.SubCategory);
+            }
+        }
+        
+        await CategorizeArticle(article, updateArticleCategoryDto.Category,
+            updateArticleCategoryDto.SubCategory, user);
+        
+        await RemoveEmptyCategories(category, subCategory);
+
+        await _context.SaveChangesAsync();
+
+        var updatedSidebarContent = await GetSidebarContentDto(user);
+        
+        return GetSidebarContentResult.Succeed(updatedSidebarContent);
+    }
+    private async Task<SidebarContentDto> GetSidebarContentDto(AppUser user)
+    {
+        var articlesWithoutCategory = _context.Articles
+            .Include(a=>a.Author)
+            .Where(a => a.Category == null && a.Author==user)
+            .Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id})
+            .ToList();
+
+        var categories = _context.Categories
+            .Include(c=>c.Author)
+            .Where(c=>c.Author==user)
+            .Select(c => new SidebarCategoryDto()
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Articles = c.Articles.Where(a=>a.SubCategory==null).Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList(),
+                Subcategories = c.SubCategories.Select(s=>new SidebarSubCategoryDto()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Articles = s.Articles.Select(a=>new SidebarArticleDto(){Name = a.Title, Id = a.Id}).ToList()
+                }).ToList()
+            })
+            .ToList();
+            
+        return new SidebarContentDto() { Articles = articlesWithoutCategory, Categories = categories };
+    }
+    
     public async Task<PostArticleResult> PostArticle(PostArticleDto postArticleDto, string? userName)
     {
         try
@@ -176,67 +244,28 @@ public class ArticleService : IArticleService
             Author = user,
             CreatedAt = DateTime.Now.ToUniversalTime()
         };
-        
-        if (postArticleDto.Category != null)
-        {
-            var existingCategory =
-                await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == postArticleDto.Category.ToLower() && c.Author == user);
-            
-            if (existingCategory == null)
-            {
-                var newCategory = new Category() { Name = postArticleDto.Category, Author = user};
-                _context.Categories.Add(newCategory);
-                newArticle.Category = newCategory;
-            }
-            else
-            {
-                newArticle.Category = existingCategory;
-            }
-            
-            if (postArticleDto.SubCategory != null)
-            {
-                var existingSubCategory =
-                    await _context.SubCategories.FirstOrDefaultAsync(sc => 
-                            sc.Name.ToLower() == postArticleDto.SubCategory.ToLower() && 
-                            sc.Category == existingCategory && 
-                            sc.Author == user);
 
-                if (existingSubCategory == null)
-                {
-                    var category = newArticle!.Category;
-                    if (category != null)
-                    {
-                        var newSubCategory = new SubCategory() { Name = postArticleDto.SubCategory,  Category = category, Author = user};
-                        _context.SubCategories.Add(newSubCategory);
-                        newArticle.SubCategory = newSubCategory;
-                    }
-                }
-                else
-                {
-                    newArticle.SubCategory = existingSubCategory;
-                }
-            }
-        }
+        var updatedArticle = await CategorizeArticle(newArticle, postArticleDto.Category, postArticleDto.SubCategory, user);
 
 
-        _context.Articles.Add(newArticle);
+        _context.Articles.Add(updatedArticle);
         await _context.SaveChangesAsync();
 
         var articleDto = new ArticleDto()
         {
-            Id = newArticle.Id,
-            Title = newArticle.Title,
-            Markdown = newArticle.Markdown,
+            Id = updatedArticle.Id,
+            Title = updatedArticle.Title,
+            Markdown = updatedArticle.Markdown,
             Author = user.UserName,
-            CreatedAt = newArticle.CreatedAt
+            CreatedAt = updatedArticle.CreatedAt
         };
         
-        if (newArticle.Category != null)
+        if (updatedArticle.Category != null)
         {
-            articleDto.Category = newArticle.Category.Name;
-            if (newArticle.SubCategory != null)
+            articleDto.Category = updatedArticle.Category.Name;
+            if (updatedArticle.SubCategory != null)
             {
-                articleDto.SubCategory = newArticle.SubCategory.Name;
+                articleDto.SubCategory = updatedArticle.SubCategory.Name;
             }
         }
         
@@ -247,6 +276,51 @@ public class ArticleService : IArticleService
             Console.WriteLine(e);
             throw new Exception("Server error.");
         }
+    }
+
+    private async Task<Article> CategorizeArticle(Article article, string? category, string? subCategory, AppUser user)
+    {
+        if (category != null)
+        {
+            var existingCategory =
+                await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == category.ToLower() && c.Author == user);
+            
+            if (existingCategory == null)
+            {
+                var newCategory = new Category() { Name = category, Author = user};
+                _context.Categories.Add(newCategory);
+                article.Category = newCategory;
+            }
+            else
+            {
+                article.Category = existingCategory;
+            }
+            
+            if (subCategory != null)
+            {
+                var existingSubCategory =
+                    await _context.SubCategories.FirstOrDefaultAsync(sc => 
+                        sc.Name.ToLower() == subCategory.ToLower() && 
+                        sc.Category == existingCategory && 
+                        sc.Author == user);
+
+                if (existingSubCategory == null)
+                {
+                    if (article.Category != null)
+                    {
+                        var newSubCategory = new SubCategory() { Name = subCategory,  Category = article.Category, Author = user};
+                        _context.SubCategories.Add(newSubCategory);
+                        article.SubCategory = newSubCategory;
+                    }
+                }
+                else
+                {
+                    article.SubCategory = existingSubCategory;
+                }
+            }
+        }
+
+        return article;
     }
     public async Task<UpdateArticleResult> UpdateArticle(Guid id, string? userName, UpdateArticleDto updateArticleDto)
     {
@@ -435,7 +509,6 @@ public class ArticleService : IArticleService
             throw;
         }
     }
-
     public async Task<GetPublishedArticleSidebarContentResult> GetSharedArticleSidebarContent(Guid id)
     {
         var articleToFind = await _context.Articles

@@ -17,6 +17,7 @@ export default function useGetArticle() {
       fetch(`${getArticleById}${id}`,{credentials:'include'})
       .then(res=>res.json())
       .then(({data})=>{
+        console.log(data)
         setMarkdown(data.markdown)
         setTitle(data.title)
         setAuthor(data.author)
