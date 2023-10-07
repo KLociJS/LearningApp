@@ -16,7 +16,6 @@ export default function UserNameInputWithValidation({ inputValue, setInputValue,
                 hasError={error}
                 isDisabled={isDisabled}
             />
-            {error && <p className='error-msg align-start'>{error}</p>}
         </>
     )
 }

@@ -24,23 +24,20 @@ export default function UpdateArticleModalContent({ markdown, title, setShow }){
                 setError={setTitleError}
             />
             {titleError ? <p className='error-msg'>{titleError}</p> : null}
-            <div className='button-container mt-1'>
                 <button 
-                    className='secondary-button'
+                    className='primary-button'
                     onClick={updateArticle}
                     disabled={isDisabled}
                 >
                     Save 
-                    <RiSave2Line className='save-icon'/>
                 </button>
                 <button 
                     onClick={()=>setShow(false)}
-                    className='secondary-button align-right'
+                    className='secondary-button'
                     disabled={isDisabled}
                 >
                     Close
                 </button>
-            </div>
         </section>
     )
 }

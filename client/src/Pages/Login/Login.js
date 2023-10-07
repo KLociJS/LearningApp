@@ -33,13 +33,16 @@ export default function Login() {
             setInputValue={setPassword}
             isDisabled={isDisabled}
           />
-          {error && <p className='error-msg align-start'>{error}</p>}
-          <Link to="/reset-password" className="link align-end">
-            Forgot password?
-          </Link>
-          <button className="primary-button mt-2" type="submit" disabled={isDisabled}>
-            Login
-          </button>
+          <div className='card-button-group'>
+            {error ? <p className='error-msg align-start'>{error}</p> : null}
+            <Link to="/reset-password" className="link align-end">
+              Forgot password?
+            </Link>
+            <button className="primary-button" type="submit" disabled={isDisabled}>
+              Login
+            </button>
+          </div>
+
         </AuthCard>
       </main>
     </>

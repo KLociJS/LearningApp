@@ -2,8 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 
 import { AiOutlineShareAlt } from 'react-icons/ai'
 
-import  Modal from '../Modal/Modal'
-import ModalTriggerElement from '../Modal/ModalTriggerElement'
+import  Modal from '../../../../../../Components/Modal/Modal'
+import ModalTriggerElement from '../../../../../../Components/Modal/ModalTriggerElement'
 import PublishArticleModalContent from './PublishArticleModalContent/PublishArticleModalContent'
 import useArticle from 'Hooks/useArticle'
 import PublishUpdateModal from './PublishUpdateModalContent/PublishUpdateModal'
@@ -37,18 +37,18 @@ export default function Publish() {
                     {isPublished ? 
                         <>
                             <Modal
-                                triggerElement={<ModalTriggerElement text='Edit Publish Details'/>}
-                                modal={<PublishUpdateModal/>}
+                                triggerElement={<ModalTriggerElement text='Edit Publish Details' className='menu-item'/>}
+                                modalContent={<PublishUpdateModal/>}
                                 />
                             <Modal 
-                                triggerElement={<ModalTriggerElement text='Unpublish Article'/>}
-                                modal={<UnpublishArticleModal />}
+                                triggerElement={<ModalTriggerElement text='Unpublish Article' className='menu-item'/>}
+                                modalContent={<UnpublishArticleModal />}
                             />
                         </> : 
                         <>
                             <Modal 
-                                modal={<PublishArticleModalContent />}
-                                triggerElement={<ModalTriggerElement text='Publish Article'/>}
+                                modalContent={<PublishArticleModalContent />}
+                                triggerElement={<ModalTriggerElement text='Publish Article' className='menu-item'/>}
                             />
                         </>
                     }

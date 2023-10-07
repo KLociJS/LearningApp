@@ -13,8 +13,8 @@ export default function DeleteArticleModalConatent({id, setShow}) {
         <section className='modal'>
             <h3 className='modal-header warning'>Warning!</h3>
             <p className='modal-text mb-2'>Article Deletion Is Irreversible!</p>
-            <button className='warning-button mt-1' onClick={deleteHandler}>Delete</button>
-            <button className='secondary-button mt-1' onClick={()=>setShow(false)}>Cancel</button>
+            <button className='warning-button' onClick={deleteHandler}>Delete</button>
+            <button className='secondary-button' onClick={()=>setShow(false)}>Cancel</button>
         </section>
     )
 }

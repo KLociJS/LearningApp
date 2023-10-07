@@ -1,10 +1,10 @@
 import './Users.css'
 
-import Modal from './Components/RolesModal/Modal'
+import { Modal, ModalTriggerElement } from 'Components'
 import RolesModalContent from './Components/RolesModal/RolesModalContent'
 import UsersSkeleton from './Components/Skeleton/UsersSkeleton'
-import { deleteUserFetch } from 'Api'
 import { useGetUsers } from 'Hooks'
+import DeleteUserModalContent from './Components/RolesModal/DeleteUserModalContent'
 
 
 export default function Users() {
@@ -38,12 +38,14 @@ export default function Users() {
                   <td className='table-data table-hidden'>{u.email}</td>
                   <td className='table-data'>
                     <div className='table-button-container'>
-                      <Modal modalButtonText='Edit role'>
-                        <RolesModalContent user={u} setUsers={setUsers} />
-                      </Modal>
-                      <button onClick={()=>deleteUserFetch(u.id, setUsers)} className='warning-button ml-2'>
-                        Delete
-                      </button>
+                      <Modal 
+                        modalContent={<RolesModalContent user={u} setUsers={setUsers}/>}
+                        triggerElement={<ModalTriggerElement text='Edit Role' className='secondary-button'/>}
+                      />
+                      <Modal 
+                        modalContent={<DeleteUserModalContent user={u} setUsers={setUsers}/>}
+                        triggerElement={<ModalTriggerElement text='Delete User' className='warning-button ml-2' />}
+                      />
                     </div>
                   </td>
               </tr>))}

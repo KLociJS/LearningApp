@@ -15,8 +15,8 @@ export default function PublishUpdateModal({setShow}) {
             <h3 className='modal-header'>Publish article</h3>
             <Input label='Tags' inputValue={tags} setInputValue={setTags}/>
             <Input label='Description' inputValue={description} setInputValue={setDescription} />
-            <button className='primary-button mt-1' onClick={updatePublishHandler}>Update</button>
-            <button className='secondary-button mt-1' onClick={()=>setShow(false)}>Cancel</button>
+            <button className='primary-button' onClick={updatePublishHandler}>Update</button>
+            <button className='secondary-button' onClick={()=>setShow(false)}>Cancel</button>
         </section>
     )
 }

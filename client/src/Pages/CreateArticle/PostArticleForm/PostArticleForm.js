@@ -40,22 +40,21 @@ export default function PostArticleForm({ markdown, setShow }){
                 setInputValue={setSubcategory}
                 isDisabled={isDisabled}
             />
-            <div className='button-container'>
-                <button 
-                    className='secondary-button' 
-                    onClick={postArticle} 
-                    disabled={isDisabled}
-                >
-                    Save 
-                    <RiSave2Line className='save-icon'/>
-                </button>
-                <button 
-                    onClick={e=>setShow(false)} 
-                    className='secondary-button' 
-                    disabled={isDisabled}>
-                        Cancel
-                </button>
-            </div>
+            
+            <button 
+                className='primary-button' 
+                onClick={postArticle} 
+                disabled={isDisabled}
+            >
+                Save 
+            </button>
+            <button 
+                onClick={e=>setShow(false)} 
+                className='secondary-button' 
+                disabled={isDisabled}>
+                    Cancel
+            </button>
+            
         </section>
     )
 }

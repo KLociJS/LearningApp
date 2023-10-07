@@ -3,8 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 
 import { AiOutlineEdit } from 'react-icons/ai'
 
-import  Modal from '../Modal/Modal'
-import ModalTriggerElement from './CategoryModalContent/ModalTriggerElement'
+import { Modal, ModalTriggerElement } from 'Components'
 import EditModalContent from './CategoryModalContent/EditModalContent'
 
 
@@ -36,8 +35,8 @@ export default function Edit() {
                         Edit markdown
                     </Link>
                     <Modal 
-                        modal={<EditModalContent />}
-                        triggerElement={<ModalTriggerElement/>}
+                        modalContent={<EditModalContent />}
+                        triggerElement={<ModalTriggerElement className='menu-item' text='Change Category'/>}
                     />
                 </div>
                 : 

@@ -37,6 +37,7 @@ const Input = ({
                 onChange={handleChange}
                 autoComplete="off"
             />
+            {hasError && <p className='error-msg align-start'>{hasError}</p>}
     </div>
   );
 };

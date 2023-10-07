@@ -1,5 +1,6 @@
 import Input from "./Input/Input"
 import Modal from "./Modal/Modal"
+import ModalTriggerElement from "./Modal/ModalTriggerElement"
 import AuthCard from "./AuthCard/AuthCard"
 import RequireRoles from "./RequireRoles/RequireRoles"
 import UnauthenticatedRoute from "./UnauthenticatedRoute/UnauthenticatedRoute"
@@ -16,6 +17,7 @@ import MarkdownEditor from "./MarkdownEditor/MarkdownEditor"
 export { 
     Input,
     Modal,
+    ModalTriggerElement,
     AuthCard,
     RequireRoles,
     UnauthenticatedRoute,

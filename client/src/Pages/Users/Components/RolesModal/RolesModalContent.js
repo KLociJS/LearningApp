@@ -1,4 +1,3 @@
-import './Modal.css'
 import { useUpdateRoles } from 'Hooks'
 
 export default function RolesModalContent({user,setUsers,setShow}) {
@@ -20,11 +19,13 @@ export default function RolesModalContent({user,setUsers,setShow}) {
 
     return (
             <div className='modal' onClick={e=>e.stopPropagation()}>
-                <h1 className='mb-1'>Change Roles</h1>
-                <p>Username: {user.userName}</p>
-                <p className='mb-1'>Current roles: {user.roles.join(', ')}</p>
-
-                <div className='role-inputs mb-3'>
+                <h1 className='modal-hading'>Change Roles</h1>
+                <div>
+                    <p>Username: <strong>{user.userName}</strong></p>
+                    <p>Current roles:</p>
+                    <p><strong>{user.roles.join(', ')}</strong></p>
+                </div>
+                <div className='role-inputs'>
                     <div>
                         <input type="checkbox" id="admin" onChange={()=>handleChange('Admin')} />
                         <label htmlFor="admin">Admin</label>
@@ -42,8 +43,8 @@ export default function RolesModalContent({user,setUsers,setShow}) {
                         <label htmlFor="user">User</label>
                     </div>
                 </div>
-                <button onClick={()=>handleSubmit(user,setUsers)} className='primary-button center'>Save</button>
-                <button onClick={e=>setShow(false)} className='secondary-button center mt-1'>Close</button>
+                <button onClick={()=>handleSubmit(user,setUsers)} className='primary-button '>Save</button>
+                <button onClick={e=>setShow(false)} className='secondary-button'>Close</button>
 
             </div>
     )
