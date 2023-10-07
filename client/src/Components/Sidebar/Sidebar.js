@@ -4,13 +4,12 @@ import SidebarSkeleton from './SidebarSkeleton/SidebarSkeleton'
 
 import './Sidebar.css'
 
-import { MdKeyboardDoubleArrowRight, MdKeyboardDoubleArrowLeft, MdOutlinePostAdd } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { MdKeyboardDoubleArrowRight, MdKeyboardDoubleArrowLeft } from 'react-icons/md'
 import { useState } from 'react'
 
 export default function Sidebar({sidebarContent, isLoading, children, linkTo}) {
 
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
 
   if(isLoading){
     return <SidebarSkeleton />

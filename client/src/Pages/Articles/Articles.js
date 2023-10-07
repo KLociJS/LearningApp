@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './Articles.css'
 
-import Sidebar from './Components/Sidebar/Sidebar'
+import Sidebar from '../../Components/Sidebar/Sidebar'
 import { useGetSidebarContent } from 'Hooks'
 import { MdOutlinePostAdd } from 'react-icons/md'
 import SidebarContext from 'Context/SideBarProvider'

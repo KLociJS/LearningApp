@@ -1,5 +1,5 @@
 import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownPreview'
-import Sidebar from 'Pages/Articles/Components/Sidebar/Sidebar'
+import { Sidebar } from 'Components'
 import useGetSharedSidebarContent from './Hooks/useGetSharedSidebarContent'
 import useGetSharedArticle from './Hooks/useGetSharedArticle'
 import SharedArticleSkeleton from './Components/SharedArticleSkeleton'

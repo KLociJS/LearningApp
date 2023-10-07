@@ -12,6 +12,7 @@ import EmailInputWithValidation from "./Input/EmailInputWithValidation/EmailInpu
 import UserNameInputWithValidation from "./Input/UserNameInputWithValidation/UserNameInputWithValidation"
 import Loading from "./LoadingComponent/Loading"
 import MarkdownEditor from "./MarkdownEditor/MarkdownEditor"
+import Sidebar from "./Sidebar/Sidebar"
 
 
 export { 
@@ -28,5 +29,6 @@ export {
     UserNameInputWithValidation,
     PasswordInput,
     Loading,
-    MarkdownEditor
+    MarkdownEditor,
+    Sidebar
 }
