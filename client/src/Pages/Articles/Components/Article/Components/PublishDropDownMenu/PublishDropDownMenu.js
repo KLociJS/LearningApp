@@ -1,27 +1,39 @@
-import { useParams } from 'react-router-dom'
-import { useState } from 'react'
-
-import './Publish.css'
+import { useState, useRef, useEffect } from 'react'
 
 import { AiOutlineShareAlt } from 'react-icons/ai'
 
 import  Modal from '../Modal/Modal'
 import ModalTriggerElement from '../Modal/ModalTriggerElement'
-import PublishArticleModalContent from './PublishArticleModal/PublishArticleModalContent'
+import PublishArticleModalContent from './PublishArticleModalContent/PublishArticleModalContent'
 import useArticle from 'Hooks/useArticle'
-import PublishUpdateModal from './PublishUpdateModal/PublishUpdateModal'
-import UnpublishArticleModal from './PublishUpdateModal/UnpublishArticleModal'
+import PublishUpdateModal from './PublishUpdateModalContent/PublishUpdateModal'
+import UnpublishArticleModal from './PublishUpdateModalContent/UnpublishArticleModal'
 
 export default function Publish() {
-    const { id } = useParams()
     const [show, setShow] = useState(false)
     const { isPublished } = useArticle()
 
+    const menuRef = useRef(null)
+
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShow(false)
+      }
+    }
+  
+    useEffect(() => {
+      document.addEventListener('mousedown', handleClickOutside)
+  
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    }, [])
+
     return (
-        <div className='edit-icon-container'>
+        <div className='menu-container' ref={menuRef}>
             <AiOutlineShareAlt className='edit-icon' onClick={()=>setShow(prev=>!prev)}/>
             { show ? 
-                <div className='icon-menu'>
+                <div className='dropdown-menu'>
                     {isPublished ? 
                         <>
                             <Modal

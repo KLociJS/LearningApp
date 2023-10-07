@@ -7,13 +7,14 @@ import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownP
 import ArticleContext from 'Context/ArticleProvider'
 import { useGetArticle } from 'Hooks'
 
+import './Components/DropdownMenu.css'
+
 import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton'
-import Edit from './Components/EditMenu/Edit'
+import EditDropDownMenu from './Components/EditDropDownMenu/EditDropDownMenu'
+import PublishDropDownMenu from './Components/PublishDropDownMenu/PublishDropDownMenu'
 import Modal from './Components/DeleteArticleModal/Modal'
-import PublishArticleModalContent from './Components/PublishMenu/PublishArticleModal/PublishArticleModalContent'
 import DeleteArticleModalContent from './Components/DeleteArticleModal/DeleteArticleModalContent'
 import { RoleBasedRender } from 'Components'
-import Publish from './Components/PublishMenu/Publish'
 
 export default function Article() {
     const { id } = useParams()
@@ -49,9 +50,9 @@ export default function Article() {
           </div>
           <div className='action-btn'>
             <RoleBasedRender allowedroles={['Author']}>
-            <Publish/>
+              <PublishDropDownMenu/>
             </RoleBasedRender>
-            <Edit/>
+            <EditDropDownMenu/>
             <Modal icon={<RiDeleteBinLine className='delete-icon'/>}>
               <DeleteArticleModalContent id={id}/>
             </Modal>
@@ -59,6 +60,5 @@ export default function Article() {
         </section>
         <MarkdownPreview markdown={markdown}/>
       </ArticleContext.Provider>
-      
     )
 }
