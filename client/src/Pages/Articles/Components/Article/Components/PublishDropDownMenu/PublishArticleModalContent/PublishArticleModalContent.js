@@ -1,7 +1,7 @@
 import { Input } from 'Components'
 import usePublishArticle from './Hooks/usePublishArticle'
 
-export default function PublishArticleModalContent({id,setShow}) {
+export default function PublishArticleModalContent({setShow}) {
 
     const {
         description,
@@ -9,7 +9,7 @@ export default function PublishArticleModalContent({id,setShow}) {
         tags,
         setTags,
         publishArticleHandler
-    } = usePublishArticle(id)
+    } = usePublishArticle(setShow)
     
     return (
         <section className='modal' onClick={e=>e.stopPropagation()}>

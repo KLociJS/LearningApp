@@ -30,10 +30,14 @@ const publishArticle = `${articleController}/publish-article/`
 const featuredArticle = `${articleController}/featured-articles`
 const searchArticle = `${articleController}/search-article`
 const getSharedArticle = `${articleController}/shared-article/`
+const updateCategory = `${articleController}/update-category/`
+const updatePublishedArticle = `${articleController}/update-published-article/`
+const unpublishArticle = `${articleController}/unpublish-article/`
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`
 const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`
+
 
 export {
     register,
@@ -56,4 +60,7 @@ export {
     searchArticle,
     getSharedArticle,
     getSharedSidebarContent,
+    updateCategory,
+    updatePublishedArticle,
+    unpublishArticle
 }
