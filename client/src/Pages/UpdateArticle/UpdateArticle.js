@@ -1,6 +1,6 @@
 import { MarkdownEditor, Modal, ModalTriggerElement } from 'Components'
-import UpdateArticleModalContent from './Components/UpdateArticleModal/UpdateArticleModalContent'
 import { useGetArticle } from 'Hooks'
+import UpdateArticleModalContent from './Components/UpdateArticleModal/UpdateArticleModalContent'
 
 export default function UpdateArticle() {
     const { 
