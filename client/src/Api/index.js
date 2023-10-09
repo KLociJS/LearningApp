@@ -1,7 +1,4 @@
-import deleteArticleFetch from "./deleteArticleFetch"
-import checkAuthentication from "./checkAuthentication"
+import checkAuthentication from './checkAuthentication';
+import deleteArticleFetch from './deleteArticleFetch';
 
-export {
-    deleteArticleFetch,
-    checkAuthentication,
-}
+export { checkAuthentication, deleteArticleFetch };
