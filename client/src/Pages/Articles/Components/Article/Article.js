@@ -1,21 +1,21 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
-import { RiDeleteBinLine } from 'react-icons/ri';
+import { RiDeleteBinLine } from "react-icons/ri";
 
-import MarkdownPreview from 'Components/MarkdownEditor/MarkdownPreview/MarkdownPreview';
+import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 
-import ArticleContext from 'Context/ArticleProvider';
-import { useGetArticle } from 'Hooks';
+import ArticleContext from "Context/ArticleProvider";
+import { useGetArticle } from "Hooks";
 
-import './Components/DropdownMenu.css';
+import "./Components/DropdownMenu.css";
 
-import { RoleBasedRender } from 'Components';
-import Modal from '../../../../Components/Modal/Modal';
-import ModalTriggerElement from '../../../../Components/Modal/ModalTriggerElement';
-import ArticleSkeleton from './Components/ArticleSkeleton/ArticleSkeleton';
-import DeleteArticleModalContent from './Components/DeleteArticleModal/DeleteArticleModalContent';
-import EditDropDownMenu from './Components/EditDropDownMenu/EditDropDownMenu';
-import PublishDropDownMenu from './Components/PublishDropDownMenu/PublishDropDownMenu';
+import { RoleBasedRender } from "Components";
+import Modal from "../../../../Components/Modal/Modal";
+import ModalTriggerElement from "../../../../Components/Modal/ModalTriggerElement";
+import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
+import DeleteArticleModalContent from "./Components/DeleteArticleModal/DeleteArticleModalContent";
+import EditDropDownMenu from "./Components/EditDropDownMenu/EditDropDownMenu";
+import PublishDropDownMenu from "./Components/PublishDropDownMenu/PublishDropDownMenu";
 
 export default function Article() {
   const { id } = useParams();
@@ -28,7 +28,12 @@ export default function Article() {
     author,
     isLoading,
     isPublished,
-    setIsPublished
+    setIsPublished,
+    description,
+    tags,
+    setTags,
+    category,
+    subCategory
   } = useGetArticle();
 
   console.log(isPublished);
@@ -48,14 +53,19 @@ export default function Article() {
         author,
         isLoading,
         isPublished,
-        setIsPublished
+        setIsPublished,
+        description,
+        tags,
+        category,
+        subCategory,
+        setTags
       }}>
       <section className="article-header">
         <div>
           <h1 className="article-title">{title}</h1>
         </div>
         <div className="action-btn">
-          <RoleBasedRender allowedroles={['Author']}>
+          <RoleBasedRender allowedroles={["Author"]}>
             <PublishDropDownMenu />
           </RoleBasedRender>
           <EditDropDownMenu />

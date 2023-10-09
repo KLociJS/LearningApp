@@ -1,32 +1,33 @@
-import { useArticle } from 'Hooks';
-import { publishArticle } from '_Constants/fetchUrl';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useArticle } from "Hooks";
+import { publishArticle } from "_Constants/fetchUrl";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function usePublishArticle(setShow) {
   const { id } = useParams();
-  const { setIsPublished } = useArticle();
-  const [description, setDescription] = useState('');
-  const [tags, setTags] = useState('');
+  const { setIsPublished, setTags: setContextTags } = useArticle();
+  const [description, setDescription] = useState("");
+  const [tags, setTags] = useState("");
 
   const publishArticleHandler = () => {
     const article = {
       description,
-      tags: tags.split(', ')
+      tags: tags.split(",")
     };
 
     fetch(`${publishArticle}${id}`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(article)
     })
       .then((res) => res.json())
       .then(() => {
         setShow(false);
         setIsPublished(true);
+        setContextTags(tags);
       })
       .catch((err) => console.log(err));
   };
