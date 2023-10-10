@@ -1,6 +1,6 @@
 import { MarkdownEditor, Modal, ModalTriggerElement } from "Components";
-import { useGetArticle } from "Hooks";
-import UpdateArticleModalContent from "./Components/UpdateArticleModal/UpdateArticleModalContent";
+import UpdateArticleModalContent from "./Components/UpdateArticleModalContent";
+import useGetArticle from "./Hooks/useGetArticle";
 
 export default function UpdateArticle() {
   const { markdown, setMarkdown, title, isLoading } = useGetArticle();
@@ -8,15 +8,11 @@ export default function UpdateArticle() {
   if (isLoading) return null;
 
   return (
-    <div className='editor-page-container'>
-      <section className='controls'>
+    <div className="editor-page-container">
+      <section className="controls">
         <Modal
-          modalContent={
-            <UpdateArticleModalContent markdown={markdown} title={title} />
-          }
-          triggerElement={
-            <ModalTriggerElement className='secondary-button' text='Save' />
-          }
+          modalContent={<UpdateArticleModalContent markdown={markdown} title={title} />}
+          triggerElement={<ModalTriggerElement className="secondary-button" text="Save" />}
         />
       </section>
       <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />

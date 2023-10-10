@@ -3,19 +3,19 @@ import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements
-} from 'react-router-dom';
+} from "react-router-dom";
 
-import AuthContext from 'Context';
-import { Suspense, lazy, useEffect, useState } from 'react';
+import AuthContext from "Context";
+import { Suspense, lazy, useEffect, useState } from "react";
 
 //Stylesheets
-import './GlobalStyle/Component.css';
-import './GlobalStyle/Index.css';
-import './GlobalStyle/Layout.css';
-import './GlobalStyle/Typography.css';
+import "./GlobalStyle/Component.css";
+import "./GlobalStyle/Index.css";
+import "./GlobalStyle/Layout.css";
+import "./GlobalStyle/Typography.css";
 
 //Layout
-import { Layout } from 'Pages';
+import { Layout } from "Pages";
 
 //Pages
 import {
@@ -27,22 +27,22 @@ import {
   SharedArticle,
   SingUp,
   UnAuthorized
-} from 'Pages';
+} from "Pages";
 
-import { RequireRoles, UnauthenticatedRoute } from 'Components';
+import { RequireRoles, UnauthenticatedRoute } from "Components";
 
-import { checkAuthentication } from 'Api';
+import { checkAuthentication } from "Api";
 
-import Article from 'Pages/Articles/Components/Article/Article';
-import ArticleLanding from 'Pages/Articles/Components/ArticleLanding/ArticleLanding';
+import Article from "Pages/Articles/Components/Article/Article";
+import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 
-const Users = lazy(() => import(/* webpackChunkName: "users" */ './Pages/Users/Users'));
-const Articles = lazy(() => import(/* webpackChunkName: "articles" */ './Pages/Articles/Articles'));
+const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
+const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
 const CreateArticle = lazy(() =>
-  import(/* webpackChunkName: "createArticle" */ './Pages/CreateArticle/CreateArticle')
+  import(/* webpackChunkName: "createArticle" */ "./Pages/CreateArticle/CreateArticle")
 );
 const UpdateArticle = lazy(() =>
-  import(/* webpackChunkName: "updateArticle" */ './Pages/UpdateArticle/UpdateArticle')
+  import(/* webpackChunkName: "updateArticle" */ "./Pages/UpdateArticle/UpdateArticle")
 );
 
 const renderLoader = () => <p>Loading</p>;
@@ -52,7 +52,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route path="shared-article/:id" element={<SharedArticle />} />
       <Route index element={<Home />} />
-      <Route element={<RequireRoles allowedRoles={['User']} />}>
+      <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
         <Route
           path="article"
@@ -81,7 +81,7 @@ const router = createBrowserRouter(
           }
         />
       </Route>
-      <Route element={<RequireRoles allowedRoles={['Admin']} />}>
+      <Route element={<RequireRoles allowedRoles={["Admin"]} />}>
         <Route
           path="users"
           element={
