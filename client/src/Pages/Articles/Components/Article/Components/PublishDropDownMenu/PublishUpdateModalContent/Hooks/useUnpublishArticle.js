@@ -1,15 +1,15 @@
-import { useArticle } from 'Hooks';
-import { unpublishArticle } from '_Constants/fetchUrl';
-import { useParams } from 'react-router-dom';
+import { useArticle } from "Hooks";
+import { unpublishArticle } from "_Constants/fetchUrl";
+import { useParams } from "react-router-dom";
 
 export default function useUnpublishArticle(setShow) {
   const { id } = useParams();
-  const { setIsPublished } = useArticle();
+  const { dispatch } = useArticle();
   const unpublishHandler = () => {
-    fetch(`${unpublishArticle}${id}`, { method: 'POST', credentials: 'include' })
+    fetch(`${unpublishArticle}${id}`, { method: "POST", credentials: "include" })
       .then((res) => res.json())
       .then(() => {
-        setIsPublished(false);
+        dispatch({ type: "unpublish_article" });
         setShow(false);
       })
       .catch((err) => console.log(err));
