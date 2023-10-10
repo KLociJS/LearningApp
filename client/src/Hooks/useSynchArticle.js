@@ -25,6 +25,9 @@ const articleReducer = (state, action) => {
     case "unpublish_article": {
       return { ...state, article: { ...state.article, isPublished: false } };
     }
+    case "update_published_article_details": {
+      return { ...state, article: { ...state.article, ...action.payload } };
+    }
   }
   throw Error("Unknown action: " + action.type);
 };

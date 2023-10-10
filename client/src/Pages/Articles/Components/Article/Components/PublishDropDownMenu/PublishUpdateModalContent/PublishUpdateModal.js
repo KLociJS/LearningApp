@@ -1,5 +1,5 @@
-import { Input } from 'Components';
-import useUpdatePublishedArticle from './Hooks/useUpdatePublishedArticle';
+import { Input } from "Components";
+import useUpdatePublishedArticle from "./Hooks/useUpdatePublishedArticle";
 
 export default function PublishUpdateModal({ setShow }) {
   const { tags, setTags, description, setDescription, updatePublishHandler } =

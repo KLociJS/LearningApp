@@ -1,13 +1,13 @@
+import useArticle from "Hooks/useArticle";
 import { updatePublishedArticle } from "_Constants/fetchUrl";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import useArticle from "../../../../../../../../Hooks/useArticle";
 
 export default function useUpdatePublishedArticle(setShow) {
   const { id } = useParams();
-  const { description: oldDescription, tags: oldTags, setTags: setContextTags } = useArticle();
-  const [tags, setTags] = useState(oldTags);
-  const [description, setDescription] = useState(oldDescription);
+  const { state, dispatch } = useArticle();
+  const [tags, setTags] = useState(state.article.tags.join(","));
+  const [description, setDescription] = useState(state.article.description);
 
   const updatePublishHandler = () => {
     const updatedArticleDetails = {
@@ -24,10 +24,11 @@ export default function useUpdatePublishedArticle(setShow) {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         setShow(false);
-        console.log(tags);
-        setContextTags(tags);
+        dispatch({
+          type: "update_published_article_details",
+          payload: { ...updatedArticleDetails }
+        });
       })
       .catch((err) => console.log(err));
   };
