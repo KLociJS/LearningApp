@@ -19,6 +19,9 @@ const articleReducer = (state, action) => {
     case "fetch_article_fail": {
       return { ...state, isLoading: false, error: "Error. Try again later." };
     }
+    case "publish_article": {
+      return { ...state, article: { ...state.article, isPublished: true, ...action.payload } };
+    }
   }
   throw Error("Unknown action: " + action.type);
 };
@@ -32,7 +35,6 @@ export default function useSynchArticle() {
     fetch(`${getArticleById}${id}`, { credentials: "include" })
       .then((res) => res.json())
       .then(({ data }) => {
-        console.log(data);
         dispatch({ type: "fetch_article_success", payload: data });
       })
       .catch((err) => dispatch({ type: "fetch_article_fail" }));

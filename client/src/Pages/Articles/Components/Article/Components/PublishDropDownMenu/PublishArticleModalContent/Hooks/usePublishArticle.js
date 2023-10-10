@@ -5,12 +5,12 @@ import { useParams } from "react-router-dom";
 
 export default function usePublishArticle(setShow) {
   const { id } = useParams();
-  const { setIsPublished, setTags: setContextTags } = useArticle();
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
+  const { dispatch } = useArticle();
 
   const publishArticleHandler = () => {
-    const article = {
+    const publishedArticleDetails = {
       description,
       tags: tags.split(",")
     };
@@ -21,13 +21,12 @@ export default function usePublishArticle(setShow) {
         "Content-Type": "application/json"
       },
       credentials: "include",
-      body: JSON.stringify(article)
+      body: JSON.stringify(publishedArticleDetails)
     })
       .then((res) => res.json())
       .then(() => {
         setShow(false);
-        setIsPublished(true);
-        setContextTags(tags);
+        dispatch({ type: "publish_article", payload: { ...publishedArticleDetails } });
       })
       .catch((err) => console.log(err));
   };
