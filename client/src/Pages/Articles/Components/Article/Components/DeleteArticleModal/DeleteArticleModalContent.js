@@ -1,5 +1,5 @@
-import { deleteArticleFetch } from "Api";
 import { useNavigate, useOutletContext } from "react-router-dom";
+import deleteArticleFetch from "./deleteArticleFetch";
 
 export default function DeleteArticleModalConatent({ id, setShow }) {
   const navigate = useNavigate();

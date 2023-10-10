@@ -1,40 +1,30 @@
-import {  PasswordInput, Input } from 'Components'
-import { AuthCard } from 'Components'
+import { AuthCard, Input, PasswordInput } from "Components";
 
-import { AiOutlineLogin } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
-
-import { useLogin } from 'Hooks'
+import { AiOutlineLogin } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import useLogin from "./Hooks/useLogin";
 
 export default function Login() {
-  const {
-    userName,
-    setUserName,
-    password,
-    setPassword,
-    error,
-    setError,
-    isDisabled,
-    handleLogin
-  } = useLogin()
+  const { userName, setUserName, password, setPassword, error, setError, isDisabled, handleLogin } =
+    useLogin();
 
   return (
     <>
-      <main className='container card-container'>
+      <main className="container card-container">
         <AuthCard icon={AiOutlineLogin} heading="Login" onSubmit={handleLogin}>
-          <Input 
-            label='Username'
+          <Input
+            label="Username"
             inputValue={userName}
             setInputValue={setUserName}
             isDisabled={isDisabled}
           />
-          <PasswordInput 
+          <PasswordInput
             inputValue={password}
             setInputValue={setPassword}
             isDisabled={isDisabled}
           />
-          <div className='card-button-group'>
-            {error ? <p className='error-msg align-start'>{error}</p> : null}
+          <div className="card-button-group">
+            {error ? <p className="error-msg align-start">{error}</p> : null}
             <Link to="/reset-password" className="link align-end">
               Forgot password?
             </Link>
@@ -42,9 +32,8 @@ export default function Login() {
               Login
             </button>
           </div>
-
         </AuthCard>
       </main>
     </>
-  )
+  );
 }

@@ -1,10 +1,9 @@
-import { deleteArticle } from '_Constants/fetchUrl';
+import { deleteArticle } from "_Constants/fetchUrl";
 
 export default function deleteArticleFetch(setSidebarContent, id, navigate) {
-  fetch(`${deleteArticle}${id}`, { method: 'DELETE', credentials: 'include' })
+  fetch(`${deleteArticle}${id}`, { method: "DELETE", credentials: "include" })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
       setSidebarContent((content) => ({
         ...content,
         articles: content.articles.filter((article) => article.id !== id),
@@ -21,7 +20,7 @@ export default function deleteArticleFetch(setSidebarContent, id, navigate) {
           }))
           .filter((category) => category.articles.length > 0 || category.subcategories.length > 0)
       }));
-      navigate('/article');
+      navigate("/article");
     })
     .catch((err) => console.log(err));
 }

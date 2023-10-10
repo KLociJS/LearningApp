@@ -1,9 +1,9 @@
-import { Input } from 'Components';
-import useSidebarContent from 'Hooks/useSidebarContent';
-import { updateCategory } from '_Constants/fetchUrl';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useArticle from '../../../../../../../Hooks/useArticle';
+import { Input } from "Components";
+import useArticle from "Hooks/useArticle";
+import useSidebarContent from "Pages/Articles/Hooks/useSidebarContent";
+import { updateCategory } from "_Constants/fetchUrl";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function EditModalContent({ setShow }) {
   const { id } = useParams();
@@ -19,11 +19,11 @@ export default function EditModalContent({ setShow }) {
     };
 
     fetch(`${updateCategory}${id}`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(categoryData)
     })
       .then((res) => res.json())

@@ -11,7 +11,7 @@ import "./Components/DropdownMenu.css";
 import { RoleBasedRender } from "Components";
 import Modal from "Components/Modal/Modal";
 import ModalTriggerElement from "Components/Modal/ModalTriggerElement";
-import useSynchArticle from "Hooks/useSynchArticle";
+import useSynchArticle from "Pages/Articles/Hooks/useSynchArticle";
 import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
 import DeleteArticleModalContent from "./Components/DeleteArticleModal/DeleteArticleModalContent";
 import EditDropDownMenu from "./Components/EditDropDownMenu/EditDropDownMenu";

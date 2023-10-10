@@ -1,13 +1,13 @@
-import  { 
-  UserNameInputWithValidation,
-  PasswordInputWithValidation,
+import {
+  AuthCard,
   EmailInputWithValidation,
-  AuthCard
-} from 'Components'
-import { useSignUp } from 'Hooks'
+  PasswordInputWithValidation,
+  UserNameInputWithValidation
+} from "Components";
 
+import useSignUp from "./Hooks/useSignUp";
 
-import { AiOutlineLogin } from 'react-icons/ai'
+import { AiOutlineLogin } from "react-icons/ai";
 
 export default function SingUp() {
   const {
@@ -27,12 +27,12 @@ export default function SingUp() {
     error,
     setError,
     handleSignup
-  } = useSignUp()
+  } = useSignUp();
 
   return (
     <>
-      <main className='container card-container'>
-      <AuthCard icon={AiOutlineLogin} heading="Sign up" onSubmit={handleSignup}>
+      <main className="container card-container">
+        <AuthCard icon={AiOutlineLogin} heading="Sign up" onSubmit={handleSignup}>
           <UserNameInputWithValidation
             inputValue={userName}
             setInputValue={setUserName}
@@ -47,7 +47,7 @@ export default function SingUp() {
             setError={setPasswordError}
             isDisabled={isDisabled}
           />
-          <EmailInputWithValidation 
+          <EmailInputWithValidation
             inputValue={email}
             setInputValue={setEmail}
             error={emailError}
@@ -55,11 +55,16 @@ export default function SingUp() {
             isDisabled={isDisabled}
           />
 
-          {error && <p key={error} className='error-msg align-start'>{error}</p>}
-          <button className='primary-button mt-2' type='submit' disabled={isDisabled}>SignUp</button>
+          {error && (
+            <p key={error} className="error-msg align-start">
+              {error}
+            </p>
+          )}
+          <button className="primary-button mt-2" type="submit" disabled={isDisabled}>
+            SignUp
+          </button>
         </AuthCard>
       </main>
     </>
-  )
+  );
 }
-

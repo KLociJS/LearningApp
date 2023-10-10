@@ -31,8 +31,7 @@ import {
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
 
-import { checkAuthentication } from "Api";
-
+import checkAuthentication from "Api/checkAuthentication";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 

@@ -1,8 +1,8 @@
-import { AuthCard, EmailInputWithValidation } from 'Components';
+import { AuthCard, EmailInputWithValidation } from "Components";
 
-import { useRequestPasswordReset } from 'Hooks';
-import { FiLock } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom';
+import { FiLock } from "react-icons/fi";
+import { Link, useNavigate } from "react-router-dom";
+import useRequestPasswordReset from "./Hooks/useRequestPasswordReset";
 
 export default function RequestPasswordReset() {
   const navigate = useNavigate();

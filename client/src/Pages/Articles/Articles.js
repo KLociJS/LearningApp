@@ -1,11 +1,11 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet } from "react-router-dom";
 
-import './Articles.css';
+import "./Articles.css";
 
-import { Sidebar } from 'Components';
-import SidebarContext from 'Context/SideBarProvider';
-import { useGetSidebarContent } from 'Hooks';
-import { MdOutlinePostAdd } from 'react-icons/md';
+import { Sidebar } from "Components";
+import SidebarContext from "Context/SideBarProvider";
+import { MdOutlinePostAdd } from "react-icons/md";
+import useGetSidebarContent from "./Hooks/useGetSidebarContent";
 
 export default function Articles() {
   const { isLoading, sidebarContent, setSidebarContent } = useGetSidebarContent();
@@ -13,7 +13,7 @@ export default function Articles() {
   return (
     <>
       <SidebarContext.Provider value={{ isLoading, sidebarContent, setSidebarContent }}>
-        <Sidebar sidebarContent={sidebarContent} isLoading={isLoading} linkTo={'/article/'}>
+        <Sidebar sidebarContent={sidebarContent} isLoading={isLoading} linkTo={"/article/"}>
           <Link to="/create-article" className="create-article-link">
             New Note
             <MdOutlinePostAdd className="add-icon" />
