@@ -244,7 +244,7 @@ public class ArticleController : ControllerBase
             {
                 return BadRequest();
             }
-
+            
             return Ok(new Result(){Description = "Updated."});
         }
         catch (Exception e)
