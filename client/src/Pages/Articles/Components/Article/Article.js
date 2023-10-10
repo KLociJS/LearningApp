@@ -5,11 +5,11 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 
 import ArticleContext from "Context/ArticleProvider";
-import { useGetArticle } from "Hooks";
 
 import "./Components/DropdownMenu.css";
 
 import { RoleBasedRender } from "Components";
+import useSynchArticle from "Hooks/useSynchArticle";
 import Modal from "../../../../Components/Modal/Modal";
 import ModalTriggerElement from "../../../../Components/Modal/ModalTriggerElement";
 import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
@@ -19,50 +19,17 @@ import PublishDropDownMenu from "./Components/PublishDropDownMenu/PublishDropDow
 
 export default function Article() {
   const { id } = useParams();
-  const {
-    markdown,
-    setMarkdown,
-    title,
-    setTitle,
-    createdAt,
-    author,
-    isLoading,
-    isPublished,
-    setIsPublished,
-    description,
-    tags,
-    setTags,
-    category,
-    subCategory
-  } = useGetArticle();
+  const { state, dispatch } = useSynchArticle();
 
-  console.log(isPublished);
-
-  if (isLoading) {
+  if (state.isLoading) {
     return <ArticleSkeleton />;
   }
 
   return (
-    <ArticleContext.Provider
-      value={{
-        markdown,
-        setMarkdown,
-        title,
-        setTitle,
-        createdAt,
-        author,
-        isLoading,
-        isPublished,
-        setIsPublished,
-        description,
-        tags,
-        category,
-        subCategory,
-        setTags
-      }}>
+    <ArticleContext.Provider value={{ state, dispatch }}>
       <section className="article-header">
         <div>
-          <h1 className="article-title">{title}</h1>
+          <h1 className="article-title">{state.article.title}</h1>
         </div>
         <div className="action-btn">
           <RoleBasedRender allowedroles={["Author"]}>
@@ -80,7 +47,7 @@ export default function Article() {
           />
         </div>
       </section>
-      <MarkdownPreview markdown={markdown} />
+      <MarkdownPreview markdown={state.article.markdown} />
     </ArticleContext.Provider>
   );
 }
