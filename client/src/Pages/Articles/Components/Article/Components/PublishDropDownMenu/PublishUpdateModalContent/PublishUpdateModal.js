@@ -1,4 +1,5 @@
 import { Input } from "Components";
+import TextArea from "Components/Input/TextArea/TextArea";
 import useUpdatePublishedArticle from "./Hooks/useUpdatePublishedArticle";
 
 export default function PublishUpdateModal({ setShow }) {
@@ -9,7 +10,7 @@ export default function PublishUpdateModal({ setShow }) {
     <section className="modal" onClick={(e) => e.stopPropagation()}>
       <h3 className="modal-header">Publish article</h3>
       <Input label="Tags" inputValue={tags} setInputValue={setTags} />
-      <Input label="Description" inputValue={description} setInputValue={setDescription} />
+      <TextArea label="Description" inputValue={description} setInputValue={setDescription} />
       <button className="primary-button" onClick={updatePublishHandler}>
         Update
       </button>
