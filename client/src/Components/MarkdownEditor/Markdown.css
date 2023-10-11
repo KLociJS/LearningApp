@@ -1,99 +1,98 @@
 .editor-page-container {
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    padding: 0.5rem;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  padding: 0.5rem;
+  gap: 1rem;
 
-    /*color*/
+  /*color*/
 }
-.editor-container{
-    display: flex;
-    flex-wrap: wrap;
-    height: calc(100vh - 233px);
+.editor-container {
+  display: flex;
+  flex-wrap: wrap;
+  height: calc(100vh - 233px);
 }
 
 /*  Tools  */
-.markdown-tools{
-    display: flex;
-    align-items: center;
-    gap:0.5rem;
-    flex-basis: 100%;
-    padding: 0.5rem;
-    border: 1px solid var(--primary);
-    border-bottom: none;
-    border-radius: 5px 5px 0 0;
+.markdown-tools {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-basis: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--primary);
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
 }
 
-.markdown-tool-icon{
-    font-size: 1.5rem;
-    color: var(--primary);
-    border: 1px solid transparent;
-    border-radius: 3px;
+.markdown-tool-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+  border: 1px solid transparent;
+  border-radius: 3px;
 }
-.markdown-tool-icon:hover{
-    cursor: pointer;
-    border-color: var(--primary);
-}
-
-.markdown-tool-separator{
-    height: 1rem;
-    border-left: 1px solid var(--primary);
+.markdown-tool-icon:hover {
+  cursor: pointer;
+  border-color: var(--primary);
 }
 
-.markdown-tool-icon.last{
-    margin-left: auto;
+.markdown-tool-separator {
+  height: 1rem;
+  border-left: 1px solid var(--primary);
 }
-.markdown-tool-icon.last.active{
-    border-color: var(--primary);
+
+.markdown-tool-icon.last {
+  margin-left: auto;
+}
+.markdown-tool-icon.last.active {
+  border-color: var(--primary);
 }
 
 /* Textarea */
 
-.editor-container>textarea{
-    flex-grow: 1;
-    flex-basis: 50%;
-    height: calc(100vh - 233px);
-    resize: none;
-    overflow-y: scroll;
-    padding: 0.5rem;
+.editor-container > textarea {
+  flex-grow: 1;
+  flex-basis: 50%;
+  height: calc(100vh - 233px);
+  resize: none;
+  overflow-y: scroll;
+  padding: 0.5rem;
 
-    font-weight: 200;
+  font-weight: 200;
 
-    border: 1px solid var(--primary);
-    border-radius: 0 0 0 5px;
+  border: 1px solid var(--primary);
+  border-radius: 0 0 0 5px;
 }
 
-.editor-container>textarea:focus{
-    outline: none;
+.editor-container > textarea:focus {
+  outline: none;
 }
 
 /* Markdown preview */
 
-.editor-preview{
-    flex-grow: 1;
-    flex-basis: 50%;
-    padding: 0.5rem;
-    height: 100%;
-   
+.editor-preview {
+  flex-grow: 1;
+  flex-basis: 50%;
+  padding: 0.5rem;
+  height: 100%;
 }
-.editor-container>.editor-preview{
-    border: 1px solid var(--primary);
-    border-left: none;
-    border-radius: 0 0 5px 0;
-    overflow-y: scroll;
+.editor-container > .editor-preview {
+  border: 1px solid var(--primary);
+  border-left: none;
+  border-radius: 0 0 5px 0;
+  overflow-y: scroll;
 }
 
 /* Hide scrollbar */
 
-.editor-container>textarea::-webkit-scrollbar, .editor-container>.editor-preview::-webkit-scrollbar {
-    display: none;
+.editor-container > .editor-preview::-webkit-scrollbar {
+  display: none;
 }
-.editor-container>textarea, .editor-container>.editor-preview {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
+.editor-container > .editor-preview {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Editor preview */
@@ -103,27 +102,27 @@
 .editor-preview h3,
 .editor-preview p,
 .editor-preview li {
-    color: var(--primary);
+  color: var(--primary);
 }
 
 /* Spacing */
-.editor-preview h1{
-    margin: 2rem 0 1rem 0; 
+.editor-preview h1 {
+  margin: 2rem 0 1rem 0;
 }
 .editor-preview h3,
-.editor-preview h2{
-    margin: 1rem 0 1rem 0;
+.editor-preview h2 {
+  margin: 1rem 0 1rem 0;
 }
 
-.editor-preview p{
+.editor-preview p {
   margin-bottom: 1.5rem;
 }
 .editor-preview pre {
   margin-bottom: 1.5rem;
 }
 
-.editor-preview li{
-  margin-top:  0.5rem;
+.editor-preview li {
+  margin-top: 0.5rem;
 }
 
 .editor-preview ul {
@@ -133,129 +132,132 @@
 
 /* Typography*/
 
-.editor-preview li{
-    font-weight: 200;
+.editor-preview li {
+  font-weight: 200;
 }
 
-.editor-preview p, .editor-preview li{
-    font-weight: 300;
-    line-height: 1.3;
+.editor-preview p,
+.editor-preview li {
+  font-weight: 300;
+  line-height: 1.3;
 }
 .editor-preview h1,
 .editor-preview h3,
-.editor-preview h2{
-    font-weight: 400;
+.editor-preview h2 {
+  font-weight: 400;
 }
 
 /* Code */
 .editor-preview pre {
-    margin: 2rem 0;
+  margin: 2rem 0;
 }
 pre div {
-    border-radius: 15px !important;
-    background-color: var(--primary)!important;
+  border-radius: 15px !important;
+  background-color: var(--primary) !important;
 }
 pre div * {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 /* Image */
-.editor-preview img{
-    width: 50vw;
-    height: auto;
+.editor-preview img {
+  width: 50vw;
+  height: auto;
 }
 
 /* Strong, italic */
-.editor-preview strong, .editor-preview em{
-    border-radius: 5px;
-    padding: 1px 2px;
-    font-weight: 400;
+.editor-preview strong,
+.editor-preview em {
+  border-radius: 5px;
+  padding: 1px 2px;
+  font-weight: 400;
 }
 
-.editor-preview strong, .editor-preview em{
-    background-color: var(--skeleton);
+.editor-preview strong,
+.editor-preview em {
+  background-color: var(--skeleton);
 }
 /* Blockquote */
 
-.editor-preview blockquote{
-    padding: 1rem 1rem 0.1rem 1rem;
-    border-left: 4px solid var(--primary-disabled);
-    background-color: var(--skeleton);
-    border-radius: 0 5px 5px 0;
+.editor-preview blockquote {
+  padding: 1rem 1rem 0.1rem 1rem;
+  border-left: 4px solid var(--primary-disabled);
+  background-color: var(--skeleton);
+  border-radius: 0 5px 5px 0;
 }
 
-blockquote>p{
-    font-style: italic;
+blockquote > p {
+  font-style: italic;
 }
-.editor-preview blockquote>p>strong{
-    font-weight: 600;
-    border: none;
+.editor-preview blockquote > p > strong {
+  font-weight: 600;
+  border: none;
 }
 
 /* Table */
 
 .editor-preview table {
-    --border: 1px solid var(--primary);
-    border-radius: 10px;
-    width: 100%;
-    margin: 1rem 0;
-    overflow-x: scroll;
+  --border: 1px solid var(--primary);
+  border-radius: 10px;
+  width: 100%;
+  margin: 1rem 0;
+  overflow-x: scroll;
 
-    /* Don't change these properties */
-    border-spacing: 0;
-    border-collapse: separate;
-    border: var(--border);
-    overflow: hidden;
+  /* Don't change these properties */
+  border-spacing: 0;
+  border-collapse: separate;
+  border: var(--border);
+  overflow: hidden;
 }
-.editor-preview th, .editor-preview td{
-    text-align: start;
-    padding: 0.25rem 1rem;
-    color: var(--primary);
+.editor-preview th,
+.editor-preview td {
+  text-align: start;
+  padding: 0.25rem 1rem;
+  color: var(--primary);
 }
-.editor-preview th{
-    background-color: var(--primary);
-    color: var(--secondary)
+.editor-preview th {
+  background-color: var(--primary);
+  color: var(--secondary);
 }
 .editor-preview th:not(:last-child),
-.editor-preview td:not(:last-child){
-    border-right: var(--border);
+.editor-preview td:not(:last-child) {
+  border-right: var(--border);
 }
 
 /* Table */
 
 /* Apply a border to the right of all but the last column */
 /* Apply a border to the bottom of all but the last row */
-.editor-preview table>thead>tr:not(:last-child)>th,
-.editor-preview table>thead>tr:not(:last-child)>td,
-.editor-preview table>tbody>tr:not(:last-child)>th,
-.editor-preview table>tbody>tr:not(:last-child)>td,
-.editor-preview table>tfoot>tr:not(:last-child)>th,
-.editor-preview table>tfoot>tr:not(:last-child)>td,
-.editor-preview table>tr:not(:last-child)>td,
-.editor-preview table>tr:not(:last-child)>th,
-.editor-preview table>thead:not(:last-child),
-.editor-preview table>tbody:not(:last-child),
-.editor-preview table>tfoot:not(:last-child) {
-    border-bottom: var(--border);
+.editor-preview table > thead > tr:not(:last-child) > th,
+.editor-preview table > thead > tr:not(:last-child) > td,
+.editor-preview table > tbody > tr:not(:last-child) > th,
+.editor-preview table > tbody > tr:not(:last-child) > td,
+.editor-preview table > tfoot > tr:not(:last-child) > th,
+.editor-preview table > tfoot > tr:not(:last-child) > td,
+.editor-preview table > tr:not(:last-child) > td,
+.editor-preview table > tr:not(:last-child) > th,
+.editor-preview table > thead:not(:last-child),
+.editor-preview table > tbody:not(:last-child),
+.editor-preview table > tfoot:not(:last-child) {
+  border-bottom: var(--border);
 }
 
 /* Editor preview */
 
-
-.note{
-    display: flex;
+.note {
+  display: flex;
 }
 
 /* Editor helper */
 
-.link-style{
-    text-decoration: underline;
-    color: blue;
+.link-style {
+  text-decoration: underline;
+  color: blue;
 }
-.link-style:hover{
-    cursor: pointer;
+.link-style:hover {
+  cursor: pointer;
 }
 
-.artilce-landing-ul{
-    margin: 1.5rem 0 0 2rem;
+.artilce-landing-ul {
+  margin: 1.5rem 0 0 2rem;
 }

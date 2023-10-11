@@ -43,7 +43,7 @@ export default function Publish() {
               />
               <Modal
                 triggerElement={
-                  <ModalTriggerElement text="Unpublish Article" className="menu-item" />
+                  <ModalTriggerElement text="Unpublish Article" className="menu-item last-child" />
                 }
                 modalContent={<UnpublishArticleModal />}
               />
@@ -53,7 +53,7 @@ export default function Publish() {
               <Modal
                 modalContent={<PublishArticleModalContent />}
                 triggerElement={
-                  <ModalTriggerElement text="Publish Article" className="menu-item" />
+                  <ModalTriggerElement text="Publish Article" className="menu-item last-child" />
                 }
               />
             </>
