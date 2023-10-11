@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   width: 100vw;
-  padding: 0.5rem;
   gap: 1rem;
 }
 .controls {
@@ -18,6 +17,7 @@
 /*  Tools  */
 .markdown-tools {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
   flex-basis: 100%;
@@ -25,6 +25,7 @@
   border: 1px solid var(--primary);
   border-bottom: none;
   border-radius: 5px 5px 0 0;
+  background-color: var(--secondary);
 }
 
 .markdown-tool-icon {
@@ -33,9 +34,29 @@
   border: 1px solid transparent;
   border-radius: 3px;
 }
-.markdown-tool-icon:hover {
+.markdown-tools > button {
+  display: flex;
+  align-content: center;
+  justify-items: center;
+  border: 1px solid transparent;
+  background-color: var(--secondary);
+}
+.markdown-tools > button:hover {
   cursor: pointer;
-  border-color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+}
+
+.markdown-tools > .markdown-tool-button {
+  color: var(--primary);
+  padding: 3px;
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .markdown-tools > .markdown-tool-button {
+    display: block;
+  }
 }
 
 .markdown-tool-separator {
@@ -43,7 +64,7 @@
   border-left: 1px solid var(--primary);
 }
 
-.markdown-tool-icon.last {
+.markdown-tools > .last {
   margin-left: auto;
 }
 .markdown-tool-icon.last.active {
@@ -95,6 +116,31 @@
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+@media screen and (max-width: 900px) {
+  .editor-container > textarea.hidden {
+    display: none;
+  }
+  .editor-container > .editor-preview {
+    border: 1px solid var(--primary);
+  }
+
+  .editor-container > .editor-preview.hidden {
+    display: none;
+  }
+  .editor-container > textarea {
+    border: 1px solid var(--primary);
+  }
+  .editor-container > .editor-preview::-webkit-scrollbar {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 1300px) {
+  .markdown-tools {
+    border-radius: 0;
+  }
 }
 
 /* Editor preview */

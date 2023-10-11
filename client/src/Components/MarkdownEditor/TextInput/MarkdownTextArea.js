@@ -1,8 +1,11 @@
-import React from 'react'
-import '../Markdown.css'
+import "../Markdown.css";
 
-export default function MarkdownTextArea({setMarkdown, markdown, textAreaRef}) {
+export default function MarkdownTextArea({ setMarkdown, markdown, textAreaRef, show }) {
   return (
-    <textarea onChange={(e) => setMarkdown(e.currentTarget.value)} value={markdown} ref={textAreaRef}></textarea>
-  )
+    <textarea
+      onChange={(e) => setMarkdown(e.currentTarget.value)}
+      value={markdown}
+      ref={textAreaRef}
+      className={show ? "" : "hidden"}></textarea>
+  );
 }

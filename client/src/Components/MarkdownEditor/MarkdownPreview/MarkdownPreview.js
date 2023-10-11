@@ -6,9 +6,9 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import dark from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
 
-export default function MarkdownPreview({ markdown, markdownPreviewRef }) {
+export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) {
   return (
-    <div className="editor-preview" ref={markdownPreviewRef}>
+    <div className={`editor-preview ${show ? "hidden" : ""}`} ref={markdownPreviewRef}>
       <ReactMarkdown
         children={markdown} // eslint-disable-line react/no-children-prop
         remarkPlugins={[remarkGfm]}

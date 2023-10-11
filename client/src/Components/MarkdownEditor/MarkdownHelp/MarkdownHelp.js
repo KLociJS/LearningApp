@@ -1,6 +1,6 @@
-export default function MarkdownHelp() {
+export default function MarkdownHelp({ show }) {
   return (
-    <div className="editor-preview">
+    <div className={`editor-preview ${show ? "hidden" : ""}`}>
       <h1>Help section</h1>
       <p>Go back to editing by pressing the questionmark button again.</p>
       <hr></hr>
@@ -60,31 +60,31 @@ export default function MarkdownHelp() {
             <td>
               <div
                 style={{
-                  backgroundColor: 'rgb(30, 30, 30)',
-                  padding: '1rem',
-                  borderRadius: '10px'
+                  backgroundColor: "rgb(30, 30, 30)",
+                  padding: "1rem",
+                  borderRadius: "10px"
                 }}>
                 <code>
                   <span
                     className="token console"
-                    style={{ color: 'rgb(255, 255, 182)', 'text-decoration': 'underline' }}>
+                    style={{ color: "rgb(255, 255, 182)", "text-decoration": "underline" }}>
                     console
                   </span>
-                  <span className="token" style={{ color: 'rgb(86, 156, 214)' }}>
+                  <span className="token" style={{ color: "rgb(86, 156, 214)" }}>
                     .
                   </span>
                   <span
                     className="token method property-access"
-                    style={{ color: 'rgb(86, 156, 214)' }}>
+                    style={{ color: "rgb(86, 156, 214)" }}>
                     log
                   </span>
-                  <span className="token" style={{ color: 'rgb(86, 156, 214)' }}>
+                  <span className="token" style={{ color: "rgb(86, 156, 214)" }}>
                     (
                   </span>
-                  <span className="token" style={{ color: 'rgb(206, 145, 120)' }}>
+                  <span className="token" style={{ color: "rgb(206, 145, 120)" }}>
                     {`'Hello world'`}
                   </span>
-                  <span className="token" style={{ color: 'rgb(86, 156, 214)' }}>
+                  <span className="token" style={{ color: "rgb(86, 156, 214)" }}>
                     );
                   </span>
                 </code>
@@ -93,8 +93,8 @@ export default function MarkdownHelp() {
           </tr>
           <tr>
             <td>
-              {'>'} This is a quote<br></br>
-              {'>'} Second line of the quote
+              {">"} This is a quote<br></br>
+              {">"} Second line of the quote
             </td>
             <td>
               <blockquote>
@@ -113,7 +113,7 @@ export default function MarkdownHelp() {
           <tr>
             <td>
               <p>
-                | header | header | <br></br>| - | - |<br></br>| a | c |{' '}
+                | header | header | <br></br>| - | - |<br></br>| a | c |{" "}
               </p>
             </td>
             <td>
