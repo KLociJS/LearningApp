@@ -1,113 +1,119 @@
 import {
-    createBrowserRouter,
-    RouterProvider,
-    Route,
-    createRoutesFromElements,
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+  createRoutesFromElements
 } from "react-router-dom";
 
 import AuthContext from "Context";
-import { useState, useEffect, lazy, Suspense } from "react";
+import { Suspense, lazy, useEffect, useState } from "react";
 
 //Stylesheets
-import './GlobalStyle/Index.css'
-import './GlobalStyle/Layout.css'
-import './GlobalStyle/Component.css'
-import './GlobalStyle/Typography.css'
+import "./GlobalStyle/Component.css";
+import "./GlobalStyle/Index.css";
+import "./GlobalStyle/Layout.css";
+import "./GlobalStyle/Typography.css";
 
 //Layout
-import { Layout } from "Pages"
+import { Layout } from "Pages";
 
 //Pages
 import {
-    UnAuthorized,
-    Home,
-    Login,
-    SingUp,
-    RequesPasswordReset,
-    ConfirmEmail,
-    RequestPasswordChange,
-    SharedArticle,
-} from "Pages"
-
+  ConfirmEmail,
+  Home,
+  Login,
+  RequestPasswordChange,
+  RequestPasswordReset,
+  SharedArticle,
+  SingUp,
+  UnAuthorized
+} from "Pages";
 
 import { RequireRoles, UnauthenticatedRoute } from "Components";
 
-import { checkAuthentication } from "Api";
-
-import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
+import checkAuthentication from "Api/checkAuthentication";
 import Article from "Pages/Articles/Components/Article/Article";
-import UsersSkeleton from "Pages/Users/Components/Skeleton/UsersSkeleton";
+import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 
-const Users = lazy(()=>import("./Pages/Users/Users"))
-const Articles = lazy(()=>import("./Pages/Articles/Articles"))
-const CreateArticle = lazy(()=>import("./Pages/CreateArticle/CreateArticle"))
-const UpdateArticle = lazy(()=>import("./Pages/UpdateArticle/UpdateArticle"))
+const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
+const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
+const CreateArticle = lazy(() =>
+  import(/* webpackChunkName: "createArticle" */ "./Pages/CreateArticle/CreateArticle")
+);
+const UpdateArticle = lazy(() =>
+  import(/* webpackChunkName: "updateArticle" */ "./Pages/UpdateArticle/UpdateArticle")
+);
+
+const renderLoader = () => <p>Loading</p>;
 
 const router = createBrowserRouter(
-    createRoutesFromElements(
-        <Route path="/" element={<Layout />}>
-            <Route path="shared-article/:id" element={<SharedArticle />} />
-            <Route index element={<Home />} />
-            <Route element={<RequireRoles allowedRoles={['User']} />}>
-                <Route path="confirm-email" element={<ConfirmEmail />} />   
-                <Route 
-                    path="article"
-                    element={
-                        <Suspense>
-                            <Articles fallback={<></>} />
-                        </Suspense>}
-                >
-                    <Route index element={<ArticleLanding />} />
-                    <Route path=":id" element={<Article />} />
-                </Route>
-                <Route
-                    path="create-article"
-                    element={
-                        <Suspense fallback={<></>}>
-                            <CreateArticle />
-                        </Suspense>}
-                />
-                <Route
-                    path="update-article/:id"
-                    element={
-                        <Suspense>
-                            <UpdateArticle />
-                        </Suspense>}
-                />
-            </Route>
-            <Route element={<RequireRoles allowedRoles={['Admin']} />}>
-                <Route 
-                    path="users" 
-                    element={
-                        <Suspense fallback={<UsersSkeleton/>}>
-                            <Users />
-                        </Suspense>}
-                />
-            </Route>
-            <Route element={<UnauthenticatedRoute />}>
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<SingUp />} />
-                <Route path="reset-password" element={<RequesPasswordReset />} />
-                <Route path="forgot-password" element={<RequestPasswordChange />} />
-            </Route>
-            <Route path='/unauthorized' element={<UnAuthorized />} />
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route path="shared-article/:id" element={<SharedArticle />} />
+      <Route index element={<Home />} />
+      <Route element={<RequireRoles allowedRoles={["User"]} />}>
+        <Route path="confirm-email" element={<ConfirmEmail />} />
+        <Route
+          path="article"
+          element={
+            <Suspense fallback={renderLoader()}>
+              <Articles />
+            </Suspense>
+          }>
+          <Route index element={<ArticleLanding />} />
+          <Route path=":id" element={<Article />} />
         </Route>
-    )
+        <Route
+          path="create-article"
+          element={
+            <Suspense fallback={renderLoader()}>
+              <CreateArticle />
+            </Suspense>
+          }
+        />
+        <Route
+          path="update-article/:id"
+          element={
+            <Suspense fallback={renderLoader()}>
+              <UpdateArticle />
+            </Suspense>
+          }
+        />
+      </Route>
+      <Route element={<RequireRoles allowedRoles={["Admin"]} />}>
+        <Route
+          path="users"
+          element={
+            <Suspense fallback={renderLoader()}>
+              <Users />
+            </Suspense>
+          }
+        />
+      </Route>
+      <Route element={<UnauthenticatedRoute />}>
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<SingUp />} />
+        <Route path="reset-password" element={<RequestPasswordReset />} />
+        <Route path="forgot-password" element={<RequestPasswordChange />} />
+      </Route>
+      <Route path="/unauthorized" element={<UnAuthorized />} />
+    </Route>
+  )
 );
 
 export default function App() {
-    const [user, setUser] = useState(null)
-    const [isAuthenticationDone, setIsAuthenticationDone] = useState(false)
-  
-  useEffect(()=>{
-    if(user===null){
-      checkAuthentication(setUser,setIsAuthenticationDone)
-    }
-  },[setUser, user])
+  const [user, setUser] = useState(null);
+  const [isAuthenticationDone, setIsAuthenticationDone] = useState(false);
 
-    return (
-        <AuthContext.Provider value={{ user, setUser, isAuthenticationDone }}>
-            <RouterProvider router={router} />
-        </AuthContext.Provider>
-    )
+  useEffect(() => {
+    if (user === null) {
+      checkAuthentication(setUser, setIsAuthenticationDone);
+    }
+  }, [setUser, user]);
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, isAuthenticationDone }}>
+      <RouterProvider router={router} />
+    </AuthContext.Provider>
+  );
 }

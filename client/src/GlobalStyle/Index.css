@@ -1,25 +1,52 @@
 :root {
   --primary: #002147;
   --primary-2: #002147f1;
+  --primary-light: #e8ecf1;
   --primary-disabled: #002147bd;
-  --primary-transparent:#00214711;
-  --secondary: #FBFBFF;
+  --primary-transparent: #00214711;
+  --secondary: #fbfbff;
   --danger: red;
-  --accent: #FF9900;
-  --shadow:#8f8f8f;
+  --accent: #ff9900;
+  --shadow: #8f8f8f;
   --skeleton: #e6e6e6;
   --skeleton-dark: #c4c4c4;
   --green: #007e00;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Roboto';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto";
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
   color: inherit;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background-color: var(--primary-transparent);
+  border-radius: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-2);
+  border-radius: 4px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+  cursor: pointer;
 }

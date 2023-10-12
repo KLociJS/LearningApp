@@ -1,26 +1,21 @@
-import { RiSave2Line } from 'react-icons/ri'
-import { MarkdownEditor, Modal } from 'Components'
-import UpdateArticleModalContent from './Components/UpdateArticleModal/UpdateArticleModalContent'
-import { useGetArticle } from 'Hooks'
+import { MarkdownEditor, Modal, ModalTriggerElement } from "Components";
+import UpdateArticleModalContent from "./Components/UpdateArticleModalContent";
+import useGetArticle from "./Hooks/useGetArticle";
 
 export default function UpdateArticle() {
-    const { 
-        markdown, 
-        setMarkdown, 
-        title,
-        isLoading
-      } = useGetArticle()
+  const { markdown, setMarkdown, title, isLoading } = useGetArticle();
 
-    if (isLoading) return null
+  if (isLoading) return null;
 
-    return (
-        <div className='editor-page-container'>
-            <section className='controls'>
-                <Modal modalButtonText='Save' icon={<RiSave2Line className='save-icon' />}>
-                    <UpdateArticleModalContent markdown={markdown} title={title}/>
-                </Modal>
-            </section>
-            <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown}/>
-        </div>
-    )
+  return (
+    <div className="editor-page-container">
+      <section className="controls">
+        <Modal
+          modalContent={<UpdateArticleModalContent markdown={markdown} title={title} />}
+          triggerElement={<ModalTriggerElement className="secondary-button" text="Save" />}
+        />
+      </section>
+      <MarkdownEditor markdown={markdown} setMarkdown={setMarkdown} />
+    </div>
+  );
 }

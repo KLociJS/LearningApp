@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Models.ResponseDto;
@@ -204,6 +205,74 @@ public class ArticleController : ControllerBase
         {
             Console.WriteLine(e);
             return StatusCode(500, "An error occured on the server.");
+        }
+    }
+
+    
+    [HttpPatch("update-category/{id}")]
+    public async Task<IActionResult> UpdateCategory(Guid id, UpdateArticleCategoryDto updateArticleCategoryDto)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+            var updateCategoryResult = await _articleService.UpdateCategory(userName, updateArticleCategoryDto, id);
+
+            if (!updateCategoryResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(updateCategoryResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured on the server.");
+        }
+    }
+
+    [HttpPatch("update-published-article/{id}")]
+    public async Task<IActionResult> UpdatePublishedArticle(Guid id, PublishArticleDto publishArticleDto)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+
+            var updatePublishedArticleResult =
+                await _articleService.UpdatePublishedArticle(id, userName, publishArticleDto);
+            if (!updatePublishedArticleResult.Succeeded)
+            {
+                return BadRequest();
+            }
+            
+            return Ok(new Result(){Description = "Updated."});
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured ont he server.");
+        }
+    }
+
+    [HttpPost("unpublish-article/{id}")]
+    public async Task<IActionResult> UnPublishArticle(Guid id)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext!.User.Identity!.Name;
+            var unPublishResult = await _articleService.UnPublishArticle(id,userName);
+
+            if (!unPublishResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new Result() { Description = "Article taken down." });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured ont he server.");
         }
     }
 }

@@ -1,17 +1,11 @@
-import useAuth from 'Hooks/useAuth'
-import React from 'react'
+import useAuth from 'Hooks/useAuth';
 
-export default function AuthBasedRender({children}) {
+export default function AuthBasedRender({ children }) {
+  const { user } = useAuth();
 
-    const { user } = useAuth()
+  if (user !== null) {
+    return null;
+  }
 
-    if(user!==null){
-        return null
-    }
-
-  return (
-    <>
-        {children}
-    </>
-  )
+  return <>{children}</>;
 }

@@ -19,4 +19,12 @@ public interface IArticleService
     Task<List<ArticleSearchbarResultDto>> SearchArticle(string title);
     Task<GetArticleByIdResult> GetSharedArticleById(Guid id);
     Task<GetPublishedArticleSidebarContentResult> GetSharedArticleSidebarContent(Guid id);
+
+    Task<GetSidebarContentResult>
+        UpdateCategory(string? userName, UpdateArticleCategoryDto updateArticleCategoryDto, Guid id);
+
+    Task<UpdatePublishedArticleResult> UpdatePublishedArticle(Guid id, string? userName,
+        PublishArticleDto publishArticleDto);
+
+    Task<UnPublishArticleResult> UnPublishArticle(Guid id, string? userName);
 }

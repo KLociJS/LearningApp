@@ -31,7 +31,6 @@ export default function PasswordInputWithValidation({ inputValue, setInputValue,
                 />
             }
         </div>
-        {error && <p className='error-msg align-start'>{error}</p>}
     </>
   )
 }
