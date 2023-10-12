@@ -1,62 +1,54 @@
 /**** Article ****/
 
 .article-container {
-    width: 78vw;
-    height: calc(100vh - 80px);
+  width: 78vw;
+  height: calc(100vh - 80px);
 
-    padding: 2rem;
+  padding: 2rem;
 
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-    height: calc(100vh - 80px);
-    overflow-y: scroll;
-}
-
-/* Hide scrollbar */
-
-.article-container::-webkit-scrollbar {
-    display: none;
-}
-.article-container {
-    -ms-overflow-style: none;
-    /* IE and Edge */
-    scrollbar-width: none;
-    /* Firefox */
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
 }
 
-.article-header{
-    display: flex;
-    width: 100%;
+.article-header {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
-.action-btn{
-    margin-left: auto;
-    display: flex;
-    gap: 1rem;
+.action-btn {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
 }
-.delete-icon{
-    color: var(--danger);
-    cursor: pointer;
+.delete-icon {
+  border: none;
+  background-color: var(--secondary);
+  color: var(--danger);
+  cursor: pointer;
 }
-.edit-icon, .share-icon{
-    color: var(--primary);
-    cursor: pointer;
+.edit-icon,
+.share-icon {
+  color: var(--primary);
+  cursor: pointer;
 }
 
-.article-title{
-    font-size: 2rem;
-    color: var(--primary);
+.article-title {
+  font-size: 2rem;
+  color: var(--primary);
 }
-.article-info{
-    font-size: 0.75rem;
-    color: var(--shadow);
+.article-info {
+  font-size: 0.75rem;
+  color: var(--shadow);
 }
 
 @media screen and (max-width: 960px) {
-   .article-container{
-        width: 100%;
-        padding: 1rem 0.25rem 0 2.5rem;
-        overflow-y: scroll;
-   }
+  .article-container {
+    width: 100%;
+    padding: 1rem 0.25rem 0 2.5rem;
+    overflow-y: scroll;
+  }
 }

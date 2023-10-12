@@ -17,7 +17,6 @@ export default function EmailInputWithValidation({ inputValue, setInputValue, er
                 hasError={error}
                 isDisabled={isDisabled}
             />
-            {error && <p className='error-msg align-start'>{error}</p>}
         </>
     )
 }

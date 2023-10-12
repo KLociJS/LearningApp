@@ -1,12 +1,18 @@
-.controls{
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1rem;
-    gap: 1rem;
+.controls {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+  gap: 1rem;
 }
 
-.save-icon{
-    font-size: 1.5rem;
-    margin-left: 0.5rem;
+.save-icon {
+  font-size: 1.5rem;
+  margin-left: 0.5rem;
+}
+
+@media screen and (max-width: 1300px) {
+  .controls {
+    padding-right: 0.2rem;
+  }
 }

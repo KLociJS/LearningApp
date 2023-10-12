@@ -23,5 +23,5 @@ public class Article
 
     public bool? Published { get; set; }
     public string? Description { get; set; }
-    public List<Tag>? Tags { get; set; }
+    public List<ArticleTag> ArticleTags { get; set; } = new();
 }

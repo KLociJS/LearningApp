@@ -1,26 +1,22 @@
 import React, { useState } from 'react'
-
 import './Modal.css'
 
-export default function Modal({ children, modalButtonText, icon }) {
+export default function Modal({ modalContent, triggerElement }) {
     const [show, setShow] = useState(false)
 
     return (
         <>
             {show ? 
             <>
-                <button className='secondary-button'>
-                    {modalButtonText}{icon}
-                </button>
+                {React.cloneElement(triggerElement, { setShow })}
                 <div className='modal-container' onClick={()=>setShow(false)}>
-                    {React.cloneElement(children, { setShow })}
+                    {React.cloneElement(modalContent, { setShow })}
                 </div>  
-            </> :
-            <button className='secondary-button' onClick={() => setShow(true)}>
-                {modalButtonText}{icon}
-            </button>
+            </> : 
+            <>
+                {React.cloneElement(triggerElement, { setShow })}
+            </>
             }
         </>
     )
 }
-

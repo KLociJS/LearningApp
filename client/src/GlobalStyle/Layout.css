@@ -1,16 +1,16 @@
 /* Layout */
 
 .container {
-    z-index: 1;
-    width: 100%;
-    max-width: 1300px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 50px;
-    padding-left: 50px;
+  z-index: 1;
+  width: 100%;
+  max-width: 1300px;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 50px;
+  padding-left: 50px;
 }
 
-.main-container{
+.main-container {
   display: flex;
   min-height: calc(100vh - 160px);
   width: 100%;
@@ -18,90 +18,84 @@
   margin-right: auto;
   margin-left: auto;
 }
-  
-  @media screen and (max-width: 960px) {
-    .container{
-      padding: 0;
-    }
-  }
-  
-  .align-end{
-    align-self: flex-end;
-  }
 
-  .align-start{
-    align-self: flex-start;
+@media screen and (max-width: 960px) {
+  .container {
+    padding: 0;
   }
+}
 
-  .align-right{
-    margin-left: auto;
-  }
+.align-end {
+  align-self: flex-end;
+}
 
-  /* Align */
+.align-start {
+  align-self: flex-start;
+}
 
-  .center{
-    align-self: center;
-  }
-  
-  /* Margin */
-  .mt-0{
-    margin-top: 0.5rem;
-  }
-  .mt-1{
-    margin-top: 1rem;
-  }
-  .mt-2{
-    margin-top: 1.5rem;
-  }
-  .mt-3{
-    margin-top: 2rem;
-  }
+.align-right {
+  margin-left: auto;
+}
 
-  .mb-1{
-    margin-bottom: 0.5rem;
-  }
-  .mb-2{
-    margin-bottom: 1rem;
-  }
-  .mb-3{
-    margin-bottom: 1.5rem;
-  }
-  .mb-4{
-    margin-bottom: 2rem;
-  }
+/* Align */
 
-  .ml-1{
+.center {
+  align-self: center;
+}
 
-  }
-  .ml-2{
-    margin-left: 1rem;
-  }
-  .ml-3{
+/* Margin */
+.mt-0 {
+  margin-top: 0.5rem;
+}
+.mt-1 {
+  margin-top: 1rem;
+}
+.mt-2 {
+  margin-top: 1.5rem;
+}
+.mt-3 {
+  margin-top: 2rem;
+}
 
-  }
-  .ml-4{
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 1rem;
+}
+.mb-3 {
+  margin-bottom: 1.5rem;
+}
+.mb-4 {
+  margin-bottom: 2rem;
+}
 
-  }
+.ml-1 {
+}
+.ml-2 {
+  margin-left: 1rem;
+}
+.ml-3 {
+}
+.ml-4 {
+}
 
-  .card div:first-child{
-    margin-top: 0;
-  }
+.card div:first-child {
+  margin-top: 0;
+}
 
 /* Auth card container */
 .card-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
-
-.full-width-container{
+.full-width-container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80vh;
   width: 100%;
 }
-
-

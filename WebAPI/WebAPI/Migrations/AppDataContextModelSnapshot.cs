@@ -226,7 +226,7 @@ namespace WebAPI.Migrations
                     b.Property<Guid>("AuthorId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CategoryId")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
@@ -265,17 +265,23 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("ArticleId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("TagId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("ArticleId", "TagId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ArticleTags", (string)null);
+                    b.ToTable("ArticleTags");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -399,7 +405,9 @@ namespace WebAPI.Migrations
 
                     b.HasOne("WebAPI.Models.Category", "Category")
                         .WithMany("Articles")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("WebAPI.Models.SubCategory", "SubCategory")
                         .WithMany("Articles")
@@ -415,13 +423,13 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
                 {
                     b.HasOne("WebAPI.Models.Article", "Article")
-                        .WithMany()
+                        .WithMany("ArticleTags")
                         .HasForeignKey("ArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("WebAPI.Models.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("ArticleTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -472,6 +480,11 @@ namespace WebAPI.Migrations
                     b.Navigation("SubCategories");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.Article", b =>
+                {
+                    b.Navigation("ArticleTags");
+                });
+
             modelBuilder.Entity("WebAPI.Models.Category", b =>
                 {
                     b.Navigation("Articles");
@@ -482,6 +495,11 @@ namespace WebAPI.Migrations
             modelBuilder.Entity("WebAPI.Models.SubCategory", b =>
                 {
                     b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.Tag", b =>
+                {
+                    b.Navigation("ArticleTags");
                 });
 #pragma warning restore 612, 618
         }

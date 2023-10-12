@@ -21,28 +21,20 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Article>()
-            .HasMany(a => a.Tags)
-            .WithMany(t => t.Articles)
-            .UsingEntity<ArticleTag>(
-                j => j
-                    .HasOne(at => at.Tag)
-                    .WithMany()
-                    .HasForeignKey(at => at.TagId),
-                j => j
-                    .HasOne(at => at.Article)
-                    .WithMany()
-                    .HasForeignKey(at => at.ArticleId),
-                j =>
-                {
-                    j.HasKey(at => new { at.ArticleId, at.TagId });
-                    j.ToTable("ArticleTags");
-                });
+        builder.Entity<ArticleTag>()
+            .HasOne(a => a.Article)
+            .WithMany(at => at.ArticleTags)
+            .HasForeignKey(at => at.ArticleId);
 
+        builder.Entity<ArticleTag>()
+            .HasOne(at => at.Tag)
+            .WithMany(t => t.ArticleTags)
+            .HasForeignKey(at => at.TagId);
     }
 
     public DbSet<Article> Articles { get; set; }
     public DbSet<Tag> Tags { get; set; }
+    public DbSet<ArticleTag> ArticleTags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
 }
