@@ -7,13 +7,27 @@ export default function useUpdatePublishedArticle(setShow) {
   const { id } = useParams();
   const { state, dispatch } = useArticle();
   const [tags, setTags] = useState(state.article.tags.join(","));
+  const [tagError, setTagError] = useState("");
   const [description, setDescription] = useState(state.article.description);
+  const [descriptionError, setDescriptionError] = useState(false);
+  const [error, setError] = useState();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const updatePublishHandler = () => {
+    if (description.length < 100 && description.length > 400) {
+      setDescriptionError(true);
+      return;
+    }
+    if (tags.length < 3) {
+      setTagError("Use at least one tag.");
+      return;
+    }
+
     const updatedArticleDetails = {
       tags: tags.split(","),
       description
     };
+    setIsDisabled(true);
     fetch(`${updatePublishedArticle}${id}`, {
       method: "PATCH",
       headers: {
@@ -22,7 +36,13 @@ export default function useUpdatePublishedArticle(setShow) {
       credentials: "include",
       body: JSON.stringify(updatedArticleDetails)
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          res.json();
+        } else {
+          throw new Error();
+        }
+      })
       .then((res) => {
         setShow(false);
         dispatch({
@@ -30,7 +50,10 @@ export default function useUpdatePublishedArticle(setShow) {
           payload: { ...updatedArticleDetails }
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError("Server issue, try again later.");
+      })
+      .finally(() => setIsDisabled(false));
   };
 
   return {
@@ -38,6 +61,12 @@ export default function useUpdatePublishedArticle(setShow) {
     setTags,
     description,
     setDescription,
-    updatePublishHandler
+    updatePublishHandler,
+    descriptionError,
+    setDescriptionError,
+    tagError,
+    setTagError,
+    isDisabled,
+    error
   };
 }
