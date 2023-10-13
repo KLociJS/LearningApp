@@ -23,7 +23,7 @@ export default function NavBar() {
       <div className="navbar-container container">
         <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
           <LuBrainCircuit className="navbar-icon" />
-          Learn
+          WDN
         </Link>
         <div className="menu-icon" onClick={handleClick}>
           {isOpen ? <FaTimes /> : <FaBars />}
