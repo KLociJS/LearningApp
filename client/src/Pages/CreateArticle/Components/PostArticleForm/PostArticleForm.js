@@ -12,7 +12,7 @@ export default function PostArticleForm({ markdown, setShow }) {
     subcategory,
     title,
     titleError,
-    settitleError
+    setTitleError
   } = usePostArticle(markdown, setShow);
 
   return (
@@ -24,7 +24,7 @@ export default function PostArticleForm({ markdown, setShow }) {
         setInputValue={setTitle}
         isDisabled={isDisabled}
         hasError={titleError}
-        setError={settitleError}
+        setError={setTitleError}
       />
       {titleError ? <p className="error-msg">{titleError}</p> : null}
       <Input

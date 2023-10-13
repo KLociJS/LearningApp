@@ -1,12 +1,12 @@
-import { postArticleUrl } from '_Constants/fetchUrl';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { postArticleUrl } from "_Constants/fetchUrl";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function usePostArticle(markdown, setShow) {
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [titleError, setTitleError] = useState('');
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [title, setTitle] = useState("");
+  const [titleError, setTitleError] = useState("");
 
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -17,30 +17,30 @@ export default function usePostArticle(markdown, setShow) {
     const article = {
       title,
       markdown,
-      category: category === '' ? null : category,
-      subcategory: subcategory === '' ? null : subcategory
+      category: category === "" ? null : category,
+      subcategory: subcategory === "" ? null : subcategory
     };
 
-    if (title === '') {
-      setTitleError('Title is required');
+    if (title === "") {
+      setTitleError("Title is required");
       setIsDisabled(false);
       return;
     }
 
     fetch(postArticleUrl, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       },
-      credentials: 'include',
+      credentials: "include",
       body: JSON.stringify(article)
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setIsDisabled(false);
         setShow(false);
         navigate(`/article/${data.id}`);
+        localStorage.removeItem("markdown");
       })
       .catch((err) => {
         setIsDisabled(false);
