@@ -33,8 +33,10 @@ import { RequireRoles, UnauthenticatedRoute } from "Components";
 
 import checkAuthentication from "Api/checkAuthentication";
 import ArticleContextWrapper from "Components/ArticleContextWrapper/ArticleContextWrapper";
+import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkeleton/MarkdownEditorSkeleton";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
+import ArticleCardSkeleton from "Pages/Home/Components/Featured/Components/Components/ArticleCardSkeleton";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
 const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
@@ -58,7 +60,7 @@ const router = createBrowserRouter(
           <Route
             path="article"
             element={
-              <Suspense fallback={renderLoader()}>
+              <Suspense fallback={<ArticleCardSkeleton />}>
                 <Articles />
               </Suspense>
             }>
@@ -68,7 +70,7 @@ const router = createBrowserRouter(
           <Route
             path="update-article/:id"
             element={
-              <Suspense fallback={renderLoader()}>
+              <Suspense fallback={<MarkdownEditorSkeleton />}>
                 <UpdateArticle />
               </Suspense>
             }
@@ -77,7 +79,7 @@ const router = createBrowserRouter(
         <Route
           path="create-article"
           element={
-            <Suspense fallback={renderLoader()}>
+            <Suspense fallback={<MarkdownEditorSkeleton />}>
               <CreateArticle />
             </Suspense>
           }
