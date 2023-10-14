@@ -11,7 +11,6 @@ export default function useCreateArticle() {
 
   useEffect(() => {
     const savedMarkdown = localStorage.getItem("markdown");
-    console.log(savedMarkdown);
     if (savedMarkdown) {
       setMarkdown(savedMarkdown);
     }
