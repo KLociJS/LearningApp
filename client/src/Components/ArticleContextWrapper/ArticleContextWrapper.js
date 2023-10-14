@@ -1,5 +1,6 @@
 import ArticleContext from "Context/ArticleProvider";
-import useSynchArticle from "Pages/Articles/Hooks/useSynchArticle";
+import useSynchArticle from "Hooks/useSynchArticle";
+
 import { Outlet } from "react-router-dom";
 
 export default function ArticleContextWrapper() {
