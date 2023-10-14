@@ -32,6 +32,7 @@ import {
 import { RequireRoles, UnauthenticatedRoute } from "Components";
 
 import checkAuthentication from "Api/checkAuthentication";
+import ArticleContextWrapper from "Components/ArticleContextWrapper/ArticleContextWrapper";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 
@@ -53,29 +54,31 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
-        <Route
-          path="article"
-          element={
-            <Suspense fallback={renderLoader()}>
-              <Articles />
-            </Suspense>
-          }>
-          <Route index element={<ArticleLanding />} />
-          <Route path=":id" element={<Article />} />
+        <Route element={<ArticleContextWrapper />}>
+          <Route
+            path="article"
+            element={
+              <Suspense fallback={renderLoader()}>
+                <Articles />
+              </Suspense>
+            }>
+            <Route index element={<ArticleLanding />} />
+            <Route path=":id" element={<Article />} />
+          </Route>
+          <Route
+            path="update-article/:id"
+            element={
+              <Suspense fallback={renderLoader()}>
+                <UpdateArticle />
+              </Suspense>
+            }
+          />
         </Route>
         <Route
           path="create-article"
           element={
             <Suspense fallback={renderLoader()}>
               <CreateArticle />
-            </Suspense>
-          }
-        />
-        <Route
-          path="update-article/:id"
-          element={
-            <Suspense fallback={renderLoader()}>
-              <UpdateArticle />
             </Suspense>
           }
         />

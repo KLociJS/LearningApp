@@ -31,6 +31,9 @@ const articleReducer = (state, action) => {
     case "update_article_category": {
       return { ...state, article: { ...state.article, ...action.payload } };
     }
+    case "update_markdown": {
+      return { ...state, article: { ...state.article, markdown: action.payload } };
+    }
   }
   throw Error("Unknown action: " + action.type);
 };
