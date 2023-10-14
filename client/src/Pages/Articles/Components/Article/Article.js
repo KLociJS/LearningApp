@@ -25,7 +25,7 @@ export default function Article() {
   }
 
   return (
-    <>
+    <section className="article-container">
       <section className="article-header">
         <div>
           <h1 className="article-title">{state.article.title}</h1>
@@ -47,6 +47,6 @@ export default function Article() {
         </div>
       </section>
       <MarkdownPreview markdown={state.article.markdown} />
-    </>
+    </section>
   );
 }
