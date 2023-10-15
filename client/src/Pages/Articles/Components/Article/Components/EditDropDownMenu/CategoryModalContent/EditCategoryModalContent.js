@@ -1,7 +1,7 @@
 import { Input } from "Components";
 import useUpdateCategory from "../Hooks/useUpdateCategory";
 
-export default function EditModalContent({ setShow }) {
+export default function EditCategoryModalContent({ setShow }) {
   const {
     state: { category, categoryError, subCategory, fetchError, isDisabled },
     dispatch,
