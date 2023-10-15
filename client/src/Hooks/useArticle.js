@@ -1,6 +1,7 @@
-import { useContext } from "react"
-import ArticleContext from "Context/ArticleProvider"
+import { createContext, useContext } from "react";
 
-const useArticle = () => useContext(ArticleContext)
+export const ArticleContext = createContext(null);
 
-export default useArticle
+const useArticleContext = () => useContext(ArticleContext);
+
+export default useArticleContext;

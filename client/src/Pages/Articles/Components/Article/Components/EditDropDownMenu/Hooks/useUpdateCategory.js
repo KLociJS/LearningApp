@@ -1,4 +1,4 @@
-import useArticle from "Hooks/useArticle";
+import useArticleContext from "Hooks/useArticle";
 import useSidebarContent from "Pages/Articles/Hooks/useSidebarContent";
 import { updateCategory } from "_Constants/fetchUrl";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 export default function useUpdateCategory(setShow) {
   const { id } = useParams();
   const { setSidebarContent } = useSidebarContent();
-  const { state, dispatch } = useArticle();
+  const { state, dispatch } = useArticleContext();
   const [category, setCategory] = useState(state.article.category);
   const [subCategory, setSubcategory] = useState(state.article.subCategory);
 

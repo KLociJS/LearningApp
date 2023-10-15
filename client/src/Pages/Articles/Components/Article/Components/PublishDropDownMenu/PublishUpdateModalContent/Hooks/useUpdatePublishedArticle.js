@@ -1,4 +1,4 @@
-import useArticle from "Hooks/useArticle";
+import useArticleContext from "Hooks/useArticle";
 import { updatePublishedArticle } from "_Constants/fetchUrl";
 import { useReducer } from "react";
 import { useParams } from "react-router-dom";
@@ -36,7 +36,7 @@ const updatePublishedArticleReducer = (state, action) => {
 
 export default function useUpdatePublishedArticle(setShow) {
   const { id } = useParams();
-  const { state: articleState, dispatch: articleDispatch } = useArticle();
+  const { state: articleState, dispatch: articleDispatch } = useArticleContext();
 
   const initialState = {
     tags: articleState.article.tags,

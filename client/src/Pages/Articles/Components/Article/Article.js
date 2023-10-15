@@ -8,8 +8,7 @@ import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownP
 import Modal from "Components/Modal/Modal";
 import ModalTriggerElement from "Components/Modal/ModalTriggerElement";
 
-import { useArticle } from "Hooks";
-
+import useArticleContext from "Hooks/useArticle";
 import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
 import DeleteArticleModalContent from "./Components/DeleteArticleModal/DeleteArticleModalContent";
 import EditDropDownMenu from "./Components/EditDropDownMenu/EditDropDownMenu";
@@ -17,7 +16,7 @@ import PublishDropDownMenu from "./Components/PublishDropDownMenu/PublishDropDow
 
 export default function Article() {
   const { id } = useParams();
-  const { state } = useArticle();
+  const { state } = useArticleContext();
   console.log(state);
 
   if (state.isLoading) {

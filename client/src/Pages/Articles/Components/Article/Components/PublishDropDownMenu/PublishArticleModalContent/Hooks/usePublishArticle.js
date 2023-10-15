@@ -1,4 +1,4 @@
-import { useArticle } from "Hooks";
+import useArticleContext from "Hooks/useArticle";
 import { publishArticle } from "_Constants/fetchUrl";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
@@ -7,7 +7,7 @@ export default function usePublishArticle(setShow) {
   const { id } = useParams();
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
-  const { dispatch } = useArticle();
+  const { dispatch } = useArticleContext();
 
   const publishArticleHandler = () => {
     const publishedArticleDetails = {
