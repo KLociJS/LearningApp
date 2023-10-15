@@ -10,7 +10,8 @@ export default function PublishUpdateModal({ setShow }) {
   } = useUpdatePublishedArticle(setShow);
 
   const setTags = (tags) => {
-    const tagArr = tags.length > 1 ? tags.split(",") : [];
+    console.log(tags);
+    const tagArr = tags.split(",");
     dispatch({ type: "set_tags", payload: tagArr });
   };
   const getTags = (tags) => {
