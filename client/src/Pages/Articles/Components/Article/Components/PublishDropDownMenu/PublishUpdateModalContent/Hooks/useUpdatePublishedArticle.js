@@ -1,33 +1,71 @@
 import useArticle from "Hooks/useArticle";
 import { updatePublishedArticle } from "_Constants/fetchUrl";
-import { useState } from "react";
+import { useReducer } from "react";
 import { useParams } from "react-router-dom";
+
+const updatePublishedArticleReducer = (state, action) => {
+  switch (action.type) {
+    case "set_tags": {
+      return { ...state, tagsError: null, tags: action.payload };
+    }
+    case "tags_error": {
+      return { ...state, tagsError: action.payload };
+    }
+    case "set_description": {
+      return { ...state, descriptionError: false, description: action.payload };
+    }
+    case "description_error": {
+      return { ...state, descriptionError: true };
+    }
+    case "update_request_pending": {
+      return { ...state, isDisabled: true };
+    }
+    case "update_request_succeed": {
+      return { ...state, isDisabled: false };
+    }
+    case "update_request_failed": {
+      return {
+        ...state,
+        isDisabled: false,
+        fetchError: "Unable to update published article details. Try again."
+      };
+    }
+  }
+  throw new Error("Invalid action.");
+};
 
 export default function useUpdatePublishedArticle(setShow) {
   const { id } = useParams();
-  const { state, dispatch } = useArticle();
-  const [tags, setTags] = useState(state.article.tags.join(","));
-  const [tagError, setTagError] = useState("");
-  const [description, setDescription] = useState(state.article.description);
-  const [descriptionError, setDescriptionError] = useState(false);
-  const [error, setError] = useState();
-  const [isDisabled, setIsDisabled] = useState(false);
+  const { state: articleState, dispatch: articleDispatch } = useArticle();
+
+  const initialState = {
+    tags: articleState.article.tags,
+    tagsError: null,
+    description: articleState.article.description,
+    descriptionError: false,
+    isDisabled: false,
+    fetchError: null
+  };
+
+  const [state, dispatch] = useReducer(updatePublishedArticleReducer, initialState);
 
   const updatePublishHandler = () => {
-    if (description.length < 100 && description.length > 400) {
-      setDescriptionError(true);
+    if (state.description.length < 100 && description.length > 400) {
+      dispatch({ type: "description_error" });
       return;
     }
-    if (tags.length < 3) {
-      setTagError("Use at least one tag.");
+
+    if (state.tags.length < 1) {
+      dispatch({ type: "tags_error", payload: "Use at least one tag." });
       return;
     }
 
     const updatedArticleDetails = {
-      tags: tags.split(","),
-      description
+      tags: state.tags,
+      description: state.description
     };
-    setIsDisabled(true);
+
+    dispatch({ type: "update_request_pending" });
     fetch(`${updatePublishedArticle}${id}`, {
       method: "PATCH",
       headers: {
@@ -43,30 +81,22 @@ export default function useUpdatePublishedArticle(setShow) {
           throw new Error();
         }
       })
-      .then((res) => {
+      .then(() => {
         setShow(false);
-        dispatch({
+        dispatch({ type: "update_request_succeed" });
+        articleDispatch({
           type: "update_published_article_details",
           payload: { ...updatedArticleDetails }
         });
       })
-      .catch((err) => {
-        setError("Server issue, try again later.");
-      })
-      .finally(() => setIsDisabled(false));
+      .catch(() => {
+        dispatch({ type: "update_request_failed" });
+      });
   };
 
   return {
-    tags,
-    setTags,
-    description,
-    setDescription,
-    updatePublishHandler,
-    descriptionError,
-    setDescriptionError,
-    tagError,
-    setTagError,
-    isDisabled,
-    error
+    state,
+    dispatch,
+    updatePublishHandler
   };
 }
