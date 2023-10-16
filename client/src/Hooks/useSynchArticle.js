@@ -1,6 +1,6 @@
 import { getArticleById } from "_Constants/fetchUrl";
 import { useEffect, useReducer } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const initialState = {
   article: null,
@@ -37,22 +37,26 @@ const articleReducer = (state, action) => {
 export default function useSynchArticle() {
   const [state, dispatch] = useReducer(articleReducer, initialState);
   const { id } = useParams();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch({ type: "fetch_article_request" });
-    fetch(`${getArticleById}${id}`, { credentials: "include" })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error();
-        }
-      })
-      .then(({ data }) => {
-        dispatch({ type: "fetch_article_success", payload: data });
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
+    const paths = pathname.split("/").filter((p) => p !== "");
+    if (paths.length !== 1) {
+      dispatch({ type: "fetch_article_request" });
+      fetch(`${getArticleById}${id}`, { credentials: "include" })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error();
+          }
+        })
+        .then(({ data }) => {
+          dispatch({ type: "fetch_article_success", payload: data });
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [id, pathname]);
 
   return { state, dispatch };
 }
