@@ -1,4 +1,4 @@
-import useUpdateRoles from "Pages/Users/Hooks/useUpdateRoles";
+import useUpdateRoles from "./Hooks/useUpdateRoles";
 
 export default function RolesModalContent({ user, setUsers, setShow }) {
   const { roles, setRoles, error, setError, handleSubmit } = useUpdateRoles(setShow);
