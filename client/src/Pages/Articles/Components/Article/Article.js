@@ -17,7 +17,6 @@ import PublishDropDownMenu from "./Components/PublishDropDownMenu/PublishDropDow
 export default function Article() {
   const { id } = useParams();
   const { state } = useArticleContext();
-  console.log(state);
 
   if (state.isLoading) {
     return <ArticleSkeleton />;

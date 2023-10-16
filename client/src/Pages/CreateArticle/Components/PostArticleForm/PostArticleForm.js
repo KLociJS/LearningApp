@@ -3,17 +3,20 @@ import usePostArticle from "./Hooks/usePostArticle";
 
 export default function PostArticleForm({ markdown, setShow }) {
   const {
-    postArticle,
-    isDisabled,
-    setTitle,
-    setCategory,
-    setSubcategory,
-    category,
-    subcategory,
-    title,
-    titleError,
-    setTitleError
+    state: { title, titleError, category, categoryError, subCategory, isDisabled, hasFetchError },
+    dispatch,
+    postArticle
   } = usePostArticle(markdown, setShow);
+
+  const setTitle = (title) => {
+    dispatch({ type: "set_title", payload: title });
+  };
+  const setCategory = (category) => {
+    dispatch({ type: "set_category", payload: category });
+  };
+  const setSubCategory = (subCategory) => {
+    dispatch({ type: "set_sub_category", payload: subCategory });
+  };
 
   return (
     <section className="modal" onClick={(e) => e.stopPropagation()}>
@@ -24,26 +27,27 @@ export default function PostArticleForm({ markdown, setShow }) {
         setInputValue={setTitle}
         isDisabled={isDisabled}
         hasError={titleError}
-        setError={setTitleError}
       />
-      {titleError ? <p className="error-msg">{titleError}</p> : null}
       <Input
         label="Category"
         inputValue={category}
         setInputValue={setCategory}
         isDisabled={isDisabled}
+        hasError={categoryError}
       />
       <Input
         label="Subcategory"
-        inputValue={subcategory}
-        setInputValue={setSubcategory}
+        inputValue={subCategory}
+        setInputValue={setSubCategory}
         isDisabled={isDisabled}
       />
-
+      {hasFetchError ? (
+        <p className="error-msg">{`Couldn't post article. Try again later`}</p>
+      ) : null}
       <button className="primary-button" onClick={postArticle} disabled={isDisabled}>
         Save
       </button>
-      <button onClick={(e) => setShow(false)} className="secondary-button" disabled={isDisabled}>
+      <button onClick={() => setShow(false)} className="secondary-button" disabled={isDisabled}>
         Cancel
       </button>
     </section>
