@@ -1,0 +1,27 @@
+.markdown-button-skeleton {
+  width: 100px;
+  height: 2rem;
+  background-color: var(--skeleton);
+  border-radius: 5px;
+  margin-top: 1rem;
+  animation: skeleton 1s ease infinite alternate;
+}
+.markdown-editor-skeleton {
+  width: 100%;
+  height: 100%;
+  background-color: var(--skeleton);
+  border-radius: 5px;
+  animation: skeleton 1s ease infinite alternate;
+}
+
+@media screen and (max-width: 1300px) {
+  .markdown-editor-skeleton {
+    border-radius: 0px;
+  }
+}
+
+@keyframes skeleton {
+  to {
+    opacity: 0.5;
+  }
+}

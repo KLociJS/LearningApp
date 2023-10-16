@@ -44,6 +44,7 @@ builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IHttpContextAccessorWrapper, HttpContextAccessorWrapper>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
@@ -87,7 +88,7 @@ builder.Services.AddAuthentication(options =>
             ValidateIssuerSigningKey = true,
             ValidIssuer = configuration["JWT:ValidIssuer"],
             ValidAudience = configuration["JWT:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!))
         };
         options.Events = new JwtBearerEvents()
         {
@@ -99,12 +100,6 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-
-//Add Email config
-var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
-builder.Services.AddSingleton(emailConfig);
-
-builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 builder.Services.AddControllers();

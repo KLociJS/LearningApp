@@ -19,9 +19,7 @@ export default function Articles() {
             <MdOutlinePostAdd className="add-icon" />
           </Link>
         </Sidebar>
-        <section className="article-container">
-          <Outlet context={{ setSidebarContent }} />
-        </section>
+        <Outlet context={{ setSidebarContent }} />
       </SidebarContext.Provider>
     </>
   );

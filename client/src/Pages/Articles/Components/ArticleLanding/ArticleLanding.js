@@ -1,6 +1,6 @@
 export default function ArticleLanding() {
   return (
-    <>
+    <section className="article-container">
       <header>
         <h1 className="heading-1">Welcome to Learn notes!</h1>
         <p className="paragraph-light">
@@ -29,6 +29,6 @@ export default function ArticleLanding() {
           </p>
         </li>
       </ul>
-    </>
+    </section>
   );
 }

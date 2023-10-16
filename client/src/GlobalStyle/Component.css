@@ -79,6 +79,12 @@
   color: var(--danger);
   cursor: pointer;
 }
+
+.warning-button:disabled,
+.warning-button:disabled:hover {
+  border: 1px solid var(--primary-disabled);
+  color: var(--primary-disabled);
+}
 @media screen and (max-width: 800px) {
   .warning-button {
     padding: 0.5rem;

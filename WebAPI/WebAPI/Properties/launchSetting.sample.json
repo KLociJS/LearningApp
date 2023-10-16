@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -16,7 +16,13 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7120;http://localhost:5097",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "SMTP_PASSWORD": "your smtp password",
+        "EMAIL_FROM" : "email from",
+        "SMTP_SERVER": "smtp server",
+        "EMAIL_PORT": "smtp server port",
+        "SMTP_USER_NAME" : "your smtp username",
+        "JWT_SECRET" : "you jwt secret"
       }
     },
     "IIS Express": {

@@ -6,13 +6,6 @@ namespace User.Management.Service.Services;
 
 public class EmailService : IEmailService
 {
-    private readonly EmailConfiguration _emailConfiguration;
-
-    public EmailService(EmailConfiguration emailConfiguration)
-    {
-        _emailConfiguration = emailConfiguration;
-    }
-    
     public SendEmailResult SendEmail(Message message)
     {
         try
@@ -46,7 +39,7 @@ public class EmailService : IEmailService
     private MimeMessage CreateEmailMessage(Message message)
     {
         var emailMessage = new MimeMessage();
-        emailMessage.From.Add(new MailboxAddress("email",_emailConfiguration.From));
+        emailMessage.From.Add(new MailboxAddress("email",Environment.GetEnvironmentVariable("EMAIL_FROM")));
         emailMessage.To.AddRange(message.To);
         emailMessage.Subject = message.Subject;
         emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
@@ -59,9 +52,9 @@ public class EmailService : IEmailService
         using var client = new SmtpClient();
         try
         {
-            client.Connect(_emailConfiguration.SmtpServer, _emailConfiguration.Port, true);
+            client.Connect(Environment.GetEnvironmentVariable("SMTP_SERVER"), Int32.Parse(Environment.GetEnvironmentVariable("EMAIL_PORT")!), true);
             client.AuthenticationMechanisms.Remove("XOAUTH2");
-            client.Authenticate(_emailConfiguration.UserName, _emailConfiguration.PassWord);
+            client.Authenticate(Environment.GetEnvironmentVariable("SMTP_USER_NAME"), Environment.GetEnvironmentVariable("SMTP_PASSWORD"));
 
             client.Send(mailMessage);
         }

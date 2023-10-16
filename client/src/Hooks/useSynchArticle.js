@@ -1,11 +1,10 @@
 import { getArticleById } from "_Constants/fetchUrl";
 import { useEffect, useReducer } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 const initialState = {
   article: null,
-  isLoading: true,
-  error: null
+  isLoading: true
 };
 
 const articleReducer = (state, action) => {
@@ -15,9 +14,6 @@ const articleReducer = (state, action) => {
     }
     case "fetch_article_success": {
       return { ...state, isLoading: false, article: action.payload };
-    }
-    case "fetch_article_fail": {
-      return { ...state, isLoading: false, error: "Error. Try again later." };
     }
     case "publish_article": {
       return { ...state, article: { ...state.article, isPublished: true, ...action.payload } };
@@ -31,6 +27,9 @@ const articleReducer = (state, action) => {
     case "update_article_category": {
       return { ...state, article: { ...state.article, ...action.payload } };
     }
+    case "update_markdown": {
+      return { ...state, article: { ...state.article, markdown: action.payload } };
+    }
   }
   throw Error("Unknown action: " + action.type);
 };
@@ -38,16 +37,26 @@ const articleReducer = (state, action) => {
 export default function useSynchArticle() {
   const [state, dispatch] = useReducer(articleReducer, initialState);
   const { id } = useParams();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    dispatch({ type: "fetch_article_request" });
-    fetch(`${getArticleById}${id}`, { credentials: "include" })
-      .then((res) => res.json())
-      .then(({ data }) => {
-        dispatch({ type: "fetch_article_success", payload: data });
-      })
-      .catch((err) => dispatch({ type: "fetch_article_fail" }));
-  }, [id]);
+    const paths = pathname.split("/").filter((p) => p !== "");
+    if (paths.length !== 1) {
+      dispatch({ type: "fetch_article_request" });
+      fetch(`${getArticleById}${id}`, { credentials: "include" })
+        .then((res) => {
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw new Error();
+          }
+        })
+        .then(({ data }) => {
+          dispatch({ type: "fetch_article_success", payload: data });
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [id, pathname]);
 
   return { state, dispatch };
 }

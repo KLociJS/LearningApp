@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { AiOutlineShareAlt } from "react-icons/ai";
 
 import { Modal, ModalTriggerElement } from "Components";
-import { useArticle } from "Hooks";
+import useArticleContext from "Hooks/useArticle";
 import PublishArticleModalContent from "./PublishArticleModalContent/PublishArticleModalContent";
 import PublishUpdateModal from "./PublishUpdateModalContent/PublishUpdateModal";
 import UnpublishArticleModal from "./PublishUpdateModalContent/UnpublishArticleModal";
 
 export default function Publish() {
   const [show, setShow] = useState(false);
-  const { state } = useArticle();
+  const { state } = useArticleContext();
 
   const menuRef = useRef(null);
 

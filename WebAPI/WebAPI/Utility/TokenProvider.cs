@@ -16,7 +16,7 @@ public class TokenProvider : ITokenProvider
     
     public JwtSecurityToken GetJwtSecurityToken(List<Claim> authClaims)
     {
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
+        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET")!));
         var token = new JwtSecurityToken(
             issuer: _configuration["JWT:ValidIssuer"],
             audience:_configuration["JWT:ValidAudience"],
