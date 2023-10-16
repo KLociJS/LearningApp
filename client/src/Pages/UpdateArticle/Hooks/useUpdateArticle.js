@@ -1,3 +1,4 @@
+import useArticleContext from "Hooks/useArticle";
 import { updateArticleUrl } from "_Constants/fetchUrl";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,6 +7,7 @@ export default function useUpdateArticle(title, markdown, setShow) {
   const [newTitle, setNewTitle] = useState(title);
   const [titleError, setTitleError] = useState();
   const [isDisabled, setIsDisabled] = useState(false);
+  const { dispatch } = useArticleContext();
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ export default function useUpdateArticle(title, markdown, setShow) {
       .then(() => {
         setIsDisabled(false);
         setShow(false);
+        dispatch({ type: "update_markdown", payload: markdown });
         navigate(`/article/${id}`);
       })
       .catch((err) => {

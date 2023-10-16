@@ -1,7 +1,7 @@
 import "./Users.css";
 
 import { Modal, ModalTriggerElement } from "Components";
-import DeleteUserModalContent from "./Components/RolesModal/DeleteUserModalContent";
+import DeleteUserModalContent from "./Components/DeleteUserModal/DeleteUserModalContent";
 import RolesModalContent from "./Components/RolesModal/RolesModalContent";
 import UsersSkeleton from "./Components/Skeleton/UsersSkeleton";
 import useGetUsers from "./Hooks/useGetUsers";

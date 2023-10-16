@@ -1,17 +1,20 @@
 import { MarkdownEditor, Modal, ModalTriggerElement } from "Components";
+import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkeleton/MarkdownEditorSkeleton";
 import UpdateArticleModalContent from "./Components/UpdateArticleModalContent";
-import useGetArticle from "./Hooks/useGetArticle";
+import useUpdateMarkdown from "./Hooks/useUpdateMarkdown";
 
 export default function UpdateArticle() {
-  const { markdown, setMarkdown, title, isLoading } = useGetArticle();
+  const { state, markdown, setMarkdown } = useUpdateMarkdown();
 
-  if (isLoading) return null;
+  if (state.isLoading) return <MarkdownEditorSkeleton />;
 
   return (
     <div className="editor-page-container">
       <section className="controls">
         <Modal
-          modalContent={<UpdateArticleModalContent markdown={markdown} title={title} />}
+          modalContent={
+            <UpdateArticleModalContent markdown={markdown} title={state.article.title} />
+          }
           triggerElement={<ModalTriggerElement className="secondary-button" text="Save" />}
         />
       </section>
