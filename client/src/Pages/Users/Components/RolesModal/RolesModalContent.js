@@ -1,7 +1,8 @@
 import useUpdateRoles from "./Hooks/useUpdateRoles";
 
 export default function RolesModalContent({ user, setUsers, setShow }) {
-  const { roles, setRoles, error, setError, handleSubmit } = useUpdateRoles(setShow);
+  const { roles, setRoles, hasFetchError, setHasFetchError, isDisabled, handleUpdateRoles } =
+    useUpdateRoles(setShow);
 
   const handleChange = (role) => {
     if (roles.includes(role)) {
@@ -41,10 +42,16 @@ export default function RolesModalContent({ user, setUsers, setShow }) {
           <label htmlFor="user">User</label>
         </div>
       </div>
-      <button onClick={() => handleSubmit(user, setUsers)} className="primary-button ">
+      {hasFetchError ? (
+        <p className="error-msg">{`Couldn't change roles. Try again later`}</p>
+      ) : null}
+      <button
+        onClick={() => handleUpdateRoles(user, setUsers)}
+        className="primary-button"
+        disabled={isDisabled}>
         Save
       </button>
-      <button onClick={(e) => setShow(false)} className="secondary-button">
+      <button onClick={(e) => setShow(false)} className="secondary-button" disabled={isDisabled}>
         Close
       </button>
     </div>
