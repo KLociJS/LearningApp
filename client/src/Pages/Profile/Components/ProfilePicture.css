@@ -1,0 +1,35 @@
+.profile-pic-container {
+  position: relative;
+}
+
+.upload-profile-pic-button {
+  position: absolute;
+  bottom: 40px;
+  right: 25px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  padding: 0.2rem 0.3rem;
+  background-color: var(--secondary);
+}
+
+.upload-profile-pic-button:hover {
+  cursor: pointer;
+  background-color: var(--primary-light);
+  border-color: var(--primary-2);
+}
+
+.profile-picture {
+  max-width: 200px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+}
+.crop-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.upload-image-modal {
+  background-color: var(--secondary);
+  padding: 1rem;
+}

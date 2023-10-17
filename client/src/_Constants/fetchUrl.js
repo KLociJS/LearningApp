@@ -5,6 +5,7 @@ const apiUrl = `${process.env.REACT_APP_API_URI}api/`;
 const authController = `${apiUrl}Auth`;
 const userController = `${apiUrl}User`;
 const articleController = `${apiUrl}Article`;
+const profileController = `${apiUrl}Profile`;
 
 //// ActionUrls
 // Auth
@@ -38,6 +39,9 @@ const unpublishArticle = `${articleController}/unpublish-article/`;
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
 const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`;
 
+//Profile
+const postProfilePicture = `${profileController}/upload-profile-picture`;
+
 export {
   changeRole,
   checkAuth,
@@ -53,6 +57,7 @@ export {
   login,
   logout,
   postArticleUrl,
+  postProfilePicture,
   publishArticle,
   register,
   requestPasswordChange,
@@ -61,5 +66,5 @@ export {
   unpublishArticle,
   updateArticleUrl,
   updateCategory,
-  updatePublishedArticle,
+  updatePublishedArticle
 };

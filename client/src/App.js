@@ -37,6 +37,7 @@ import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkel
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import ArticleCardSkeleton from "Pages/Home/Components/Featured/Components/Components/ArticleCardSkeleton";
+import Profile from "Pages/Profile/Profile";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
 const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
@@ -54,6 +55,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route path="shared-article/:id" element={<SharedArticle />} />
       <Route index element={<Home />} />
+      <Route path="profile/:name" element={<Profile />} />
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
         <Route element={<ArticleContextWrapper />}>
