@@ -9,4 +9,5 @@ public class AppUser : IdentityUser<Guid>
     public List<SubCategory> SubCategories { get; set; }
     public virtual ICollection<IdentityUserRole<Guid>> Roles { get; } = new List<IdentityUserRole<Guid>>();
     public string? ProfilePictureName { get; set; }
+    public string? Bio { get; set; }
 }

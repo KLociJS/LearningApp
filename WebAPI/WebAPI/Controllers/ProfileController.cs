@@ -1,5 +1,7 @@
+using System.Drawing;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Models.RequestDtos.ProfileRequestDto;
 using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResponseDto.ProfileResponseDto;
 using WebAPI.Services;
@@ -42,5 +44,29 @@ public class ProfileController : ControllerBase
             throw;
         }
         
+    }
+
+    [Authorize(Roles = "User")]
+    [HttpPatch("update-bio")]
+    public async Task<IActionResult> PatchBio(PatchBioRequestDto patchBioRequestDto)
+    {
+        try
+        {
+            var userName = _httpContext.HttpContext.User.Identity!.Name;
+
+            var patchBioResult = await _profileService.PatchBio(patchBioRequestDto, userName);
+
+            if (!patchBioResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(new PathBioResponseDto(){Bio = patchBioResult.Message!});
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

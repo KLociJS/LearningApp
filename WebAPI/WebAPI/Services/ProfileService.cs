@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Models;
+using WebAPI.Models.RequestDtos.ProfileRequestDto;
 using WebAPI.Models.ResultModels.ProfileResult;
 
 namespace WebAPI.Services;
@@ -46,6 +47,29 @@ public class ProfileService : IProfileService
             await _context.SaveChangesAsync();
         
             return UploadProfilePictureResult.Succeed(uploadImageResult.ImageName!);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<PatchBioResult> PatchBio(PatchBioRequestDto patchBioRequestDto, string? userName)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+
+            if (user == null)
+            {
+                return PatchBioResult.UserNotFound();
+            }
+
+            user.Bio = patchBioRequestDto.BioContent;
+            await _context.SaveChangesAsync();
+        
+            return PatchBioResult.Succeed(user.Bio);
         }
         catch (Exception e)
         {
