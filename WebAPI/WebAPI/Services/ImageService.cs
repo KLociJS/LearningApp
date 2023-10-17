@@ -1,3 +1,4 @@
+using MimeKit;
 using WebAPI.Models.ResultModels.ImageResult;
 
 namespace WebAPI.Services;
@@ -22,14 +23,14 @@ public class ImageService : IImageService
                 Directory.CreateDirectory(path);
             }
 
-            var extension = Path.GetExtension(image.FileName);
-            var allowedExtensions = new string[] { ".jpg",".png",".jpeg" };
+            var extension = image.ContentType.Split("/")[1];
+            var allowedExtensions = new string[] { "jpg","png","jpeg" };
             if (!allowedExtensions.Contains(extension))
             {
                 return UploadImageResult.WrongExtension();
             }
 
-            var fileName = Guid.NewGuid() + extension;
+            var fileName = Guid.NewGuid() + "." + extension;
             var fileWithPath = Path.Combine(path, fileName);
             var stream = new FileStream(fileWithPath, FileMode.Create);
             image.CopyTo(stream);
@@ -48,8 +49,8 @@ public class ImageService : IImageService
     {
         try
         {
-            var wwwPath = _environment.WebRootPath;
-            var path = Path.Combine(wwwPath, "ProfilePictures\\", imageFileName);
+            var wwwPath = _environment.ContentRootPath;
+            var path = Path.Combine(wwwPath, "ProfilePictures", imageFileName);
             if (File.Exists(path))
             {
                 File.Delete(path);
