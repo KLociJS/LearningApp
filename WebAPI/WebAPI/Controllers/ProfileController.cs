@@ -91,8 +91,8 @@ public class ProfileController : ControllerBase
     }
 
     [Authorize(Roles = "User")]
-    [HttpPut("put-github-url")]
-    public async Task<IActionResult> PutGithubUrl(PutGithubUrlRequestDto putGithubUrlRequestDto)
+    [HttpPut("update-github-url")]
+    public async Task<IActionResult> PutGithubUrl(PutSocialsRequestUrl putGithubUrlRequestDto)
     {
         try
         {
@@ -113,8 +113,8 @@ public class ProfileController : ControllerBase
     }
     
     [Authorize(Roles = "User")]
-    [HttpPut("put-twitter-url")]
-    public async Task<IActionResult> PutTwitterUrl(PutTwitterUrlRequestDto putTwitterUrlRequestDto)
+    [HttpPut("update-twitter-url")]
+    public async Task<IActionResult> PutTwitterUrl(PutSocialsRequestUrl putTwitterUrlRequestDto)
     {
         try
         {
@@ -135,8 +135,8 @@ public class ProfileController : ControllerBase
     }
     
     [Authorize(Roles = "User")]
-    [HttpPut("put-linkedin-url")]
-    public async Task<IActionResult> PutLinkedInUrl(PutLinkedInUrlRequestDto putLinkedInUrlRequestDto)
+    [HttpPut("update-linkedin-url")]
+    public async Task<IActionResult> PutLinkedInUrl(PutSocialsRequestUrl putLinkedInUrlRequestDto)
     {
         try
         {

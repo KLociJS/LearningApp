@@ -108,22 +108,22 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<PutGithubUrlResult> PutGithubUrl(PutGithubUrlRequestDto putGithubUrlRequestDto, string? userName)
+    public async Task<PutSocialsUrlResult> PutGithubUrl(PutSocialsRequestUrl putGithubUrlRequestDto, string? userName)
     {
         try
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null)
             {
-                return PutGithubUrlResult.UserNotFound();
+                return PutSocialsUrlResult.UserNotFound();
             }
 
-            user.GitHubUrl = putGithubUrlRequestDto.GitHubUrl;
+            user.GitHubUrl = putGithubUrlRequestDto.Url;
             await _context.SaveChangesAsync();
             
-            var successfulResult = new PutGithubUrlResponseDto() { GithubUrl = user.GitHubUrl };
+            var successfulResult = new UrlResponseDto() { Url = user.GitHubUrl };
             
-            return PutGithubUrlResult.Succeed(successfulResult);
+            return PutSocialsUrlResult.Succeed(successfulResult);
         }
         catch (Exception e)
         {
@@ -132,22 +132,22 @@ public class ProfileService : IProfileService
         }
     }
     
-    public async Task<PutTwitterUrlResult> PutTwitterUrl(PutTwitterUrlRequestDto putTwitterUrlRequestDto, string? userName)
+    public async Task<PutSocialsUrlResult> PutTwitterUrl(PutSocialsRequestUrl putTwitterUrlRequestDto, string? userName)
     {
         try
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null)
             {
-                return PutTwitterUrlResult.UserNotFound();
+                return PutSocialsUrlResult.UserNotFound();
             }
 
-            user.TwitterUrl = putTwitterUrlRequestDto.TwitterUrl;
+            user.TwitterUrl = putTwitterUrlRequestDto.Url;
             await _context.SaveChangesAsync();
         
-            var successfulResult = new PutTwitterUrlResponseDto() { TwitterUrl = user.TwitterUrl };
+            var successfulResult = new UrlResponseDto() { Url = user.TwitterUrl };
         
-            return PutTwitterUrlResult.Succeed(successfulResult);
+            return PutSocialsUrlResult.Succeed(successfulResult);
         }
         catch (Exception e)
         {
@@ -156,22 +156,22 @@ public class ProfileService : IProfileService
         }
     }
     
-    public async Task<PutLinkedInUrlResult> PutLinkedInUrl(PutLinkedInUrlRequestDto putLinkedInUrlRequestDto, string? userName)
+    public async Task<PutSocialsUrlResult> PutLinkedInUrl(PutSocialsRequestUrl putLinkedInUrlRequestDto, string? userName)
     {
         try
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
             if (user == null)
             {
-                return PutLinkedInUrlResult.UserNotFound();
+                return PutSocialsUrlResult.UserNotFound();
             }
 
-            user.LinkedInUrl = putLinkedInUrlRequestDto.LinkedInUrl;
+            user.LinkedInUrl = putLinkedInUrlRequestDto.Url;
             await _context.SaveChangesAsync();
         
-            var successfulResult = new PutLinkedInUrlResponseDto() { LinkedInUrl = user.LinkedInUrl };
+            var successfulResult = new UrlResponseDto() { Url = user.LinkedInUrl };
         
-            return PutLinkedInUrlResult.Succeed(successfulResult);
+            return PutSocialsUrlResult.Succeed(successfulResult);
         }
         catch (Exception e)
         {
