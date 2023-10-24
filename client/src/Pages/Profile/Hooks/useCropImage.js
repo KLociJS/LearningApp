@@ -1,6 +1,7 @@
+import { postProfilePicture } from "_Constants/fetchUrl";
 import { useCallback, useState } from "react";
 
-export default function useCropImage(resizedImage) {
+export default function useCropImage(resizedImage, setProfilePicture, setShow) {
   const [croppedImage, setCroppedImage] = useState(null);
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -61,7 +62,11 @@ export default function useCropImage(resizedImage) {
       body: formData
     })
       .then((res) => res.json())
-      .then((res) => console.log(res))
+      .then((res) => {
+        setProfilePicture(res.imageName);
+        setShow(false);
+        console.log(res);
+      })
       .catch((err) => console.log(err));
   };
 

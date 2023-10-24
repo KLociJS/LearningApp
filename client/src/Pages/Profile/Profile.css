@@ -1,4 +1,23 @@
 .profile-container {
+  padding: 1rem;
+}
+
+.profile-data-container {
+  border: 1px solid var(--shadow);
+  /* background-color: var(--primary-transparent); */
+
+  border-radius: 5px;
+  padding: 1rem;
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  max-width: 232px;
+  gap: 1rem;
+}
+.profile-user-name-label,
+.profile-data-label {
+  text-align: center;
+  color: var(--primary);
+}
+.profile-data-label {
+  padding-top: 1rem;
 }

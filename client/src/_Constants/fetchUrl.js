@@ -41,6 +41,12 @@ const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar
 
 //Profile
 const postProfilePicture = `${profileController}/upload-profile-picture`;
+const getProfilePicture = `${process.env.REACT_APP_API_URI}profile-picture/`;
+const getProfileData = `${profileController}/get-profile-data/`;
+const patchBio = `${profileController}/update-bio`;
+const putGithub = `${profileController}/update-github-url`;
+const putLinkedIn = `${profileController}/update-linkedin-url`;
+const putTwitter = `${profileController}/update-twitter-url`;
 
 export {
   changeRole,
@@ -50,15 +56,22 @@ export {
   deleteUser,
   featuredArticle,
   getArticleById,
+  getProfileData,
+  getProfilePicture,
   getSharedArticle,
   getSharedSidebarContent,
   getSidebarContentUrl,
   getUsers,
   login,
   logout,
+  patchBio,
   postArticleUrl,
   postProfilePicture,
+  profileController,
   publishArticle,
+  putGithub,
+  putLinkedIn,
+  putTwitter,
   register,
   requestPasswordChange,
   resetPassword,
