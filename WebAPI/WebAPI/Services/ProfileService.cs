@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos.ProfileRequestDto;
+using WebAPI.Models.ResponseDto.ProfileResponseDto;
 using WebAPI.Models.ResultModels.ProfileResult;
 
 namespace WebAPI.Services;
@@ -55,7 +56,7 @@ public class ProfileService : IProfileService
         }
     }
 
-    public async Task<PatchBioResult> PatchBio(PatchBioRequestDto patchBioRequestDto, string? userName)
+    public async Task<PutBioResult> PutBio(PutBioRequestDto putBioRequestDto, string? userName)
     {
         try
         {
@@ -63,13 +64,114 @@ public class ProfileService : IProfileService
 
             if (user == null)
             {
-                return PatchBioResult.UserNotFound();
+                return PutBioResult.UserNotFound();
             }
 
-            user.Bio = patchBioRequestDto.BioContent;
+            user.Bio = putBioRequestDto.BioContent;
             await _context.SaveChangesAsync();
         
-            return PatchBioResult.Succeed(user.Bio);
+            return PutBioResult.Succeed(user.Bio);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<GetProfileDataResult> GetProfileData(string userName)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return GetProfileDataResult.UserNotFound();
+            }
+
+            var profileDataDto = new GetProfileDataDto
+            {
+                UserName = user.UserName,
+                ProfilePicture = user.ProfilePictureName,
+                Bio = user.Bio,
+                GitHubUrl = user.GitHubUrl,
+                LinkedInUrl = user.LinkedInUrl,
+                TwitterUrl = user.TwitterUrl
+            };
+
+            return GetProfileDataResult.Succeed(profileDataDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    public async Task<PutGithubUrlResult> PutGithubUrl(PutGithubUrlRequestDto putGithubUrlRequestDto, string? userName)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return PutGithubUrlResult.UserNotFound();
+            }
+
+            user.GitHubUrl = putGithubUrlRequestDto.GitHubUrl;
+            await _context.SaveChangesAsync();
+            
+            var successfulResult = new PutGithubUrlResponseDto() { GithubUrl = user.GitHubUrl };
+            
+            return PutGithubUrlResult.Succeed(successfulResult);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<PutTwitterUrlResult> PutTwitterUrl(PutTwitterUrlRequestDto putTwitterUrlRequestDto, string? userName)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return PutTwitterUrlResult.UserNotFound();
+            }
+
+            user.TwitterUrl = putTwitterUrlRequestDto.TwitterUrl;
+            await _context.SaveChangesAsync();
+        
+            var successfulResult = new PutTwitterUrlResponseDto() { TwitterUrl = user.TwitterUrl };
+        
+            return PutTwitterUrlResult.Succeed(successfulResult);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    public async Task<PutLinkedInUrlResult> PutLinkedInUrl(PutLinkedInUrlRequestDto putLinkedInUrlRequestDto, string? userName)
+    {
+        try
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == userName);
+            if (user == null)
+            {
+                return PutLinkedInUrlResult.UserNotFound();
+            }
+
+            user.LinkedInUrl = putLinkedInUrlRequestDto.LinkedInUrl;
+            await _context.SaveChangesAsync();
+        
+            var successfulResult = new PutLinkedInUrlResponseDto() { LinkedInUrl = user.LinkedInUrl };
+        
+            return PutLinkedInUrlResult.Succeed(successfulResult);
         }
         catch (Exception e)
         {

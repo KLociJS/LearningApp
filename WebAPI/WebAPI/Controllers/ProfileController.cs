@@ -48,20 +48,106 @@ public class ProfileController : ControllerBase
 
     [Authorize(Roles = "User")]
     [HttpPatch("update-bio")]
-    public async Task<IActionResult> PatchBio(PatchBioRequestDto patchBioRequestDto)
+    public async Task<IActionResult> PutBio(PutBioRequestDto putBioRequestDto)
     {
         try
         {
             var userName = _httpContext.HttpContext.User.Identity!.Name;
 
-            var patchBioResult = await _profileService.PatchBio(patchBioRequestDto, userName);
+            var patchBioResult = await _profileService.PutBio(putBioRequestDto, userName);
 
             if (!patchBioResult.Succeeded)
             {
                 return BadRequest();
             }
 
-            return Ok(new PathBioResponseDto(){Bio = patchBioResult.Message!});
+            return Ok(new PutBioResponseDto(){Bio = patchBioResult.Message!});
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [HttpGet("get-profile-data/{userName}")]
+    public async Task<IActionResult> GetProfileData(string userName)
+    {
+        try
+        {
+            var getProfileDataResult = await _profileService.GetProfileData(userName);
+            if (!getProfileDataResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(getProfileDataResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [Authorize(Roles = "User")]
+    [HttpPut("put-github-url")]
+    public async Task<IActionResult> PutGithubUrl(PutGithubUrlRequestDto putGithubUrlRequestDto)
+    {
+        try
+        {
+            var userName = _httpContext.HttpContext.User.Identity!.Name;
+            var putGithubUrlResult = await _profileService.PutGithubUrl(putGithubUrlRequestDto, userName);
+            if (!putGithubUrlResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(putGithubUrlResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [Authorize(Roles = "User")]
+    [HttpPut("put-twitter-url")]
+    public async Task<IActionResult> PutTwitterUrl(PutTwitterUrlRequestDto putTwitterUrlRequestDto)
+    {
+        try
+        {
+            var userName = _httpContext.HttpContext.User.Identity!.Name;
+            var putTwitterUrlResult = await _profileService.PutTwitterUrl(putTwitterUrlRequestDto, userName);
+            if (!putTwitterUrlResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(putTwitterUrlResult.Data);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    
+    [Authorize(Roles = "User")]
+    [HttpPut("put-linkedin-url")]
+    public async Task<IActionResult> PutLinkedInUrl(PutLinkedInUrlRequestDto putLinkedInUrlRequestDto)
+    {
+        try
+        {
+            var userName = _httpContext.HttpContext.User.Identity!.Name;
+            var putLinkedInUrlResult = await _profileService.PutLinkedInUrl(putLinkedInUrlRequestDto, userName);
+            if (!putLinkedInUrlResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(putLinkedInUrlResult.Data);
         }
         catch (Exception e)
         {

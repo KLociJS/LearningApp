@@ -1,6 +1,6 @@
 namespace WebAPI.Models.ResponseDto.ProfileResponseDto;
 
-public class PathBioResponseDto
+public class PutBioResponseDto
 {
     public string Bio { get; set; }
 }
