@@ -7,6 +7,9 @@ export default function useCropImage(resizedImage, setProfilePicture, setShow) {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
+  const [error, setError] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const onCropComplete = useCallback(
     (croppedArea, croppedAreaPixels) => {
       const image = new Image();
@@ -53,6 +56,7 @@ export default function useCropImage(resizedImage, setProfilePicture, setShow) {
   }
 
   const onSaveCroppedImage = () => {
+    setIsDisabled(true);
     const formData = new FormData();
     formData.append("picture", dataURItoBlob(croppedImage));
 
@@ -61,13 +65,22 @@ export default function useCropImage(resizedImage, setProfilePicture, setShow) {
       method: "POST",
       body: formData
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error();
+        }
+      })
       .then((res) => {
         setProfilePicture(res.imageName);
         setShow(false);
-        console.log(res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setError(true);
+        console.log(err);
+      })
+      .finally(() => setIsDisabled(false));
   };
 
   return {
@@ -76,6 +89,8 @@ export default function useCropImage(resizedImage, setProfilePicture, setShow) {
     zoom,
     setZoom,
     onCropComplete,
-    onSaveCroppedImage
+    onSaveCroppedImage,
+    error,
+    isDisabled
   };
 }

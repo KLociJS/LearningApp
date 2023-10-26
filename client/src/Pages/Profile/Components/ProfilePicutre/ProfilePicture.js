@@ -2,7 +2,7 @@ import { Modal, ModalTriggerElement } from "Components";
 import UserNameBasedRender from "Components/UserNameBasedRender/UserNameBasedRender";
 import { getProfilePicture } from "_Constants/fetchUrl";
 import { AiOutlineUpload } from "react-icons/ai";
-import defaultProfilePicture from "../Default/default-profile.jpg";
+import defaultProfilePicture from "./Default/default-profile.jpg";
 import ProfileCropModalContent from "./ProfileCropModalContent";
 import "./ProfilePicture.css";
 
