@@ -2,7 +2,7 @@ export default function SocialLinkDisplay({ link, name, placeholder }) {
   return (
     <>
       {link ? (
-        <a href={link} target="_blank" rel="noopener noreferrer">
+        <a href={link} target="_blank" rel="noopener noreferrer" className="socials-url">
           {name}
         </a>
       ) : (
