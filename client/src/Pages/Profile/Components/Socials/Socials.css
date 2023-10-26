@@ -39,3 +39,7 @@
   display: flex;
   align-items: center;
 }
+
+.socials-url:visited {
+  color: var(--url);
+}
