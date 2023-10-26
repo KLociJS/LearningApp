@@ -14,6 +14,7 @@
 }
 .article-card:hover {
   border: 1px solid var(--shadow);
+  cursor: pointer;
 }
 .article-card-title {
   color: var(--primary);
@@ -28,4 +29,7 @@
 .article-card-footer {
   padding-top: 0.5rem;
   color: var(--shadow);
+}
+.author-link:visited {
+  color: var(--url);
 }
