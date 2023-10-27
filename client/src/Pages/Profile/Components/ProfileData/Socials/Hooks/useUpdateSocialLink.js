@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AiOutlineGithub, AiOutlineLinkedin, AiOutlineTwitter } from "react-icons/ai";
-import useSocialLinkContext from "../../../Context/useSocialLinkContext";
+import useSocialLinkContext from "../../../../Context/useSocialLinkContext";
 
 const ICON_MAP = {
   Github: AiOutlineGithub,

@@ -1,8 +1,8 @@
 import useProfileData from "Pages/Profile/Hooks/useProfileData";
-import Bio from "../Bio/Bio";
-import ProfileDataSkeleton from "../ProfileDataSkeleton/ProfileDataSkeleton";
-import ProfilePicture from "../ProfilePicutre/ProfilePicture";
-import Socials from "../Socials/Socials";
+import Bio from "./Bio/Bio";
+import ProfileDataSkeleton from "./ProfileDataSkeleton/ProfileDataSkeleton";
+import ProfilePicture from "./ProfilePicutre/ProfilePicture";
+import Socials from "./Socials/Socials";
 
 export default function ProfileData() {
   const {

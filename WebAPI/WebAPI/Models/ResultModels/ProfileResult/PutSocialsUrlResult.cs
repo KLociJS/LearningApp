@@ -12,6 +12,11 @@ public class PutSocialsUrlResult
         return new PutSocialsUrlResult() { Succeeded = false };
     }
 
+    public static PutSocialsUrlResult InvalidUrl()
+    {
+        return new PutSocialsUrlResult() { Succeeded = false };
+    }
+
     public static PutSocialsUrlResult Succeed(UrlResponseDto putGithubUrlResponseDto)
     {
         return new PutSocialsUrlResult() { Succeeded = true, Data = putGithubUrlResponseDto};

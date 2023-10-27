@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Contexts;
@@ -117,7 +118,13 @@ public class ProfileService : IProfileService
             {
                 return PutSocialsUrlResult.UserNotFound();
             }
-
+            
+            var isUrlValid = IsValidGithubURL(putGithubUrlRequestDto.Url);
+            if (!isUrlValid)
+            {
+                return PutSocialsUrlResult.InvalidUrl();
+            }
+            
             user.GitHubUrl = putGithubUrlRequestDto.Url;
             await _context.SaveChangesAsync();
             
@@ -141,7 +148,13 @@ public class ProfileService : IProfileService
             {
                 return PutSocialsUrlResult.UserNotFound();
             }
-
+            
+            var isUrlValid = IsValidTwitterURL(putTwitterUrlRequestDto.Url);
+            if (!isUrlValid)
+            {
+                return PutSocialsUrlResult.InvalidUrl();
+            }
+            
             user.TwitterUrl = putTwitterUrlRequestDto.Url;
             await _context.SaveChangesAsync();
         
@@ -166,6 +179,12 @@ public class ProfileService : IProfileService
                 return PutSocialsUrlResult.UserNotFound();
             }
 
+            var isUrlValid = IsValidLinkedInURL(putLinkedInUrlRequestDto.Url);
+            if (!isUrlValid)
+            {
+                return PutSocialsUrlResult.InvalidUrl();
+            }
+
             user.LinkedInUrl = putLinkedInUrlRequestDto.Url;
             await _context.SaveChangesAsync();
         
@@ -178,5 +197,26 @@ public class ProfileService : IProfileService
             Console.WriteLine(e);
             throw;
         }
+    }
+    
+    private bool IsValidTwitterURL(string? url)
+    {
+        var regex = new Regex(@"^https?:\/\/(www\.)?twitter\.com\/[a-zA-Z0-9_]{1,15}\/?$");
+        var urlToTest = url ?? "";
+        return regex.IsMatch(urlToTest);
+    }
+
+    private bool IsValidGithubURL(string? url)
+    {
+        var regex = new Regex(@"^https?:\/\/(www\.)?github\.com\/[a-zA-Z0-9_-]+\/?$");
+        var urlToTest = url ?? "";
+        return regex.IsMatch(urlToTest);
+    }
+
+    private bool IsValidLinkedInURL(string? url)
+    {
+        var regex = new Regex(@"^https?:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9_-]+\/?$");
+        var urlToTest = url ?? "";
+        return regex.IsMatch(urlToTest);
     }
 }

@@ -17,6 +17,7 @@
 .profile-data-label {
   text-align: center;
   color: var(--primary);
+  font-weight: 500;
 }
 .profile-data-label {
   padding-top: 1rem;
