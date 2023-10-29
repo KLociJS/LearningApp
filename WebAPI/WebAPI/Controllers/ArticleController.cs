@@ -275,4 +275,24 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured ont he server.");
         }
     }
+
+    [HttpGet("get-articles-by-author/{authorName}")]
+    public async Task<IActionResult> GetArticleByAuthor(string authorName)
+    {
+        try
+        {
+            var getArticleResult = await _articleService.GetArticlesByAuthor(authorName);
+            if (!getArticleResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(getArticleResult.ArticlesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured ont he server.");
+        }
+    }
 }
