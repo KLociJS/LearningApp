@@ -5,6 +5,7 @@ const apiUrl = `${process.env.REACT_APP_API_URI}api/`;
 const authController = `${apiUrl}Auth`;
 const userController = `${apiUrl}User`;
 const articleController = `${apiUrl}Article`;
+const profileController = `${apiUrl}Profile`;
 
 //// ActionUrls
 // Auth
@@ -33,10 +34,17 @@ const getSharedArticle = `${articleController}/shared-article/`;
 const updateCategory = `${articleController}/update-category/`;
 const updatePublishedArticle = `${articleController}/update-published-article/`;
 const unpublishArticle = `${articleController}/unpublish-article/`;
+const getFeaturedArticlesByAuthor = `${articleController}/get-articles-by-author/`;
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
 const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`;
+
+//Profile
+const postProfilePicture = `${profileController}/upload-profile-picture`;
+const getProfilePicture = `${process.env.REACT_APP_API_URI}profile-picture/`;
+const getProfileData = `${profileController}/get-profile-data/`;
+const patchBio = `${profileController}/update-bio`;
 
 export {
   changeRole,
@@ -46,13 +54,19 @@ export {
   deleteUser,
   featuredArticle,
   getArticleById,
+  getFeaturedArticlesByAuthor,
+  getProfileData,
+  getProfilePicture,
   getSharedArticle,
   getSharedSidebarContent,
   getSidebarContentUrl,
   getUsers,
   login,
   logout,
+  patchBio,
   postArticleUrl,
+  postProfilePicture,
+  profileController,
   publishArticle,
   register,
   requestPasswordChange,
@@ -61,5 +75,5 @@ export {
   unpublishArticle,
   updateArticleUrl,
   updateCategory,
-  updatePublishedArticle,
+  updatePublishedArticle
 };

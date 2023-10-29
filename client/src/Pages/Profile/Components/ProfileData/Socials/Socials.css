@@ -1,0 +1,46 @@
+.socials-container {
+  border-top: 1px solid var(--shadow);
+  flex: 1;
+}
+
+.social-link-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+.edit-social-link-icon {
+  display: flex;
+  align-items: center;
+  color: var(--primary);
+  margin-left: auto;
+  cursor: pointer;
+}
+.social-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: 75%;
+}
+.social-input {
+  width: 100%;
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+}
+
+.social-input-icon {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.social-placeholder {
+  font-size: 0.8rem;
+  color: var(--shadow);
+  display: flex;
+  align-items: center;
+}
+
+.socials-url:visited {
+  color: var(--url);
+}

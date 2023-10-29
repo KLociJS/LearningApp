@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineLogin, AiOutlineUser, AiOutlineUserAdd } from "react-icons/ai";
 import { BiNotepad } from "react-icons/bi";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { LuBrainCircuit } from "react-icons/lu";
 
 import { AuthBasedRender, RoleBasedRender } from "Components";
+import { useAuth } from "Hooks";
 import useLogout from "./Hooks/useLogout";
 import "./NavBar.css";
 
@@ -17,6 +18,8 @@ export default function NavBar() {
   const handleClick = () => setIsOpen(!isOpen);
 
   const { handleLogout } = useLogout();
+
+  const { user } = useAuth();
 
   return (
     <nav className="navbar">
@@ -65,6 +68,16 @@ export default function NavBar() {
           </RoleBasedRender>
           <RoleBasedRender allowedroles={["User", "Admin", "Moderator", "Author"]}>
             <li className="nav-item nav-pc-align-right">
+              <NavLink
+                to={`profile/${user?.userName}`}
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineUser className="mobile-icon" size={16} />
+                  Profile
+                </div>
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <button className="nav-link" onClick={handleLogout}>
                 <div className="centered-label">
                   <AiOutlineUserAdd className="mobile-icon" size={16} />

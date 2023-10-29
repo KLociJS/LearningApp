@@ -33,10 +33,11 @@ import { RequireRoles, UnauthenticatedRoute } from "Components";
 
 import checkAuthentication from "Api/checkAuthentication";
 import ArticleContextWrapper from "Components/ArticleContextWrapper/ArticleContextWrapper";
+import ArticleCardSkeleton from "Components/Featured/Components/Components/ArticleCardSkeleton";
 import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkeleton/MarkdownEditorSkeleton";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
-import ArticleCardSkeleton from "Pages/Home/Components/Featured/Components/Components/ArticleCardSkeleton";
+import Profile from "Pages/Profile/Profile";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
 const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
@@ -54,6 +55,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route path="shared-article/:id" element={<SharedArticle />} />
       <Route index element={<Home />} />
+      <Route path="profile/:name" element={<Profile />} />
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
         <Route element={<ArticleContextWrapper />}>

@@ -1,20 +1,19 @@
 .featured {
+  flex-basis: 100%;
   position: relative;
   display: flex;
-  align-content: stretch;
-  justify-content: left;
-  flex-wrap: wrap;
-  flex-basis: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 1rem;
   border: 1px solid var(--shadow);
   border-radius: 10px;
   padding: 1rem;
-  margin: 5rem 1rem 1rem;
 }
 
 @media screen and (max-width: 960px) {
   .featured {
-    flex-basis: 0;
+    border-radius: 0;
   }
 }
 
@@ -30,4 +29,10 @@
   padding: 0 0.5rem;
 
   background-color: var(--secondary);
+}
+
+.no-available-articles {
+  color: var(--primary);
+  font-weight: 400;
+  margin: auto;
 }

@@ -39,19 +39,16 @@
 
 @media screen and (max-width: 900px) {
   .hero-container {
-    flex-direction: column;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
     flex-wrap: wrap;
   }
 
   .hero-animation {
     margin: 3rem 0;
-    flex-basis: 0;
   }
   .hero-content {
     margin: 3rem 0;
-    flex-basis: 0;
   }
 }
 

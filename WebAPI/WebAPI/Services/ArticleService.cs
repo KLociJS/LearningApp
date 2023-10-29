@@ -490,7 +490,6 @@ public class ArticleService : IArticleService
 
         return UpdatePublishedArticleResult.Succeed();
     }
-    
     private async Task<List<ArticleTag>> GetTagsAsync(List<string> tagStrings, Article article)
     {
         var tags = new List<Tag>();
@@ -509,7 +508,6 @@ public class ArticleService : IArticleService
 
         return tags.Select(t=>new ArticleTag(){Article = article, Tag = t}).ToList();
     }
-
     private async Task RemoveUnusedTags()
     {
         var unusedTags = await _context.Tags
@@ -675,6 +673,46 @@ public class ArticleService : IArticleService
             };
 
             return GetPublishedArticleSidebarContentResult.Succeed(sidebarContentDto);
+        }
+    }
+    public async Task<GetArticleByAuthorResult> GetArticlesByAuthor(string authorName)
+    {
+        try
+        {
+            var author = await _context.Users.FirstOrDefaultAsync(u => u.UserName == authorName);
+            if (author == null)
+            {
+                return GetArticleByAuthorResult.AuthorNotFound();
+            }
+            var articles = await _context.Articles
+                    .Where(a=>a.Author==author && a.Published==true)
+                    .Include(a=>a.Author)
+                    .Include(a=>a.ArticleTags)
+                    .OrderBy(a => a.CreatedAt)
+                    .Take(8)
+                    .ToListAsync();
+            
+            var articlesDto = new List<ArticleCardDto>();
+
+            foreach (var a in articles)
+            {
+                articlesDto.Add(new ArticleCardDto()
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Description = a.Description!,
+                    Author = a.Author.UserName,
+                    CreatedAt = a.CreatedAt,
+                    Tags = await GetArticleTagsAsync(a)
+                });
+            }
+
+            return GetArticleByAuthorResult.Succeed(articlesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }
