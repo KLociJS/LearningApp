@@ -21,8 +21,10 @@ export default function ProfileData() {
   }
   return (
     <div className="profile-data-container">
-      <ProfilePicture profilePicture={profilePicture} setProfilePicture={setProfilePicture} />
-      <h2 className="profile-user-name-label">{userName}</h2>
+      <div className="profile-pic-wrapper">
+        <ProfilePicture profilePicture={profilePicture} setProfilePicture={setProfilePicture} />
+        <h2 className="profile-user-name-label">{userName}</h2>
+      </div>
       <Bio bioText={bioText} setBioText={setBioText} />
       <Socials
         github={socialLinks.github}

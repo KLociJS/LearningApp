@@ -34,6 +34,7 @@ const getSharedArticle = `${articleController}/shared-article/`;
 const updateCategory = `${articleController}/update-category/`;
 const updatePublishedArticle = `${articleController}/update-published-article/`;
 const unpublishArticle = `${articleController}/unpublish-article/`;
+const getFeaturedArticlesByAuthor = `${articleController}/get-articles-by-author/`;
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
@@ -53,6 +54,7 @@ export {
   deleteUser,
   featuredArticle,
   getArticleById,
+  getFeaturedArticlesByAuthor,
   getProfileData,
   getProfilePicture,
   getSharedArticle,

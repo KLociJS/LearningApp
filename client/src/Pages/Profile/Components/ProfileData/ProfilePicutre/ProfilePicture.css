@@ -1,5 +1,10 @@
 .profile-pic-container {
   position: relative;
+  flex: 1;
+}
+.profile-pic-wrapper {
+  max-width: 200px;
+  margin: auto;
 }
 
 .upload-profile-pic-button {

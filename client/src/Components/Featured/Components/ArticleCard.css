@@ -1,5 +1,5 @@
 .article-card {
-  flex-basis: 49%;
+  flex-basis: 48%;
   border-radius: 10px;
   box-shadow: 1px 1px 3px var(--shadow);
   border: 1px solid transparent;

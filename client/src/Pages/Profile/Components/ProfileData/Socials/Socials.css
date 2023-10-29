@@ -1,5 +1,6 @@
 .socials-container {
   border-top: 1px solid var(--shadow);
+  flex: 1;
 }
 
 .social-link-container {

@@ -9,7 +9,7 @@ export default function Featured({ articles, isLoading }) {
 
   return (
     <aside className="featured">
-      <h2 className="featured-label">Featured articles</h2>
+      <h2 className="featured-label">Featured</h2>
       {articles.map((a) => (
         <ArticleCard key={a.id} article={a} />
       ))}
