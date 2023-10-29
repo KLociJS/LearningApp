@@ -13,7 +13,7 @@ export default function ArticleCard({ article }) {
       <p className="article-card-description">{article.description}</p>
       <p className="article-card-footer" onClick={(e) => e.stopPropagation()}>
         {convertDate(article.createdAt)} By{" "}
-        <Link to={`profile/${article.author}`} className="author-link">
+        <Link to={`/profile/${article.author}`} className="author-link">
           {article.author}
         </Link>
       </p>
