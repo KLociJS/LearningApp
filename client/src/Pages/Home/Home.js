@@ -1,10 +1,13 @@
 import LandingAnimation from "./Components/LandingAnimation/LandingAnimation";
 import SearchBar from "./Components/SearchBar/SearchBar";
 
-import Featured from "./Components/Featured/Featured";
+import Featured from "../../Components/Featured/Featured";
+import useGetFeaturedArticles from "../../Components/Featured/Hooks/useGetFeaturedArticles";
 import "./Home.css";
 
 export default function Home() {
+  const { articles, isLoading } = useGetFeaturedArticles();
+
   return (
     <section className="hero-container">
       <div className="hero-content">
@@ -12,11 +15,10 @@ export default function Home() {
         <p className="landing-p">Share and learn from fellow developers on Web Dev Notes.</p>
         <div className="landing-cta">
           <SearchBar />
-          {/* <CtaButton /> */}
         </div>
       </div>
       <LandingAnimation />
-      <Featured />
+      <Featured articles={articles} isLoading={isLoading} />
     </section>
   );
 }
