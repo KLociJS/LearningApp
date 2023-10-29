@@ -5,6 +5,9 @@ import remarkGfm from "remark-gfm";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import dark from "react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus";
+import CustomHeading from "./CustomComponents/CustomHeading";
+import InfoBlockquote from "./CustomComponents/InfoBlockQuote";
+import WarningBlockquote from "./CustomComponents/WarningBlockQuote";
 
 export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) {
   return (
@@ -28,10 +31,21 @@ export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) 
                 {children}
               </code>
             );
+          },
+          h2({ children }) {
+            return <CustomHeading children={children} />; // eslint-disable-line react/no-children-prop
+          },
+          blockquote: ({ children }) => {
+            const child = children[1];
+            const value = child?.props?.children?.[0] || "";
+            if (value.startsWith("[info]")) {
+              return <InfoBlockquote>{value.replace("[info]", "").trim()}</InfoBlockquote>;
+            } else if (value.startsWith("[warning]")) {
+              return <WarningBlockquote>{value.replace("[warning]", "").trim()}</WarningBlockquote>;
+            } else {
+              return <blockquote>{children}</blockquote>;
+            }
           }
-          // h6({ children }) {
-          //     return <Test children={children}/>
-          // }
         }}
       />
     </div>
