@@ -276,6 +276,7 @@ public class ArticleController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("get-articles-by-author/{authorName}")]
     public async Task<IActionResult> GetArticleByAuthor(string authorName)
     {

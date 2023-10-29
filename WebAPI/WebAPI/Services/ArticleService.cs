@@ -707,9 +707,7 @@ public class ArticleService : IArticleService
                 });
             }
 
-            var featuredArticlesDto = new FeaturedArticlesDto() { ArticleCardDtos = articlesDto };
-
-            return GetArticleByAuthorResult.Succeed(featuredArticlesDto);
+            return GetArticleByAuthorResult.Succeed(articlesDto);
         }
         catch (Exception e)
         {
