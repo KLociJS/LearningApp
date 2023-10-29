@@ -1,18 +1,20 @@
 .profile-container {
+  flex-basis: 100%;
   display: flex;
   gap: 1rem;
   padding: 1rem;
 }
 
 .profile-data-container {
+  flex-basis: 30%;
   border: 1px solid var(--shadow);
   border-radius: 10px;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  max-width: 232px;
   gap: 1rem;
 }
+
 .profile-user-name-label,
 .profile-data-label {
   text-align: center;
@@ -30,6 +32,7 @@
   }
   .profile-data-container {
     border: none;
-    max-width: 900px;
+    flex-basis: 100%;
+    flex-shrink: 1;
   }
 }

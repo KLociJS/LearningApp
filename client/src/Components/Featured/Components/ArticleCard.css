@@ -1,5 +1,5 @@
 .article-card {
-  flex-basis: 48%;
+  width: 100%;
   border-radius: 10px;
   box-shadow: 1px 1px 3px var(--shadow);
   border: 1px solid transparent;
@@ -7,11 +7,6 @@
   text-decoration: none;
 }
 
-@media screen and (max-width: 900px) {
-  .article-card {
-    flex-basis: 100%;
-  }
-}
 .article-card:hover {
   border: 1px solid var(--shadow);
   cursor: pointer;
