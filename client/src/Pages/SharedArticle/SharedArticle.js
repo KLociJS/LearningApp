@@ -1,10 +1,11 @@
-import { Sidebar } from "Components";
-import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
-import convertDate from "Utility/convertDate";
+// import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import SharedArticleSkeleton from "./Components/SharedArticleSkeleton";
 import useGetSharedArticle from "./Hooks/useGetSharedArticle";
 import useGetSharedSidebarContent from "./Hooks/useGetSharedSidebarContent";
 
+import { Sidebar } from "Components";
+import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
+import convertDate from "Utility/convertDate";
 import { useEffect, useRef, useState } from "react";
 import "../Articles/Articles.css";
 import TableOfContents from "./Components/TableOfContents";
@@ -17,63 +18,15 @@ export default function SharedArticle() {
   const [activeHeading, setActiveHeading] = useState(null);
 
   const observer = useRef(null);
-  const rootRef = useRef(null);
 
   useEffect(() => {
     if (isArticleLoading) return;
-    setTimeout(() => {
-      const ids = Array.from(document.querySelectorAll(".custom-heading")).map(
-        (heading) => heading.id
-      );
-      setHeadings(ids);
-      const root = document.querySelector(".article-container");
-      rootRef.current = root;
-    }, 500);
+    const ids = Array.from(document.querySelectorAll(".custom-heading")).map((heading) => ({
+      id: heading.id,
+      isVisible: false
+    }));
+    setHeadings(ids);
   }, [isArticleLoading]);
-
-  useEffect(() => {
-    if (isArticleLoading) return;
-
-    if (rootRef) {
-      const handleObserver = (entries) => {
-        console.log(entries);
-        let targetHeading = null;
-
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            targetHeading = entry.target.id;
-          }
-        });
-
-        if (targetHeading) {
-          setActiveHeading(targetHeading);
-        }
-      };
-
-      const options = {
-        root: rootRef.current,
-        threshold: 1.0,
-        rootMargin: "0px"
-      };
-
-      setTimeout(() => {
-        observer.current = new IntersectionObserver(handleObserver, options);
-
-        const elements = document.querySelectorAll(".custom-heading");
-        elements.forEach((elem) => {
-          observer.current.observe(elem);
-        });
-      }, 500);
-    }
-
-    return () => {
-      observer.current?.disconnect();
-    };
-  }, [isArticleLoading]);
-
-  useEffect(() => {
-    console.log("Active heading changed:", activeHeading);
-  }, [activeHeading]);
 
   return (
     <>
@@ -82,7 +35,7 @@ export default function SharedArticle() {
         isLoading={isSidebarLoading}
         linkTo={"/shared-article/"}
       />
-      <section className="article-container">
+      <section className="article-container" ref={observer}>
         {isArticleLoading ? (
           <SharedArticleSkeleton />
         ) : (
@@ -96,11 +49,11 @@ export default function SharedArticle() {
                 </p>
               </div>
             </section>
-            <MarkdownPreview markdown={article.markdown} markdownPreviewRef={rootRef} />
+            <MarkdownPreview markdown={article.markdown} setHeadings={setHeadings} />
           </>
         )}
       </section>
-      <TableOfContents headings={headings} activeHeading={activeHeading} />
+      <TableOfContents headings={headings} />
     </>
   );
 }

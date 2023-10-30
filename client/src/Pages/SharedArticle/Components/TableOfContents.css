@@ -1,5 +1,4 @@
 .table-of-contents-container {
-  position: fixed;
   margin: 2rem 0 0 0.5rem;
   display: flex;
   flex-direction: column;
@@ -9,10 +8,19 @@
 .table-of-contents-link {
   text-decoration: none;
   white-space: nowrap;
+  color: var(--primary);
+  padding: 0.2rem;
+  border-radius: 5px;
 }
+
+.table-of-contents-link:hover {
+  background-color: var(--primary-transparent);
+}
+
 .table-of-contents-link:visited {
   color: var(--primary);
 }
 .highlighted {
-  background-color: aqua;
+  background-color: var(--primary-transparent);
+  font-weight: 500;
 }

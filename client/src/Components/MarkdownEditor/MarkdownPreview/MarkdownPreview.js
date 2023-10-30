@@ -9,7 +9,7 @@ import CustomHeading from "./CustomComponents/CustomHeading";
 import InfoBlockquote from "./CustomComponents/InfoBlockQuote";
 import WarningBlockquote from "./CustomComponents/WarningBlockQuote";
 
-export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) {
+export default function MarkdownPreview({ markdown, markdownPreviewRef, show, setHeadings }) {
   return (
     <div className={`editor-preview ${show ? "hidden" : ""}`} ref={markdownPreviewRef}>
       <ReactMarkdown
@@ -33,7 +33,7 @@ export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) 
             );
           },
           h2({ children }) {
-            return <CustomHeading>{children}</CustomHeading>; // eslint-disable-line react/no-children-prop
+            return <CustomHeading setHeadings={setHeadings}>{children}</CustomHeading>; // eslint-disable-line react/no-children-prop
           },
           blockquote: ({ children }) => {
             const child = children[1];
