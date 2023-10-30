@@ -1,11 +1,6 @@
 import "./TableOfContents.css";
 
 export default function TableOfContents({ headings }) {
-  const convertId = (id) => {
-    const idWithSpaces = id.replace(/-/g, " ");
-    return idWithSpaces.slice(0, 1).toUpperCase() + idWithSpaces.slice(1, id.length);
-  };
-
   return (
     <div className="table-of-contents-container">
       {headings.map((heading) => {
@@ -29,3 +24,8 @@ export default function TableOfContents({ headings }) {
     </div>
   );
 }
+
+const convertId = (id) => {
+  const idWithSpaces = id.replace(/-/g, " ");
+  return idWithSpaces.slice(0, 1).toUpperCase() + idWithSpaces.slice(1, id.length);
+};

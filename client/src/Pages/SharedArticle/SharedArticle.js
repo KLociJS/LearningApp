@@ -6,27 +6,14 @@ import useGetSharedSidebarContent from "./Hooks/useGetSharedSidebarContent";
 import { Sidebar } from "Components";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import convertDate from "Utility/convertDate";
-import { useEffect, useRef, useState } from "react";
 import "../Articles/Articles.css";
+import useGetHeadingIds from "./Components/Hooks/useGetHeadingIds";
 import TableOfContents from "./Components/TableOfContents";
 
 export default function SharedArticle() {
   const { article, isArticleLoading } = useGetSharedArticle();
   const { sidebarContent, isSidebarLoading } = useGetSharedSidebarContent();
-
-  const [headings, setHeadings] = useState([]);
-  const [activeHeading, setActiveHeading] = useState(null);
-
-  const observer = useRef(null);
-
-  useEffect(() => {
-    if (isArticleLoading) return;
-    const ids = Array.from(document.querySelectorAll(".custom-heading")).map((heading) => ({
-      id: heading.id,
-      isVisible: false
-    }));
-    setHeadings(ids);
-  }, [isArticleLoading]);
+  const { headings, setHeadings } = useGetHeadingIds(isArticleLoading);
 
   return (
     <>
@@ -35,7 +22,7 @@ export default function SharedArticle() {
         isLoading={isSidebarLoading}
         linkTo={"/shared-article/"}
       />
-      <section className="article-container" ref={observer}>
+      <section className="article-container">
         {isArticleLoading ? (
           <SharedArticleSkeleton />
         ) : (
