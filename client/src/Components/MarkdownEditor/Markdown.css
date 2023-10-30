@@ -194,6 +194,9 @@
 .editor-preview h2 {
   font-weight: 400;
 }
+.editor-preview p {
+  overflow-wrap: break-word;
+}
 
 /* Code */
 .editor-preview pre {

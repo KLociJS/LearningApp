@@ -17,6 +17,7 @@
   max-width: 1300px;
   margin-right: auto;
   margin-left: auto;
+  overflow: scroll;
 }
 
 @media screen and (max-width: 960px) {

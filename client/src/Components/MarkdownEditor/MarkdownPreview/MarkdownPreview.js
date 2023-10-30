@@ -33,7 +33,7 @@ export default function MarkdownPreview({ markdown, markdownPreviewRef, show }) 
             );
           },
           h2({ children }) {
-            return <CustomHeading children={children} />; // eslint-disable-line react/no-children-prop
+            return <CustomHeading>{children}</CustomHeading>; // eslint-disable-line react/no-children-prop
           },
           blockquote: ({ children }) => {
             const child = children[1];
