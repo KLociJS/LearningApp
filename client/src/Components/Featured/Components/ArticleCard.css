@@ -17,8 +17,8 @@
   padding-bottom: 0.5rem;
 }
 .article-card-description {
-  max-width: 62ch;
   word-wrap: break-word;
+  max-width: 100ch;
   color: var(--primary-2);
 }
 .article-card-footer {

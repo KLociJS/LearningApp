@@ -6,6 +6,10 @@
   --primary-transparent: #00214711;
   --secondary: #fbfbff;
   --danger: red;
+  --warning: #ffa500;
+  --warning-transparent: #ffa60033;
+  --info: #17a2b8;
+  --info-transparent: #17a3b83b;
   --accent: #ff9900;
   --shadow: #8f8f8f;
   --skeleton: #e6e6e6;
