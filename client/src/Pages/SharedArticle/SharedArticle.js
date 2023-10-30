@@ -6,6 +6,7 @@ import useGetSharedSidebarContent from "./Hooks/useGetSharedSidebarContent";
 import { Sidebar } from "Components";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import convertDate from "Utility/convertDate";
+import { Link } from "react-router-dom";
 import "../Articles/Articles.css";
 import useGetHeadingIds from "./Components/Hooks/useGetHeadingIds";
 import TableOfContents from "./Components/TableOfContents";
@@ -31,7 +32,11 @@ export default function SharedArticle() {
               <div>
                 <h1 className="article-title">{article.title}</h1>
                 <p className="article-info">
-                  Created by {article.author} at {convertDate(article.createdAt)} Updated at{" "}
+                  Created by{" "}
+                  <Link to={`/profile/${article.author}`} className="author-link">
+                    {article.author}
+                  </Link>{" "}
+                  at {convertDate(article.createdAt)} | Updated at{" "}
                   {article.updatedAt != null ? convertDate(article.updatedAt) : null}
                 </p>
               </div>
@@ -44,34 +49,3 @@ export default function SharedArticle() {
     </>
   );
 }
-
-/*
-    const observeOptions = {
-      root: document.querySelector(".article-container"),
-      threshold: 0.1
-    };
-
-    const observerCallback = (entries, observer) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveHeading(entry.target.id);
-          entry.target.classList.add("highlighted");
-        } else {
-          entry.target.classList.remove("highlighted");
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observeOptions);
-
-    ids.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
-    });
-
-    return () => {
-      ids.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) observer.unobserve(element);
-      });
-    };*/
