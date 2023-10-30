@@ -20,16 +20,20 @@ export default function useVisible(setHeadings, ref) {
       }
     };
 
-    const debouncedCheckVisibility = debounce(checkVisibility, 200);
+    if (setHeadings) {
+      const debouncedCheckVisibility = debounce(checkVisibility, 200);
 
-    const parentElement = document.querySelector(".article-container");
-    parentElement.addEventListener("scroll", debouncedCheckVisibility);
-    parentElement.addEventListener("resize", debouncedCheckVisibility);
-    debouncedCheckVisibility();
+      const parentElement = document.querySelector(".article-container");
+      parentElement.addEventListener("scroll", debouncedCheckVisibility);
+      parentElement.addEventListener("resize", debouncedCheckVisibility);
+      debouncedCheckVisibility();
+    }
 
     return () => {
-      parentElement.removeEventListener("scroll", debouncedCheckVisibility);
-      parentElement.removeEventListener("resize", debouncedCheckVisibility);
+      if (setHeadings) {
+        parentElement.removeEventListener("scroll", debouncedCheckVisibility);
+        parentElement.removeEventListener("resize", debouncedCheckVisibility);
+      }
     };
   }, [ref]);
 }
