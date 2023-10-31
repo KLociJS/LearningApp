@@ -541,6 +541,7 @@ public class ArticleService : IArticleService
                     Title = a.Title,
                     Description = a.Description!,
                     Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
                     CreatedAt = a.CreatedAt,
                     Tags = await GetArticleTagsAsync(a)
                 });
@@ -702,6 +703,7 @@ public class ArticleService : IArticleService
                     Title = a.Title,
                     Description = a.Description!,
                     Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
                     CreatedAt = a.CreatedAt,
                     Tags = await GetArticleTagsAsync(a)
                 });
