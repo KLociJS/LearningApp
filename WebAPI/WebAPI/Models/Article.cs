@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
+using NpgsqlTypes;
 
 namespace WebAPI.Models;
 
@@ -24,4 +25,6 @@ public class Article
     public bool? Published { get; set; }
     public string? Description { get; set; }
     public List<ArticleTag> ArticleTags { get; set; } = new();
+    
+    public NpgsqlTsVector SearchVector { get; set; }
 }

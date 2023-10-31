@@ -30,6 +30,14 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
             .HasOne(at => at.Tag)
             .WithMany(t => t.ArticleTags)
             .HasForeignKey(at => at.TagId);
+        
+        builder.Entity<Article>()
+            .HasGeneratedTsVectorColumn(
+                a => a.SearchVector,
+                "english",  
+                a => new { a.Title, a.Description, a.Markdown })  
+            .HasIndex(a => a.SearchVector)
+            .HasMethod("GIN");
     }
 
     public DbSet<Article> Articles { get; set; }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
@@ -710,6 +711,41 @@ public class ArticleService : IArticleService
             }
 
             return GetArticleByAuthorResult.Succeed(articlesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<SearchArticleFullTextResult> SearchArticleFullText(string? searchTerm)
+    {
+        try
+        {
+            var articles = await _context.Articles
+                .Where(a => a.SearchVector.Matches(EF.Functions.PlainToTsQuery("english", searchTerm)))
+                .Include(a=>a.Author)
+                .Include(a=>a.ArticleTags)
+                .ToListAsync();
+            
+            var articlesDto = new List<ArticleCardDto>();
+
+            foreach (var a in articles)
+            {
+                articlesDto.Add(new ArticleCardDto()
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Description = a.Description!,
+                    Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
+                    CreatedAt = a.CreatedAt,
+                    Tags = await GetArticleTagsAsync(a)
+                });
+            }
+
+            return SearchArticleFullTextResult.Succeed(articlesDto);
+
         }
         catch (Exception e)
         {
