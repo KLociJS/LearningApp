@@ -1,5 +1,5 @@
-import ArticleCard from "./Components/ArticleCard";
-import ArticleCardSkeleton from "./Components/Components/ArticleCardSkeleton";
+import ArticleCard from "./Components/ArticleCard/ArticleCard";
+import ArticleCardSkeleton from "./Components/ArticleCardSkeleton/ArticleCardSkeleton";
 import "./Featured.css";
 
 export default function Featured({ articles, isLoading }) {
