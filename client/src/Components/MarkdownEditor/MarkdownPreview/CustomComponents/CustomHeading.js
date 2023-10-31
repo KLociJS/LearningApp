@@ -6,7 +6,10 @@ export default function CustomHeading({ children, setHeadings }) {
   const id = children ? children[0].toLowerCase().replace(/\s+/g, "-") : "";
 
   const headingRef = useRef(null);
-  useVisible(setHeadings, headingRef);
+
+  if (setHeadings) {
+    useVisible(setHeadings, headingRef);
+  }
 
   return (
     <h2 ref={headingRef} id={id} className="custom-heading">

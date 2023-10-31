@@ -28,8 +28,8 @@ export default function useVisible(setHeadings, ref) {
     debouncedCheckVisibility();
 
     return () => {
-      parentElement.removeEventListener("scroll", debouncedCheckVisibility);
       parentElement.removeEventListener("resize", debouncedCheckVisibility);
+      parentElement.removeEventListener("scroll", debouncedCheckVisibility);
     };
   }, [ref]);
 }
