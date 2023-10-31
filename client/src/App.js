@@ -33,7 +33,7 @@ import { RequireRoles, UnauthenticatedRoute } from "Components";
 
 import checkAuthentication from "Api/checkAuthentication";
 import ArticleContextWrapper from "Components/ArticleContextWrapper/ArticleContextWrapper";
-import ArticleCardSkeleton from "Components/Featured/Components/Components/ArticleCardSkeleton";
+import ArticleCardSkeleton from "Components/Featured/Components/ArticleCardSkeleton/ArticleCardSkeleton";
 import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkeleton/MarkdownEditorSkeleton";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
