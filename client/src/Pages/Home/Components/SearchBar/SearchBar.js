@@ -1,7 +1,8 @@
 import convertDate from "Utility/convertDate";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import useSearchArticle from "./Hooks/useSearchArticle";
+
+import useSearchArticle from "Hooks/useSearchArticle";
 import "./SearchBar.css";
 
 export default function SearchBar() {
@@ -26,22 +27,31 @@ export default function SearchBar() {
         />
         <AiOutlineSearch className="search-icon" />
       </div>
-      {searchResult.length > 0 && isFocused ? (
-        <div className="search-results">
+      {isFocused && searchTerm?.length > 0 ? (
+        <ul className="search-results">
           {searchResult.map((article) => (
-            <Link
-              to={`/shared-article/${article.id}`}
-              key={article.id}
-              className="search-result-link">
+            <li key={article.id} className="search-result">
+              <Link to={`/shared-article/${article.id}`} className="search-result-link">
+                <div className="search-result-article">
+                  <h2 className="search-result-article-h2">{article.title}</h2>
+                  <p className="search-result-article-p">
+                    {convertDate(article.createdAt)} By {article.author}
+                  </p>
+                </div>
+              </Link>
+            </li>
+          ))}
+          <li className="search-result">
+            <Link to={`/search?SearchTerm=${searchTerm}`} className="search-result-link">
               <div className="search-result-article">
-                <h2 className="search-result-article-h2">{article.title}</h2>
+                <h2 className="search-result-article-h2">Full text search</h2>
                 <p className="search-result-article-p">
-                  {convertDate(article.createdAt)} By {article.author}
+                  Search for <strong>{searchTerm}</strong> globally.
                 </p>
               </div>
             </Link>
-          ))}
-        </div>
+          </li>
+        </ul>
       ) : null}
     </div>
   );

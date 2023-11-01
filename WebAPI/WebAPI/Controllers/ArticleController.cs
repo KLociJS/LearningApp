@@ -296,4 +296,20 @@ public class ArticleController : ControllerBase
             return StatusCode(500, "An error occured ont he server.");
         }
     }
+
+    [AllowAnonymous]
+    [HttpGet("article-full-text-search")]
+    public async Task<IActionResult> ArticleFullTextSearch(string? searchTerm)
+    {
+        try
+        {
+            var articleFullTextSearchResult = await _articleService.SearchArticleFullText(searchTerm);
+            return Ok(articleFullTextSearchResult.ArticleCardDtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }

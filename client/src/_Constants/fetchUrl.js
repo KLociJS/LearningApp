@@ -35,6 +35,7 @@ const updateCategory = `${articleController}/update-category/`;
 const updatePublishedArticle = `${articleController}/update-published-article/`;
 const unpublishArticle = `${articleController}/unpublish-article/`;
 const getFeaturedArticlesByAuthor = `${articleController}/get-articles-by-author/`;
+const fullTextSearch = `${articleController}/article-full-text-search?searchTerm=`;
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
@@ -53,6 +54,7 @@ export {
   deleteArticle,
   deleteUser,
   featuredArticle,
+  fullTextSearch,
   getArticleById,
   getFeaturedArticlesByAuthor,
   getProfileData,
