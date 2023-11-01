@@ -8,14 +8,13 @@
   position: sticky;
   top: 0;
   z-index: 999;
-  border-bottom: 1px solid var(--primary);
+  box-shadow: 1px 1px 3px var(--shadow);
 }
 
 .navbar-container {
   display: flex;
   justify-content: space-between;
   height: 80px;
-  border-bottom: 1px solid var(--primary);
 }
 
 .navbar-logo {
@@ -134,6 +133,7 @@
     opacity: 1;
     transition: all 0.6s ease;
     z-index: 1;
+    box-shadow: 1px 1px 3px var(--shadow);
   }
 
   .nav-link {
@@ -182,7 +182,7 @@
   .centered-label:hover {
     border-color: var(--primary);
   }
-  button.nav-link {
-    border-bottom: 1px solid var(--primary);
+  .nav-item:last-child > .nav-link {
+    box-shadow: 1px 2px 2px var(--shadow);
   }
 }
