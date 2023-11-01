@@ -24,3 +24,9 @@
   background-color: var(--primary-transparent);
   font-weight: 500;
 }
+
+@media screen and (max-width: 600px) {
+  .table-of-contents-container {
+    display: none;
+  }
+}
