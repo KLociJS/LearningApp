@@ -37,6 +37,7 @@ import ArticleCardSkeleton from "Components/Featured/Components/ArticleCardSkele
 import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkeleton/MarkdownEditorSkeleton";
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
+import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
 import Profile from "Pages/Profile/Profile";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<Layout />}>
       <Route path="shared-article/:id" element={<SharedArticle />} />
       <Route index element={<Home />} />
+      <Route path="/search" element={<FullTextSearch />} />
       <Route path="profile/:name" element={<Profile />} />
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
