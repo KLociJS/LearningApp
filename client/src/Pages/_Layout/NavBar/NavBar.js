@@ -8,6 +8,7 @@ import { LuBrainCircuit } from "react-icons/lu";
 
 import { AuthBasedRender, RoleBasedRender } from "Components";
 import { useAuth } from "Hooks";
+import NavSearchBar from "./Components/SearchBar/NavSearchBar";
 import useLogout from "./Hooks/useLogout";
 import "./NavBar.css";
 
@@ -66,6 +67,7 @@ export default function NavBar() {
               </NavLink>
             </li>
           </RoleBasedRender>
+          <NavSearchBar />
           <RoleBasedRender allowedroles={["User", "Admin", "Moderator", "Author"]}>
             <li className="nav-item nav-pc-align-right">
               <NavLink

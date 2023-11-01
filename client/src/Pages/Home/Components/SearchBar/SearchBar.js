@@ -1,7 +1,8 @@
 import convertDate from "Utility/convertDate";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import useSearchArticle from "./Hooks/useSearchArticle";
+
+import useSearchArticle from "Hooks/useSearchArticle";
 import "./SearchBar.css";
 
 export default function SearchBar() {
@@ -40,6 +41,16 @@ export default function SearchBar() {
               </Link>
             </li>
           ))}
+          <li className="search-result">
+            <Link to={`/search?SearchTerm=${searchTerm}`} className="search-result-link">
+              <div className="search-result-article">
+                <h2 className="search-result-article-h2">Full text search</h2>
+                <p className="search-result-article-p">
+                  Search for <strong>{searchTerm}</strong> globally.
+                </p>
+              </div>
+            </Link>
+          </li>
         </ul>
       ) : null}
     </div>
