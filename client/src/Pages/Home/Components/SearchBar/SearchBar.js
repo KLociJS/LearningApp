@@ -27,21 +27,20 @@ export default function SearchBar() {
         <AiOutlineSearch className="search-icon" />
       </div>
       {searchResult.length > 0 && isFocused ? (
-        <div className="search-results">
+        <ul className="search-results">
           {searchResult.map((article) => (
-            <Link
-              to={`/shared-article/${article.id}`}
-              key={article.id}
-              className="search-result-link">
-              <div className="search-result-article">
-                <h2 className="search-result-article-h2">{article.title}</h2>
-                <p className="search-result-article-p">
-                  {convertDate(article.createdAt)} By {article.author}
-                </p>
-              </div>
-            </Link>
+            <li key={article.id} className="search-result">
+              <Link to={`/shared-article/${article.id}`} className="search-result-link">
+                <div className="search-result-article">
+                  <h2 className="search-result-article-h2">{article.title}</h2>
+                  <p className="search-result-article-p">
+                    {convertDate(article.createdAt)} By {article.author}
+                  </p>
+                </div>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       ) : null}
     </div>
   );
