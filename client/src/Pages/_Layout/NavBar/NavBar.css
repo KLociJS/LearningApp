@@ -1,170 +1,188 @@
 .navbar {
-    background: var(--primary);
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    position: sticky;
-    top: 0;
-    z-index: 999;
-  }
-  
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    height: 80px;
-  }
-  
-  .navbar-logo {
-    color: var(--secondary);
-    justify-self: start;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 2rem;
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar-icon {
-    margin-right: 0.5rem;
-  }
-  
-  .nav-menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    list-style: none;
-    text-align: center;
-    margin-left: 3rem;
-    width: 100%;
-  }
+  background: var(--secondary);
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  border-bottom: 1px solid var(--primary);
+}
 
-  .nav-pc-align-left{
-    margin-right: auto;
-  }
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  height: 80px;
+  border-bottom: 1px solid var(--primary);
+}
 
-  .nav-pc-align-right{
-    margin-left: auto;
-  }
-  
-  .nav-item {
-    height: 80px;
-  }
-  
-  button.nav-link{
-    background-color: var(--primary);
-    border: none;
-    border-bottom: 4px solid transparent;
-  }
-  button.nav-link:hover{
-    cursor: pointer;
-  }
-  .nav-link {
-    color: var(--secondary);
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    height: 100%;
-    border-bottom: 4px solid transparent;
-  }
-  
+.navbar-logo {
+  color: var(--primary);
+  justify-self: start;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+}
 
-  .activated,.nav-link:hover {
-    color: var(--accent);
-    border-bottom: 4px solid var(--accent);
-  }
-  
-  .fa-bars {
-    color: var(--secondary);
-  }
+.navbar-icon {
+  margin-right: 0.5rem;
+}
 
-  .menu-icon {
-    color: var(--secondary);
-  }
-  
-  .menu-icon, .mobile-icon {
-    display: none;
-  }
-  
-  @media screen and (max-width: 960px) {
-    /* .NavbarItems {
+.nav-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+  text-align: center;
+  margin-left: 3rem;
+  width: 100%;
+}
+
+.nav-pc-align-left {
+  margin-right: auto;
+}
+
+.nav-pc-align-right {
+  margin-left: auto;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  height: 80px;
+}
+
+.nav-button {
+  border: none;
+  background-color: var(--secondary);
+  margin-top: 50%;
+  transform: translateY(-20%);
+  color: var(--primary);
+  border-bottom: 4px solid transparent;
+}
+.nav-button:hover {
+  cursor: pointer;
+}
+
+.nav-link {
+  color: var(--primary);
+  background-color: var(--secondary);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-bottom: 2px solid transparent;
+}
+
+.activated,
+.nav-link:hover {
+  border-bottom: 2px solid var(--primary);
+  cursor: pointer;
+}
+
+.fa-bars {
+  color: var(--secondary);
+}
+
+.menu-icon {
+  color: var(--primary);
+}
+
+.menu-icon,
+.mobile-icon {
+  display: none;
+}
+
+@media screen and (max-width: 960px) {
+  /* .NavbarItems {
       position: relative;
     } */
 
-    .mobile-icon{
-        display: inline-block;
-        margin-right: 0.5rem;
-    }
-
-    .centered-label {
-        display: flex;
-        align-items: center;
-    }
-
-    .nav-pc-align-left{
-        margin-right: 0;
-    }
-  
-    .nav-menu {
-      display: flex;
-      flex-direction: column;
-      margin-left: 0;
-      position: absolute;
-      top: 80px;
-      left: -100%;
-      opacity: 1;
-      transition: all 0.5s ease;
-    }
-  
-    .nav-menu.active {
-      background: var(--primary);
-      left: 0;
-      opacity: 1;
-      transition: all 0.6s ease;
-      z-index: 1;
-    }
-  
-    .nav-link {
-      padding: 2rem;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      border: none;
-    }
-  
-    .nav-link:hover {
-      color: var(--accent);
-      border: none;
-    }
-
-    .activated {
-      border-bottom: none
-    }
-  
-    .nav-item:hover {
-      border: none;
-    }
-  
-    .nav-item {
-      width: 100%;
-    }
-  
-    .navbar-logo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: translate(25%, 50%);
-    }
-  
-    .menu-icon {
-      display: block;
-      position: absolute;
-      top: 0;
-      right: 0;
-      transform: translate(-100%, 60%);
-      font-size: 1.8rem;
-      cursor: pointer;
-    }
+  .mobile-icon {
+    display: inline-block;
+    margin-right: 0.5rem;
   }
+
+  .centered-label {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-pc-align-left {
+    margin-right: 0;
+  }
+
+  .nav-menu {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0;
+    position: absolute;
+    top: 80px;
+    left: -100%;
+    opacity: 1;
+    transition: all 0.5s ease;
+  }
+
+  .nav-menu.active {
+    background: var(--secondary);
+    left: 0;
+    opacity: 1;
+    transition: all 0.6s ease;
+    z-index: 1;
+  }
+
+  .nav-link {
+    padding: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border: none;
+  }
+
+  .nav-link:hover {
+    border: none;
+  }
+
+  .activated {
+    border-bottom: none;
+  }
+
+  .nav-item:hover {
+    border: none;
+  }
+
+  .nav-item {
+    width: 100%;
+  }
+
+  .navbar-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(25%, 50%);
+  }
+
+  .menu-icon {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(-100%, 60%);
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+  .centered-label {
+    border-bottom: 2px solid transparent;
+  }
+  .centered-label:hover {
+    border-color: var(--primary);
+  }
+  button.nav-link {
+    border-bottom: 1px solid var(--primary);
+  }
+}
