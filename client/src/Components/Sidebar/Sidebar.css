@@ -31,14 +31,14 @@
 }
 
 .add-icon {
+  margin-right: 0.25rem;
   font-size: 1.5rem;
 }
 
 .create-article-link {
-  margin-left: auto;
+  align-self: flex-start;
   display: flex;
   align-items: center;
-  border: 1px solid var(--primary);
   border-radius: 5px;
   padding: 0.2rem;
   text-decoration: none;
@@ -46,8 +46,7 @@
 }
 
 .create-article-link:hover {
-  color: var(--secondary);
-  background-color: var(--primary);
+  background-color: var(--primary-transparent);
 }
 
 .subcategory-list {
