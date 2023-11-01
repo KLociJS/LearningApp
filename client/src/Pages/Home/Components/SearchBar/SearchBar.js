@@ -27,7 +27,7 @@ export default function SearchBar() {
         />
         <AiOutlineSearch className="search-icon" />
       </div>
-      {searchResult.length > 0 && isFocused ? (
+      {isFocused ? (
         <ul className="search-results">
           {searchResult.map((article) => (
             <li key={article.id} className="search-result">
