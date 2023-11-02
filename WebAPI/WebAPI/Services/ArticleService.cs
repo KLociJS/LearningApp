@@ -597,6 +597,7 @@ public class ArticleService : IArticleService
             var articleDto = new ArticleDto()
             {
                 Author = article.Author.UserName,
+                AuthorProfilePicture = article.Author.ProfilePictureName,
                 CreatedAt = article.CreatedAt,
                 Id = article.Id,
                 Markdown = article.Markdown,
