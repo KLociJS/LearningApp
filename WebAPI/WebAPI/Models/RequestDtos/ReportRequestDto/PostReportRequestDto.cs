@@ -6,5 +6,5 @@ public class PostReportRequestDto
 {
     public Guid ReportedArticleId { get; set; }
     public ReportReason Reason { get; set; }
-    public string AdditionalComments { get; set; }
+    public string? AdditionalComments { get; set; }
 }

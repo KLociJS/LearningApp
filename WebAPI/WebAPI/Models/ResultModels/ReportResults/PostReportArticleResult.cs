@@ -15,7 +15,12 @@ public class PostReportArticleResult
         return new PostReportArticleResult() { Succeeded = false, Message = "Article not found." };
     }
 
-    public static PostReportArticleResult Succeed()
+    public static PostReportArticleResult ArticleAlreadyReported()
+    {
+        return new PostReportArticleResult() { Succeeded = false, Message = "Article already reported." };
+    }
+
+public static PostReportArticleResult Succeed()
     {
         return new PostReportArticleResult() { Succeeded = true, Message = "Article report saved." };
     }

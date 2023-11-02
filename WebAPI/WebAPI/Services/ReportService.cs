@@ -33,6 +33,15 @@ public class ReportService : IReportService
                 return PostReportArticleResult.ArticleNotFound();
             }
 
+            var existingReport =
+                await _context.ArticleReports.FirstOrDefaultAsync(r =>
+                    r.Reporter == reporterUser && r.ReportedArticle == article);
+            
+            if (existingReport != null)
+            {
+                return PostReportArticleResult.ArticleAlreadyReported();
+            }
+
             var report = new ArticleReport()
             {
                 AdditionalComments = postReportRequestDto.AdditionalComments,
