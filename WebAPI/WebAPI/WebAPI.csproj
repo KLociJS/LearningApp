@@ -25,4 +25,9 @@
       <ProjectReference Include="..\User.Management.Service\User.Management.Service.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Migrations\20231102102400_Add article report table.Designer.cs" />
+      <Compile Remove="Migrations\20231102102400_Add article report table.cs" />
+    </ItemGroup>
+
 </Project>

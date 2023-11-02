@@ -48,6 +48,7 @@ builder.Services.AddScoped<IHttpContextAccessorWrapper, HttpContextAccessorWrapp
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
