@@ -1,0 +1,23 @@
+.article-card-date {
+  font-size: 0.8rem;
+  padding-top: 0.2rem;
+  color: var(--shadow);
+}
+.author-link:visited {
+  color: var(--url);
+}
+
+.article-card-author-container {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 1rem;
+}
+.article-card-author-data {
+  display: flex;
+  flex-direction: column;
+}
+.article-card-profile-picture {
+  width: 40px;
+  border-radius: 50%;
+}

@@ -1,11 +1,10 @@
 import { Modal, ModalTriggerElement } from "Components";
+import ArticleAuthorData from "Components/ArticleAuthorData/ArticleAuthorData";
 import DropDownMenu from "Components/DropDownMenu/DropDownMenu";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import TableOfContents from "Components/TableOfContents/TableOfContents";
 import useGetSharedArticle from "Pages/SharedArticleDashBoard/Hooks/useGetSharedArticle";
-import convertDate from "Utility/convertDate";
 import { BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
 import "../../../Articles/Articles.css";
 import useGetHeadingIds from "../Hooks/useGetHeadingIds";
 import ReportArticleModalContent from "../ReportArticleModalContent/ReportArticleModalContent";
@@ -29,14 +28,7 @@ export default function SharedArticle() {
         <section className="article-header">
           <div>
             <h1 className="article-title">{article.title}</h1>
-            <p className="article-info">
-              Created by{" "}
-              <Link to={`/profile/${article.author}`} className="author-link">
-                {article.author}
-              </Link>{" "}
-              at {convertDate(article.createdAt)} | Updated at{" "}
-              {article.updatedAt != null ? convertDate(article.updatedAt) : null}
-            </p>
+            <ArticleAuthorData article={article} />
           </div>
           <DropDownMenu icon={<BsThreeDots className="edit-icon" />}>
             <Modal

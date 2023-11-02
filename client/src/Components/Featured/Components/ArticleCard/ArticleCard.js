@@ -1,6 +1,6 @@
+import ArticleAuthorData from "Components/ArticleAuthorData/ArticleAuthorData";
 import { useNavigate } from "react-router-dom";
 import "./ArticleCard.css";
-import ArticleAuthorData from "./Components/ArticleAuthorData/ArticleAuthorData";
 import ArticleTags from "./Components/ArticleTags/ArticleTags";
 
 export default function ArticleCard({ article }) {
