@@ -7,7 +7,7 @@ export default function ArticleAuthorData({ article }) {
   const profilePictureUrl = article.authorProfilePicture ? article.authorProfilePicture : null;
 
   return (
-    <div className="article-card-author-container">
+    <div className="article-card-author-container" onClick={(e) => e.stopPropagation()}>
       <img
         src={
           profilePictureUrl

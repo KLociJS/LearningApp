@@ -4,7 +4,7 @@ import "./Articles.css";
 
 import { Sidebar } from "Components";
 import SidebarContext from "Context/SideBarProvider";
-import { MdOutlinePostAdd } from "react-icons/md";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 import useGetSidebarContent from "./Hooks/useGetSidebarContent";
 
 export default function Articles() {
@@ -15,8 +15,8 @@ export default function Articles() {
       <SidebarContext.Provider value={{ isLoading, sidebarContent, setSidebarContent }}>
         <Sidebar sidebarContent={sidebarContent} isLoading={isLoading} linkTo={"/article/"}>
           <Link to="/create-article" className="create-article-link">
-            New Note
-            <MdOutlinePostAdd className="add-icon" />
+            <AiOutlinePlusCircle className="add-icon" />
+            Add Note
           </Link>
         </Sidebar>
         <Outlet context={{ setSidebarContent }} />
