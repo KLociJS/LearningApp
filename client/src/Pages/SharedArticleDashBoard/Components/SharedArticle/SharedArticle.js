@@ -1,5 +1,6 @@
 import { Modal, ModalTriggerElement } from "Components";
 import ArticleAuthorData from "Components/ArticleAuthorData/ArticleAuthorData";
+import CustomRolesRender from "Components/CustomRolesRender/CustomRolesRender";
 import DropDownMenu from "Components/DropDownMenu/DropDownMenu";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import TableOfContents from "Components/TableOfContents/TableOfContents";
@@ -31,12 +32,16 @@ export default function SharedArticle() {
             <ArticleAuthorData article={article} />
           </div>
           <DropDownMenu icon={<BsThreeDots className="edit-icon" />}>
-            <Modal
-              triggerElement={
-                <ModalTriggerElement text="Report article" className="menu-item last-child" />
-              }
-              modalContent={<ReportArticleModalContent articleId={article.id} />}
-            />
+            <CustomRolesRender
+              allowedRoles={["User", "Author"]}
+              disAllowedRoles={["Admin", "Moderator"]}>
+              <Modal
+                triggerElement={
+                  <ModalTriggerElement text="Report article" className="menu-item last-child" />
+                }
+                modalContent={<ReportArticleModalContent articleId={article.id} />}
+              />
+            </CustomRolesRender>
           </DropDownMenu>
         </section>
         <MarkdownPreview markdown={article.markdown} setHeadings={setHeadings} />
