@@ -43,7 +43,7 @@ export default function NavBar() {
               </div>
             </NavLink>
           </li>
-          <RoleBasedRender allowedroles={["User"]}>
+          <RoleBasedRender allowedRoles={["User"]}>
             <li className="nav-item">
               <NavLink
                 to="/article"
@@ -55,7 +55,7 @@ export default function NavBar() {
               </NavLink>
             </li>
           </RoleBasedRender>
-          <RoleBasedRender allowedroles={["Admin"]}>
+          <RoleBasedRender allowedRoles={["Admin"]}>
             <li className="nav-item">
               <NavLink
                 to="/users"
@@ -68,7 +68,7 @@ export default function NavBar() {
             </li>
           </RoleBasedRender>
           <NavSearchBar />
-          <RoleBasedRender allowedroles={["User", "Admin", "Moderator", "Author"]}>
+          <RoleBasedRender allowedRoles={["User", "Admin", "Moderator", "Author"]}>
             <li className="nav-item nav-pc-align-right">
               <NavLink
                 to={`profile/${user?.userName}`}

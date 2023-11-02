@@ -11,7 +11,7 @@ export default function Publish() {
   const { state } = useArticleContext();
 
   return (
-    <RoleBasedRender allowedroles={["Author"]}>
+    <RoleBasedRender allowedRoles={["Author"]}>
       <DropDownMenu icon={<AiOutlineShareAlt className="edit-icon" />}>
         {state.article.isPublished ? (
           <>
