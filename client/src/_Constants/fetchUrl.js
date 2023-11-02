@@ -6,6 +6,7 @@ const authController = `${apiUrl}Auth`;
 const userController = `${apiUrl}User`;
 const articleController = `${apiUrl}Article`;
 const profileController = `${apiUrl}Profile`;
+const reportController = `${apiUrl}Report`;
 
 //// ActionUrls
 // Auth
@@ -47,6 +48,9 @@ const getProfilePicture = `${process.env.REACT_APP_API_URI}profile-picture/`;
 const getProfileData = `${profileController}/get-profile-data/`;
 const patchBio = `${profileController}/update-bio`;
 
+//Report
+const postArticleReport = `${reportController}/post-report-article`;
+
 export {
   changeRole,
   checkAuth,
@@ -66,6 +70,7 @@ export {
   login,
   logout,
   patchBio,
+  postArticleReport,
   postArticleUrl,
   postProfilePicture,
   profileController,

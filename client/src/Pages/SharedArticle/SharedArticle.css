@@ -1,9 +1,0 @@
-.report-article-button {
-  border: none;
-  background-color: var(--secondary);
-  color: var(--primary);
-  margin-left: auto;
-}
-.report-article-button:hover {
-  cursor: pointer;
-}

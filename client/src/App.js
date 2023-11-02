@@ -24,7 +24,6 @@ import {
   Login,
   RequestPasswordChange,
   RequestPasswordReset,
-  SharedArticle,
   SingUp,
   UnAuthorized
 } from "Pages";
@@ -39,6 +38,7 @@ import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
 import Profile from "Pages/Profile/Profile";
+import SharedArticleDashBoard from "Pages/SharedArticleDashBoard/SharedArticleDashBoard";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
 const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
@@ -54,7 +54,7 @@ const renderLoader = () => <p>Loading</p>;
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="shared-article/:id" element={<SharedArticle />} />
+      <Route path="shared-article/:id" element={<SharedArticleDashBoard />} />
       <Route index element={<Home />} />
       <Route path="/search" element={<FullTextSearch />} />
       <Route path="profile/:name" element={<Profile />} />

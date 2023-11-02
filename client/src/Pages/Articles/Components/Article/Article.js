@@ -8,9 +8,9 @@ import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownP
 import Modal from "Components/Modal/Modal";
 import ModalTriggerElement from "Components/Modal/ModalTriggerElement";
 
+import TableOfContents from "Components/TableOfContents/TableOfContents";
 import useArticleContext from "Hooks/useArticle";
-import useGetHeadingIds from "Pages/SharedArticle/Components/Hooks/useGetHeadingIds";
-import TableOfContents from "Pages/SharedArticle/Components/TableOfContents";
+import useGetHeadingIds from "Pages/SharedArticleDashBoard/Components/Hooks/useGetHeadingIds";
 import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
 import DeleteArticleModalContent from "./Components/DeleteArticleModal/DeleteArticleModalContent";
 import EditDropDownMenu from "./Components/EditDropDownMenu/EditDropDownMenu";
