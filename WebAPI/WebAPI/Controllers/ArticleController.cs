@@ -314,7 +314,7 @@ public class ArticleController : ControllerBase
         }
     }
 
-    [Authorize("Admin,Moderator")]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPatch("un-publish-by-mod/{id}")]
     public async Task<IActionResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
     {
