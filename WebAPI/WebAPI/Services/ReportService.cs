@@ -78,6 +78,20 @@ public class ReportService : IReportService
         }
     }
 
+    public async Task<GetArticleReportsResult> GetActionTakenReports()
+    {
+        try
+        {
+            var actionTakenReports = await GetArticleReportsDtoByStatus(ReportStatus.ActionTaken);
+            return GetArticleReportsResult.Succeed(actionTakenReports);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
     private async Task<List<ArticleReportResponseDto>> GetArticleReportsDtoByStatus(ReportStatus status)
     {
         var reports = await _context.ArticleReports
