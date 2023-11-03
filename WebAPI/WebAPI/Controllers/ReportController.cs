@@ -48,6 +48,21 @@ public class ReportController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin,Moderator")]
+    [HttpGet]
+    public async Task<IActionResult> GetPendingArticleReports()
+    {
+        try
+        {
+            var getReportsResult = await _reportService.GetPendingArticleReports();
+            return Ok(getReportsResult.ArticleReportResponsesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 
 
 }

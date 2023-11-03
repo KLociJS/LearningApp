@@ -9,7 +9,7 @@ public class ArticleReport
     public Guid ReporterId { get; set; }
     public AppUser Reporter { get; set; }
     
-    public Guid? ReportedArticleId { get; set; }
+    public Guid ReportedArticleId { get; set; }
     public Article ReportedArticle { get; set; }
     
     public ReportReason Reason { get; set; }

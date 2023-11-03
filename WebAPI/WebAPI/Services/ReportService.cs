@@ -3,6 +3,7 @@ using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.Enums;
 using WebAPI.Models.RequestDtos.ReportRequestDto;
+using WebAPI.Models.ResponseDto.ReportResponseDto;
 using WebAPI.Models.ResultModels.ReportResults;
 
 namespace WebAPI.Services;
@@ -56,6 +57,36 @@ public class ReportService : IReportService
             await _context.SaveChangesAsync();
         
             return PostReportArticleResult.Succeed();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<GetArticleReportsResult> GetPendingArticleReports()
+    {
+        try
+        {
+            var reports = await _context.ArticleReports
+                .Include(r=>r.Reporter)
+                .Include(r=>r.ReportedArticle)
+                .Where(r=>r.Status==ReportStatus.Pending)
+                .ToListAsync();
+            
+            var reportsDto = reports.Select(r => new ArticleReportResponseDto()
+            {
+                Id = r.Id,
+                AdditionalComments = r.AdditionalComments,
+                CreatedAt = r.CreatedAt,
+                Reason = r.Reason,
+                ReportedArticleId = r.ReportedArticleId,
+                ReporterUserName = r.Reporter.UserName
+            })
+                .ToList();
+
+            return GetArticleReportsResult.Succeed(reportsDto);
+
         }
         catch (Exception e)
         {

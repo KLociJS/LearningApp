@@ -6,4 +6,5 @@ namespace WebAPI.Services;
 public interface IReportService
 {
     Task<PostReportArticleResult> PostReportArticle(string? userName, PostReportRequestDto postReportRequestDto);
+    Task<GetArticleReportsResult> GetPendingArticleReports();
 }
