@@ -1,4 +1,4 @@
-import { Modal, ModalTriggerElement } from "Components";
+import { Modal, ModalTriggerElement, RoleBasedRender } from "Components";
 import ArticleAuthorData from "Components/ArticleAuthorData/ArticleAuthorData";
 import CustomRolesRender from "Components/CustomRolesRender/CustomRolesRender";
 import DropDownMenu from "Components/DropDownMenu/DropDownMenu";
@@ -10,6 +10,7 @@ import "../../../Articles/Articles.css";
 import useGetHeadingIds from "../Hooks/useGetHeadingIds";
 import ReportArticleModalContent from "../ReportArticleModalContent/ReportArticleModalContent";
 import SharedArticleSkeleton from "../SharedArticleSkeleton/SharedArticleSkeleton";
+import UnpublishByModModalContent from "../UnpublishByModModalContent/UnpublishByModModalContent";
 
 export default function SharedArticle() {
   const { article, isArticleLoading } = useGetSharedArticle();
@@ -42,6 +43,14 @@ export default function SharedArticle() {
                 modalContent={<ReportArticleModalContent articleId={article.id} />}
               />
             </CustomRolesRender>
+            <RoleBasedRender allowedRoles={["Admin", "Moderator"]}>
+              <Modal
+                triggerElement={
+                  <ModalTriggerElement text="Unpublish article" className="menu-item last-child" />
+                }
+                modalContent={<UnpublishByModModalContent articleId={article.id} />}
+              />
+            </RoleBasedRender>
           </DropDownMenu>
         </section>
         <MarkdownPreview markdown={article.markdown} setHeadings={setHeadings} />
