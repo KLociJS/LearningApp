@@ -68,13 +68,25 @@ public class ReportService : IReportService
     {
         try
         {
-            var reports = await _context.ArticleReports
-                .Include(r=>r.Reporter)
-                .Include(r=>r.ReportedArticle)
-                .Where(r=>r.Status==ReportStatus.Pending)
-                .ToListAsync();
+            var pendingReportsDto = await GetArticleReportsDtoByStatus(ReportStatus.Pending);
+            return GetArticleReportsResult.Succeed(pendingReportsDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    private async Task<List<ArticleReportResponseDto>> GetArticleReportsDtoByStatus(ReportStatus status)
+    {
+        var reports = await _context.ArticleReports
+            .Include(r=>r.Reporter)
+            .Include(r=>r.ReportedArticle)
+            .Where(r=>r.Status==status)
+            .ToListAsync();
             
-            var reportsDto = reports.Select(r => new ArticleReportResponseDto()
+        var reportsDto = reports.Select(r => new ArticleReportResponseDto()
             {
                 Id = r.Id,
                 AdditionalComments = r.AdditionalComments,
@@ -83,15 +95,8 @@ public class ReportService : IReportService
                 ReportedArticleId = r.ReportedArticleId,
                 ReporterUserName = r.Reporter.UserName
             })
-                .ToList();
+            .ToList();
 
-            return GetArticleReportsResult.Succeed(reportsDto);
-
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return reportsDto;
     }
 }
