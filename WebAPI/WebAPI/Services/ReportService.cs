@@ -77,7 +77,6 @@ public class ReportService : IReportService
             throw;
         }
     }
-
     public async Task<GetArticleReportsResult> GetActionTakenReports()
     {
         try
@@ -91,7 +90,19 @@ public class ReportService : IReportService
             throw;
         }
     }
-
+    public async Task<GetArticleReportsResult> GetDismissedArticleReports()
+    {
+        try
+        {
+            var dismissedReports = await GetArticleReportsDtoByStatus(ReportStatus.Dismissed);
+            return GetArticleReportsResult.Succeed(dismissedReports);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     private async Task<List<ArticleReportResponseDto>> GetArticleReportsDtoByStatus(ReportStatus status)
     {
         var reports = await _context.ArticleReports

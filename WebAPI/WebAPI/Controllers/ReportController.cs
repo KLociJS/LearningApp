@@ -80,5 +80,21 @@ public class ReportController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin,Moderator")]
+    [HttpGet("dismissed")]
+    public async Task<IActionResult> GetDismissedArticleReports()
+    {
+        try
+        {
+            var dismissedReportsResult = await _reportService.GetDismissedArticleReports();
+            return Ok(dismissedReportsResult.ArticleReportResponsesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
 
 }
