@@ -149,8 +149,12 @@ public class ReportService : IReportService
             if (patchArticleReportRequestDto.Status == ReportStatus.ActionTaken)
             {
                 var articleTakeDownNotice = new ArticleTakeDownNotice()
-                    { Reason = articleReport.Reason, Details = patchArticleReportRequestDto.Details };
-                articleReport.ReportedArticle.Author.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+                {
+                    Reason = articleReport.Reason, 
+                    Details = patchArticleReportRequestDto.Details,
+                    Author = articleReport.ReportedArticle.Author
+                };
+                _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
                 articleReport.ReportedArticle.Published = false;
                 
                 return PatchArticleReportResult.ArticleTakenDown(articleTakeDownNotice);

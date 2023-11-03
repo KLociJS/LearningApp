@@ -57,6 +57,6 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
     public DbSet<ArticleTag> ArticleTags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
-    
     public DbSet<ArticleReport> ArticleReports { get; set; }
+    public DbSet<ArticleTakeDownNotice> ArticleTakeDownNotices { get; set; }
 }
