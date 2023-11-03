@@ -4,6 +4,7 @@ using NuGet.Protocol.Plugins;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Models.ResponseDto;
+using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
@@ -305,6 +306,27 @@ public class ArticleController : ControllerBase
         {
             var articleFullTextSearchResult = await _articleService.SearchArticleFullText(searchTerm);
             return Ok(articleFullTextSearchResult.ArticleCardDtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [Authorize("Admin,Moderator")]
+    [HttpPatch("un-publish-by-mod/{id}")]
+    public async Task<IActionResult> UnPublishArticleByMod(Guid id)
+    {
+        try
+        {
+            var unPublishByModResult = await _articleService.UnPublishArticleByMod(id);
+            if (!unPublishByModResult.Succeeded)
+            {
+                return BadRequest(new UnPublishArticleByModResponseDto(){Message = unPublishByModResult.Message});
+            }
+
+            return Ok(new UnPublishArticleByModResponseDto() { Message = unPublishByModResult.Message });
         }
         catch (Exception e)
         {

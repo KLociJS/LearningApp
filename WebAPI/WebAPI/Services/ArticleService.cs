@@ -754,4 +754,27 @@ public class ArticleService : IArticleService
             throw;
         }
     }
+
+    public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id)
+    {
+        try
+        {
+            var articleToUnPublish = await _context.Articles.FirstOrDefaultAsync(a => a.Id == id);
+            if (articleToUnPublish == null)
+            {
+                return UnPublishArticleByModResult.ArticleNotFound();
+            }
+
+            articleToUnPublish.Published = false;
+            await _context.SaveChangesAsync();
+            
+            return UnPublishArticleByModResult.Succeed();
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }
