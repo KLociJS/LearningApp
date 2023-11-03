@@ -40,7 +40,7 @@ export default function SharedArticle() {
                 triggerElement={
                   <ModalTriggerElement text="Report article" className="menu-item last-child" />
                 }
-                modalContent={<ReportArticleModalContent articleId={article.id} />}
+                modalContent={<ReportArticleModalContent />}
               />
             </CustomRolesRender>
             <RoleBasedRender allowedRoles={["Admin", "Moderator"]}>
