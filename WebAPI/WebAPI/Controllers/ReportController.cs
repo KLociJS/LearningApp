@@ -70,7 +70,7 @@ public class ReportController : ControllerBase
     {
         try
         {
-            var actionTakenReportsResult = await _reportService.GetActionTakenReports();
+            var actionTakenReportsResult = await _reportService.GetDismissedArticleReports();
             return Ok(actionTakenReportsResult.ArticleReportResponsesDto);
         }
         catch (Exception e)

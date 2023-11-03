@@ -7,6 +7,6 @@ public interface IReportService
 {
     Task<PostReportArticleResult> PostReportArticle(string? userName, PostReportRequestDto postReportRequestDto);
     Task<GetArticleReportsResult> GetPendingArticleReports();
-    Task<GetArticleReportsResult> GetActionTakenReports();
+    Task<GetArticleReportsResult> GetActionTakenArticleReports();
     Task<GetArticleReportsResult> GetDismissedArticleReports();
 }
