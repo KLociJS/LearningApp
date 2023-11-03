@@ -755,20 +755,31 @@ public class ArticleService : IArticleService
         }
     }
 
-    public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id)
+    public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
     {
         try
         {
-            var articleToUnPublish = await _context.Articles.FirstOrDefaultAsync(a => a.Id == id);
+            var articleToUnPublish = await _context.Articles
+                .Include(a=>a.Author)
+                .FirstOrDefaultAsync(a => a.Id == id);
             if (articleToUnPublish == null)
             {
                 return UnPublishArticleByModResult.ArticleNotFound();
             }
 
             articleToUnPublish.Published = false;
+
+            var articleTakeDownNotice = new ArticleTakeDownNotice()
+            {
+                Author = articleToUnPublish.Author,
+                Details = unPublishArticleByModRequestDto.Details,
+                Reason = unPublishArticleByModRequestDto.Reason
+            };
+
+            _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
             await _context.SaveChangesAsync();
-            
-            return UnPublishArticleByModResult.Succeed();
+
+        return UnPublishArticleByModResult.Succeed();
             
         }
         catch (Exception e)

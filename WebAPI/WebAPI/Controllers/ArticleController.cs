@@ -316,11 +316,11 @@ public class ArticleController : ControllerBase
 
     [Authorize("Admin,Moderator")]
     [HttpPatch("un-publish-by-mod/{id}")]
-    public async Task<IActionResult> UnPublishArticleByMod(Guid id)
+    public async Task<IActionResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
     {
         try
         {
-            var unPublishByModResult = await _articleService.UnPublishArticleByMod(id);
+            var unPublishByModResult = await _articleService.UnPublishArticleByMod(id, unPublishArticleByModRequestDto);
             if (!unPublishByModResult.Succeeded)
             {
                 return BadRequest(new UnPublishArticleByModResponseDto(){Message = unPublishByModResult.Message});
