@@ -124,4 +124,44 @@ public class ReportService : IReportService
 
         return reportsDto;
     }
+    public async Task<PatchArticleReportResult> PatchArticleReport(PatchArticleReportRequestDto patchArticleReportRequestDto)
+    {
+        try
+        {
+            var articleReport =
+                await _context.ArticleReports
+                    .Include(a=>a.Reporter)
+                    .Include(a=>a.ReportedArticle)
+                    .FirstOrDefaultAsync(ar => ar.Id == patchArticleReportRequestDto.ReportId);
+            
+            if (articleReport == null)
+            {
+                return PatchArticleReportResult.ReportNotFound();
+            }
+
+            var existingReports = await _context.ArticleReports.Where(ar =>
+                ar.ReportedArticleId == articleReport.ReportedArticle.Id &&
+                ar.Reason == articleReport.Reason)
+                .ToListAsync();
+            
+            existingReports.ForEach(ar=>ar.Status=patchArticleReportRequestDto.Status);
+
+            if (patchArticleReportRequestDto.Status == ReportStatus.ActionTaken)
+            {
+                var articleTakeDownNotice = new ArticleTakeDownNotice()
+                    { Reason = articleReport.Reason, Details = patchArticleReportRequestDto.Details };
+                articleReport.ReportedArticle.Author.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+                articleReport.ReportedArticle.Published = false;
+                
+                return PatchArticleReportResult.ArticleTakenDown(articleTakeDownNotice);
+            }
+            
+            return PatchArticleReportResult.ReportDismissed();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }

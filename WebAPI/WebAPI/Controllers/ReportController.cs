@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Models.RequestDtos.ReportRequestDto;
+using WebAPI.Models.ResponseDto;
 using WebAPI.Models.ResponseDto.ReportResponseDto;
 using WebAPI.Services;
 
@@ -70,7 +71,7 @@ public class ReportController : ControllerBase
     {
         try
         {
-            var actionTakenReportsResult = await _reportService.GetDismissedArticleReports();
+            var actionTakenReportsResult = await _reportService.GetActionTakenArticleReports();
             return Ok(actionTakenReportsResult.ArticleReportResponsesDto);
         }
         catch (Exception e)
@@ -88,6 +89,35 @@ public class ReportController : ControllerBase
         {
             var dismissedReportsResult = await _reportService.GetDismissedArticleReports();
             return Ok(dismissedReportsResult.ArticleReportResponsesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [Authorize(Roles = "Admin,Moderator")]
+    [HttpPatch("patch-article-report")]
+    public async Task<IActionResult> PatchArticleReport(PatchArticleReportRequestDto patchArticleReportRequestDto)
+    {
+        try
+        {
+            var patchArticleReportResult = await _reportService.PatchArticleReport(patchArticleReportRequestDto);
+            if (!patchArticleReportResult.Succeeded)
+            {
+                return BadRequest(new PatchArticleReportResponseDto()
+                {
+                    Message = patchArticleReportResult.Message
+                });
+            }
+
+            return Ok( new PatchArticleReportResponseDto()
+                {
+                    Message = patchArticleReportResult.Message,
+                    ArticleTakeDownNotice = patchArticleReportResult.ArticleTakeDownNotice
+                });
+            
         }
         catch (Exception e)
         {
