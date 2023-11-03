@@ -77,7 +77,7 @@ public class ReportService : IReportService
             throw;
         }
     }
-    public async Task<GetArticleReportsResult> GetActionTakenReports()
+    public async Task<GetArticleReportsResult> GetActionTakenArticleReports()
     {
         try
         {
