@@ -37,6 +37,7 @@ const updatePublishedArticle = `${articleController}/update-published-article/`;
 const unpublishArticle = `${articleController}/unpublish-article/`;
 const getFeaturedArticlesByAuthor = `${articleController}/get-articles-by-author/`;
 const fullTextSearch = `${articleController}/article-full-text-search?searchTerm=`;
+const unPublishByMod = `${articleController}/un-publish-by-mod/`;
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
@@ -79,6 +80,7 @@ export {
   requestPasswordChange,
   resetPassword,
   searchArticle,
+  unPublishByMod,
   unpublishArticle,
   updateArticleUrl,
   updateCategory,
