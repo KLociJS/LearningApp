@@ -39,6 +39,12 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
                 a => new { a.Title, a.Description, a.Markdown })  
             .HasIndex(a => a.SearchVector)
             .HasMethod("GIN");
+
+        builder.Entity<ArticleTakeDownNotice>()
+            .Property(n => n.Reason)
+            .HasConversion(
+                v => v.ToString(), 
+                v => (ReportReason)Enum.Parse(typeof(ReportReason), v));
         
         builder.Entity<ArticleReport>()
             .Property(e => e.Reason)
