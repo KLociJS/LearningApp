@@ -155,6 +155,8 @@ public class ReportService : IReportService
                 
                 return PatchArticleReportResult.ArticleTakenDown(articleTakeDownNotice);
             }
+
+            await _context.SaveChangesAsync();
             
             return PatchArticleReportResult.ReportDismissed();
         }
