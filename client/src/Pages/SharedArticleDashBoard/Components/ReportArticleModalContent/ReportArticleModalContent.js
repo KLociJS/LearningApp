@@ -15,7 +15,7 @@ export default function ReportArticleModalContent({ setShow }) {
     isDisabled,
     fetchError,
     handlePostReport
-  } = useReportArticle();
+  } = useReportArticle(setShow);
 
   return (
     <div className="modal" onClick={(e) => e.stopPropagation()}>

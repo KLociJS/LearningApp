@@ -2,7 +2,7 @@ import { postArticleReport } from "_Constants/fetchUrl";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-export default function useReportArticle() {
+export default function useReportArticle(setShow) {
   const { id } = useParams();
   const [additionalComments, setAdditionalComments] = useState("");
   const [reason, setReason] = useState("");
