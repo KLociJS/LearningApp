@@ -10,6 +10,7 @@ import { AuthBasedRender, RoleBasedRender } from "Components";
 import { useAuth } from "Hooks";
 import NavSearchBar from "./Components/SearchBar/NavSearchBar";
 import useLogout from "./Hooks/useLogout";
+import usePendingArticleReport from "./Hooks/usePendingArticleReport";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -21,6 +22,8 @@ export default function NavBar() {
   const { handleLogout } = useLogout();
 
   const { user } = useAuth();
+
+  const { pendingArticleReportCount } = usePendingArticleReport();
 
   return (
     <nav className="navbar">
@@ -76,6 +79,11 @@ export default function NavBar() {
                   <AiOutlineUserAdd className="mobile-icon" size={16} />
                   Moderation
                 </div>
+                {pendingArticleReportCount ? (
+                  <div className="counter-container">
+                    <p className="counter">{pendingArticleReportCount}</p>
+                  </div>
+                ) : null}
               </NavLink>
             </li>
           </RoleBasedRender>

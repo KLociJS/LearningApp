@@ -53,6 +53,7 @@ const patchBio = `${profileController}/update-bio`;
 const postArticleReport = `${reportController}/post-report-article`;
 const getPendingReports = `${reportController}/pending`;
 const patchArticleReport = `${reportController}/patch-article-report/`;
+const getPendingArticleReportCount = `${reportController}/pending-report-count`;
 
 export {
   changeRole,
@@ -64,6 +65,7 @@ export {
   fullTextSearch,
   getArticleById,
   getFeaturedArticlesByAuthor,
+  getPendingArticleReportCount,
   getPendingReports,
   getProfileData,
   getProfilePicture,
