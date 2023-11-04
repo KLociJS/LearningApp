@@ -19,7 +19,6 @@ export default function usePendingArticleReport() {
         }
       })
       .then((data) => {
-        console.log(data);
         setPendingArticleReportCount(data.pendingReportCount);
       })
       .catch((err) => console.log(err));
