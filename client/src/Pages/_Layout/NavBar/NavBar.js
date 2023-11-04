@@ -53,7 +53,7 @@ export default function NavBar() {
                 className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
                 <div className="centered-label">
                   <BiNotepad className="mobile-icon" size={16} />
-                  My Notes
+                  Notes
                 </div>
               </NavLink>
             </li>
