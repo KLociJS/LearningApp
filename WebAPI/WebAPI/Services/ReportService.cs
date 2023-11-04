@@ -186,7 +186,6 @@ public class ReportService : IReportService
             throw;
         }
     }
-    
     private async Task RemoveUnusedTags()
     {
         var unusedTags = await _context.Tags
@@ -196,6 +195,22 @@ public class ReportService : IReportService
         foreach (var unusedTag in unusedTags)
         {
             _context.Tags.Remove(unusedTag);
+        }
+    }
+    public async Task<GetPendingReportsCountDto> GetPendingArticleReportCount()
+    {
+        try
+        {
+            var pendingReportsCount = await _context.ArticleReports
+                .Where(ar => ar.Status == ReportStatus.Pending)
+                .CountAsync();
+
+            return new GetPendingReportsCountDto() { PendingReportCount = pendingReportsCount };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

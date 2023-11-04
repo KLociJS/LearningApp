@@ -125,5 +125,21 @@ public class ReportController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin,Moderator")]
+    [HttpGet("pending-report-count")]
+    public async Task<IActionResult> GetPendingReportCount()
+    {
+        try
+        {
+            var pendingReportCountDto = await _reportService.GetPendingArticleReportCount();
+            return Ok(pendingReportCountDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
 
 }
