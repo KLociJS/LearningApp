@@ -26,6 +26,12 @@ export default function UnpublishByModModalContent({ setShow }) {
         selectValue={reason}
         setSelectValue={setReason}
         isDisabled={isDisabled}
+        options={[
+          { value: "PhishingLink", text: "Phishing link" },
+          { value: "InappropriateContent", text: "Inappropriate content" },
+          { value: "MissInformation", text: "Miss information" },
+          { value: "Other", text: "Other" }
+        ]}
       />
       <TextArea
         label="Additional details"
