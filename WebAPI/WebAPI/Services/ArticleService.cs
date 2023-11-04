@@ -762,6 +762,7 @@ public class ArticleService : IArticleService
         {
             var articleToUnPublish = await _context.Articles
                 .Include(a=>a.Author)
+                .Include(a=>a.ArticleTags)
                 .FirstOrDefaultAsync(a => a.Id == id);
             if (articleToUnPublish == null)
             {
@@ -778,8 +779,15 @@ public class ArticleService : IArticleService
             };
 
             _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+
+            var articleTags = articleToUnPublish.ArticleTags;
+            _context.ArticleTags.RemoveRange(articleTags);
+            
+            await _context.SaveChangesAsync();
+
             await RemoveUnusedTags();
             await _context.SaveChangesAsync();
+
 
         return UnPublishArticleByModResult.Succeed();
             
