@@ -668,6 +668,7 @@ public class ArticleService : IArticleService
                             Name = sc.Name,
                             Articles = sc.Articles
                                 .OrderBy(a=>a.Title)
+                                .Where(a=>a.Published==true)
                                 .Select(a => new SidebarArticleDto() { Id = a.Id, Name = a.Title })
                                 .ToList()
                         }).ToList()
@@ -777,6 +778,7 @@ public class ArticleService : IArticleService
             };
 
             _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+            await RemoveUnusedTags();
             await _context.SaveChangesAsync();
 
         return UnPublishArticleByModResult.Succeed();
