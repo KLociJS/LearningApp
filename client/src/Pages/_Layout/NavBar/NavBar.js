@@ -67,6 +67,18 @@ export default function NavBar() {
               </NavLink>
             </li>
           </RoleBasedRender>
+          <RoleBasedRender allowedRoles={["Admin", "Moderator"]}>
+            <li className="nav-item">
+              <NavLink
+                to="/moderation-dashboard"
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineUserAdd className="mobile-icon" size={16} />
+                  Moderation
+                </div>
+              </NavLink>
+            </li>
+          </RoleBasedRender>
           <NavSearchBar />
           <RoleBasedRender allowedRoles={["User", "Admin", "Moderator", "Author"]}>
             <li className="nav-item nav-pc-align-right">

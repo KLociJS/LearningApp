@@ -9,5 +9,5 @@ public interface IReportService
     Task<GetArticleReportsResult> GetPendingArticleReports();
     Task<GetArticleReportsResult> GetActionTakenArticleReports();
     Task<GetArticleReportsResult> GetDismissedArticleReports();
-    Task<PatchArticleReportResult> PatchArticleReport(PatchArticleReportRequestDto patchArticleReportRequestDto);
+    Task<PatchArticleReportResult> PatchArticleReport(Guid reportId,PatchArticleReportRequestDto patchArticleReportRequestDto);
 }

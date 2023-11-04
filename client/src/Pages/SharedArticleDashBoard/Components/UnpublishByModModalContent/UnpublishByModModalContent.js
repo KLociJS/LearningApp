@@ -16,7 +16,7 @@ export default function UnpublishByModModalContent({ setShow }) {
     fetchError,
     handleCancel,
     handleUnpublishByMod
-  } = useUnPublishByMod();
+  } = useUnPublishByMod(setShow);
 
   return (
     <div className="modal" onClick={(e) => e.stopPropagation()}>

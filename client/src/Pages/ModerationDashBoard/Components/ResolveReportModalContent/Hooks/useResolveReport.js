@@ -1,19 +1,17 @@
-import { unPublishByMod } from "_Constants/fetchUrl";
+import { patchArticleReport } from "_Constants/fetchUrl";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
-export default function useUnPublishByMod(setShow) {
-  const { id } = useParams();
-  const [reason, setReason] = useState("");
-  const [reasonError, setReasonError] = useState(false);
+export default function useResolveReport(report, setPendingReports, setShow) {
+  const [status, setStatus] = useState("");
+  const [statusError, setStatusError] = useState(false);
   const [details, setDetails] = useState("");
   const [detailsError, setDetailsError] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [fetchError, setFetchError] = useState(false);
 
-  const handleUnpublishByMod = () => {
-    if (reason === "") {
-      setReasonError(true);
+  const handleResolveReport = () => {
+    if (status === "") {
+      setStatusError(true);
       return;
     }
     if (details.length > 200) {
@@ -21,18 +19,19 @@ export default function useUnPublishByMod(setShow) {
       return;
     }
     setIsDisabled(true);
-    const unPublishData = {
-      reason,
+
+    const reportData = {
+      status,
       details
     };
 
-    fetch(`${unPublishByMod}${id}`, {
+    fetch(`${patchArticleReport}${report.id}`, {
       method: "PATCH",
+      credentials: "include",
       headers: {
         "content-type": "application/json"
       },
-      credentials: "include",
-      body: JSON.stringify(unPublishData)
+      body: JSON.stringify(reportData)
     })
       .then((res) => {
         if (res.ok) {
@@ -42,29 +41,36 @@ export default function useUnPublishByMod(setShow) {
         }
       })
       .then((data) => {
+        setPendingReports((prev) =>
+          prev.filter((r) => {
+            return r.id !== report.id;
+          })
+        );
         setShow(false);
       })
       .catch((err) => {
-        setFetchError(true);
         console.log(err);
+        setFetchError(true);
       })
       .finally(() => setIsDisabled(false));
   };
 
-  const handleCancel = () => setShow(false);
+  const handleCancel = () => {
+    setShow(false);
+  };
 
   return {
-    reason,
-    setReason,
-    reasonError,
-    setReasonError,
+    status,
+    setStatus,
+    statusError,
+    setStatusError,
     details,
     setDetails,
     detailsError,
     setDetailsError,
     isDisabled,
     fetchError,
-    handleCancel,
-    handleUnpublishByMod
+    handleResolveReport,
+    handleCancel
   };
 }

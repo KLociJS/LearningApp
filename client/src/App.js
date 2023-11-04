@@ -37,6 +37,7 @@ import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkel
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
+import ModerationDashBoard from "Pages/ModerationDashBoard/ModerationDashBoard";
 import Profile from "Pages/Profile/Profile";
 import SharedArticleDashBoard from "Pages/SharedArticleDashBoard/SharedArticleDashBoard";
 
@@ -95,6 +96,16 @@ const router = createBrowserRouter(
           element={
             <Suspense fallback={renderLoader()}>
               <Users />
+            </Suspense>
+          }
+        />
+      </Route>
+      <Route element={<RequireRoles allowedRoles={["Admin", "Moderator"]} />}>
+        <Route
+          path="moderation-dashboard"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ModerationDashBoard />
             </Suspense>
           }
         />

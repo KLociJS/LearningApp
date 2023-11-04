@@ -36,8 +36,11 @@ public class ReportService : IReportService
 
             var existingReport =
                 await _context.ArticleReports.FirstOrDefaultAsync(r =>
-                    r.Reporter == reporterUser && r.ReportedArticle == article);
-            
+                    r.Reporter == reporterUser 
+                    && r.ReportedArticle == article 
+                    && r.Status== ReportStatus.Pending 
+                    && r.Reason==postReportRequestDto.Reason);
+
             if (existingReport != null)
             {
                 return PostReportArticleResult.ArticleAlreadyReported();
@@ -118,21 +121,25 @@ public class ReportService : IReportService
                 CreatedAt = r.CreatedAt,
                 Reason = r.Reason,
                 ReportedArticleId = r.ReportedArticleId,
+                ReportedArticleTitle = r.ReportedArticle.Title,
                 ReporterUserName = r.Reporter.UserName
             })
             .ToList();
 
         return reportsDto;
     }
-    public async Task<PatchArticleReportResult> PatchArticleReport(PatchArticleReportRequestDto patchArticleReportRequestDto)
+    public async Task<PatchArticleReportResult> PatchArticleReport(Guid reportId,PatchArticleReportRequestDto patchArticleReportRequestDto)
     {
         try
         {
             var articleReport =
                 await _context.ArticleReports
-                    .Include(a=>a.Reporter)
-                    .Include(a=>a.ReportedArticle)
-                    .FirstOrDefaultAsync(ar => ar.Id == patchArticleReportRequestDto.ReportId);
+                    .Include(ar=>ar.Reporter)
+                    .Include(ar=>ar.ReportedArticle)
+                        .ThenInclude(a=>a.Author)
+                    .Include(ar=>ar.ReportedArticle)
+                        .ThenInclude(a=>a.ArticleTags)
+                    .FirstOrDefaultAsync(ar => ar.Id == reportId);
             
             if (articleReport == null)
             {
@@ -152,12 +159,21 @@ public class ReportService : IReportService
                 {
                     Reason = articleReport.Reason, 
                     Details = patchArticleReportRequestDto.Details,
-                    Author = articleReport.ReportedArticle.Author
+                    Author = articleReport.ReportedArticle.Author,
+                    AuthorId = articleReport.ReportedArticle.AuthorId
                 };
                 _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
-                articleReport.ReportedArticle.Published = false;
                 
-                return PatchArticleReportResult.ArticleTakenDown(articleTakeDownNotice);
+                articleReport.ReportedArticle.Published = false;
+                var articleTags = articleReport.ReportedArticle.ArticleTags;
+                _context.ArticleTags.RemoveRange(articleTags);
+                
+                await _context.SaveChangesAsync();
+
+                await RemoveUnusedTags();
+                await _context.SaveChangesAsync();
+
+                return PatchArticleReportResult.ArticleTakenDown();
             }
 
             await _context.SaveChangesAsync();
@@ -168,6 +184,18 @@ public class ReportService : IReportService
         {
             Console.WriteLine(e);
             throw;
+        }
+    }
+    
+    private async Task RemoveUnusedTags()
+    {
+        var unusedTags = await _context.Tags
+            .Include(t => t.ArticleTags)
+            .Where(t => !t.ArticleTags.Any())
+            .ToListAsync();
+        foreach (var unusedTag in unusedTags)
+        {
+            _context.Tags.Remove(unusedTag);
         }
     }
 }

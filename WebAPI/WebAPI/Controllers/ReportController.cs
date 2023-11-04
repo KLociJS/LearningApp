@@ -98,12 +98,12 @@ public class ReportController : ControllerBase
     }
 
     [Authorize(Roles = "Admin,Moderator")]
-    [HttpPatch("patch-article-report")]
-    public async Task<IActionResult> PatchArticleReport(PatchArticleReportRequestDto patchArticleReportRequestDto)
+    [HttpPatch("patch-article-report/{reportId}")]
+    public async Task<IActionResult> PatchArticleReport(Guid reportId, PatchArticleReportRequestDto patchArticleReportRequestDto)
     {
         try
         {
-            var patchArticleReportResult = await _reportService.PatchArticleReport(patchArticleReportRequestDto);
+            var patchArticleReportResult = await _reportService.PatchArticleReport(reportId,patchArticleReportRequestDto);
             if (!patchArticleReportResult.Succeeded)
             {
                 return BadRequest(new PatchArticleReportResponseDto()
@@ -114,8 +114,7 @@ public class ReportController : ControllerBase
 
             return Ok( new PatchArticleReportResponseDto()
                 {
-                    Message = patchArticleReportResult.Message,
-                    ArticleTakeDownNotice = patchArticleReportResult.ArticleTakeDownNotice
+                    Message = patchArticleReportResult.Message
                 });
             
         }
