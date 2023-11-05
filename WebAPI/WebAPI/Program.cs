@@ -50,6 +50,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddTransient<IImageService, ImageService>();
 builder.Services.AddScoped<IProfileService, ProfileService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<INoticeService, NoticeService>();
 
 // Add identity core
 builder.Services.AddIdentity<AppUser, IdentityRole<Guid>>()
