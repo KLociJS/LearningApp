@@ -205,7 +205,7 @@ public class ReportService : IReportService
                 .Where(ar => ar.Status == ReportStatus.Pending)
                 .CountAsync();
 
-            return new GetPendingReportsCountDto() { PendingReportCount = pendingReportsCount };
+            return new GetPendingReportsCountDto() { Count = pendingReportsCount };
         }
         catch (Exception e)
         {

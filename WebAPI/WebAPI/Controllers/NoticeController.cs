@@ -42,4 +42,67 @@ public class NoticeController : ControllerBase
             throw;
         }
     }
+
+    [HttpGet("get-notice/{id}")]
+    public async Task<IActionResult> GetNoticeById(Guid id)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext.User.Identity!.Name;
+            var getNoticeResult = await _noticeService.GetNoticeById(userName, id);
+            if (!getNoticeResult.Succeeded)
+            {
+                return BadRequest(getNoticeResult.Message);
+            }
+
+            return Ok(getNoticeResult.NoticeResponseDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [HttpDelete("delete-notice/{id}")]
+    public async Task<IActionResult> DeleteNoticeById(Guid id)
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext.User.Identity!.Name;
+            var deleteNoticeResult = await _noticeService.DeleteNoticeById(userName, id);
+            if (!deleteNoticeResult.Suceeded)
+            {
+                return BadRequest(new Result() {Description = deleteNoticeResult.Message});
+            }
+
+            return Ok(new Result() {Description = deleteNoticeResult.Message});
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [HttpGet("get-notice-count")]
+    public async Task<IActionResult> GetUnReadNoticeCount()
+    {
+        try
+        {
+            var userName = _httpContextAccessor.HttpContext.User.Identity!.Name;
+            var getUnReadNoticeCountResult = await _noticeService.GetUnreadNoticeCount(userName);
+            if (!getUnReadNoticeCountResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(getUnReadNoticeCountResult.GetUnreadNoticeCountDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
 }

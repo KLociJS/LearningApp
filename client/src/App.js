@@ -37,6 +37,7 @@ import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkel
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
+import Notice from "Pages/Message/Notice";
 import ModerationDashBoard from "Pages/ModerationDashBoard/ModerationDashBoard";
 import Profile from "Pages/Profile/Profile";
 import SharedArticleDashBoard from "Pages/SharedArticleDashBoard/SharedArticleDashBoard";
@@ -59,8 +60,10 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="/search" element={<FullTextSearch />} />
       <Route path="profile/:name" element={<Profile />} />
+
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
+        <Route path="notice" element={<Notice />} />
         <Route element={<ArticleContextWrapper />}>
           <Route
             path="article"

@@ -1,16 +1,14 @@
 import { useAuth } from "Hooks";
-import { getPendingArticleReportCount } from "_Constants/fetchUrl";
 import { useEffect, useState } from "react";
 
-export default function usePendingArticleReport() {
-  const [pendingArticleReportCount, setPendingArticleReportCount] = useState(0);
+export default function useNotificationCount(fetchUrl, allowedRoles) {
+  const [count, setCount] = useState(0);
   const { user } = useAuth();
 
-  const roles = ["Admin", "Moderator"];
-  const isAdminOrMod = user?.roles.some((r) => roles.includes(r));
+  const isAllowed = user?.roles.some((r) => allowedRoles.includes(r));
 
   const fetchPendingReportCount = () => {
-    fetch(getPendingArticleReportCount, { credentials: "include" })
+    fetch(fetchUrl, { credentials: "include" })
       .then((res) => {
         if (res.ok) {
           return res.json();
@@ -19,18 +17,18 @@ export default function usePendingArticleReport() {
         }
       })
       .then((data) => {
-        setPendingArticleReportCount(data.pendingReportCount);
+        setCount(data.count);
       })
       .catch((err) => console.log(err));
   };
 
   useEffect(() => {
-    if (isAdminOrMod) {
+    if (isAllowed) {
       fetchPendingReportCount();
       const intervalId = setInterval(fetchPendingReportCount, 10000);
       return () => clearInterval(intervalId);
     }
-  }, [isAdminOrMod]);
+  }, [isAllowed]);
 
-  return { pendingArticleReportCount };
+  return count;
 }

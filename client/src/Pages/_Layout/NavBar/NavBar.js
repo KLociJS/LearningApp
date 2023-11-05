@@ -1,16 +1,24 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { AiOutlineHome, AiOutlineLogin, AiOutlineUser, AiOutlineUserAdd } from "react-icons/ai";
+import {
+  AiOutlineHome,
+  AiOutlineLogin,
+  AiOutlineMail,
+  AiOutlineUser,
+  AiOutlineUserAdd
+} from "react-icons/ai";
 import { BiNotepad } from "react-icons/bi";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { LuBrainCircuit } from "react-icons/lu";
 
 import { AuthBasedRender, RoleBasedRender } from "Components";
 import { useAuth } from "Hooks";
+import { getPendingArticleReportCount, getUnreadNoticeCount } from "_Constants/fetchUrl";
+import Notifier from "./Components/Notifier/Notifier";
 import NavSearchBar from "./Components/SearchBar/NavSearchBar";
 import useLogout from "./Hooks/useLogout";
-import usePendingArticleReport from "./Hooks/usePendingArticleReport";
+import useNotificationCount from "./Hooks/useNotificationCount";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -23,7 +31,11 @@ export default function NavBar() {
 
   const { user } = useAuth();
 
-  const { pendingArticleReportCount } = usePendingArticleReport();
+  const pendingArticleReportCount = useNotificationCount(getPendingArticleReportCount, [
+    "Admin",
+    "Moderator"
+  ]);
+  const unreadNoticesCount = useNotificationCount(getUnreadNoticeCount, ["User"]);
 
   return (
     <nav className="navbar">
@@ -57,6 +69,17 @@ export default function NavBar() {
                 </div>
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/notice"
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineMail className="mobile-icon" size={16} />
+                  Notices
+                </div>
+                <Notifier count={unreadNoticesCount} />
+              </NavLink>
+            </li>
           </RoleBasedRender>
           <RoleBasedRender allowedRoles={["Admin"]}>
             <li className="nav-item">
@@ -79,11 +102,7 @@ export default function NavBar() {
                   <AiOutlineUserAdd className="mobile-icon" size={16} />
                   Moderation
                 </div>
-                {pendingArticleReportCount ? (
-                  <div className="counter-container">
-                    <p className="counter">{pendingArticleReportCount}</p>
-                  </div>
-                ) : null}
+                <Notifier count={pendingArticleReportCount} />
               </NavLink>
             </li>
           </RoleBasedRender>

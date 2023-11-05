@@ -7,6 +7,7 @@ const userController = `${apiUrl}User`;
 const articleController = `${apiUrl}Article`;
 const profileController = `${apiUrl}Profile`;
 const reportController = `${apiUrl}Report`;
+const noticeController = `${apiUrl}Notice`;
 
 //// ActionUrls
 // Auth
@@ -55,16 +56,25 @@ const getPendingReports = `${reportController}/pending`;
 const patchArticleReport = `${reportController}/patch-article-report/`;
 const getPendingArticleReportCount = `${reportController}/pending-report-count`;
 
+//Notice
+const getNotices = `${noticeController}/get-notices`;
+const getNotice = `${noticeController}/get-notice/`;
+const deleteNotice = `${noticeController}/delete-notice/`;
+const getUnreadNoticeCount = `${noticeController}/get-notice-count`;
+
 export {
   changeRole,
   checkAuth,
   confirmEmail,
   deleteArticle,
+  deleteNotice,
   deleteUser,
   featuredArticle,
   fullTextSearch,
   getArticleById,
   getFeaturedArticlesByAuthor,
+  getNotice,
+  getNotices,
   getPendingArticleReportCount,
   getPendingReports,
   getProfileData,
@@ -72,6 +82,7 @@ export {
   getSharedArticle,
   getSharedSidebarContent,
   getSidebarContentUrl,
+  getUnreadNoticeCount,
   getUsers,
   login,
   logout,

@@ -2,5 +2,5 @@ namespace WebAPI.Models.ResponseDto.ReportResponseDto;
 
 public class GetPendingReportsCountDto
 {
-    public int PendingReportCount { get; set; }
+    public int Count { get; set; }
 }
