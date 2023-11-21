@@ -105,7 +105,6 @@ public class NoticeService : INoticeService
             throw;
         }
     }
-
     public async Task<GetUnreadNoticeCountResult> GetUnreadNoticeCount(string? userName)
     {
         try

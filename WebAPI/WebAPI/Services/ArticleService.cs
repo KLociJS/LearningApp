@@ -725,6 +725,7 @@ public class ArticleService : IArticleService
         try
         {
             var articles = await _context.Articles
+                .Where(a=>a.Published==true)
                 .Where(a => a.SearchVector.Matches(EF.Functions.PlainToTsQuery("english", searchTerm)))
                 .Include(a=>a.Author)
                 .Include(a=>a.ArticleTags)
@@ -755,7 +756,6 @@ public class ArticleService : IArticleService
             throw;
         }
     }
-
     public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
     {
         try
