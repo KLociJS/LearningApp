@@ -2,7 +2,7 @@ import "./ArticleSkeleton.css";
 
 export default function ArticleSkeleton() {
   return (
-    <section className="article-container">
+    <section className="article-container-skeleton">
       <section className="article-skeleton-header-container">
         <div>
           <div className="article-skeleton-title"></div>
