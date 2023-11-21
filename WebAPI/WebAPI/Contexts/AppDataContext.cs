@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
+using WebAPI.Models.Enums;
 
 namespace WebAPI.Contexts;
 
@@ -38,6 +39,23 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
                 a => new { a.Title, a.Description, a.Markdown })  
             .HasIndex(a => a.SearchVector)
             .HasMethod("GIN");
+
+        builder.Entity<ArticleTakeDownNotice>()
+            .Property(n => n.Reason)
+            .HasConversion(
+                v => v.ToString(), 
+                v => (ReportReason)Enum.Parse(typeof(ReportReason), v));
+        
+        builder.Entity<ArticleReport>()
+            .Property(e => e.Reason)
+            .HasConversion(
+                v => v.ToString(),
+                v => (ReportReason)Enum.Parse(typeof(ReportReason), v));
+        builder.Entity<ArticleReport>()
+            .Property(e => e.Status)
+            .HasConversion(
+                v => v.ToString(),
+                v => (ReportStatus)Enum.Parse(typeof(ReportStatus), v));
     }
 
     public DbSet<Article> Articles { get; set; }
@@ -45,4 +63,6 @@ public class AppDataContext : IdentityDbContext<AppUser, IdentityRole<Guid>, Gui
     public DbSet<ArticleTag> ArticleTags { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<SubCategory> SubCategories { get; set; }
+    public DbSet<ArticleReport> ArticleReports { get; set; }
+    public DbSet<ArticleTakeDownNotice> ArticleTakeDownNotices { get; set; }
 }

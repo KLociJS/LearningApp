@@ -7,7 +7,6 @@ import "./Home.css";
 
 export default function Home() {
   const { articles, isLoading } = useGetFeaturedArticles();
-  console.log(articles);
 
   return (
     <section className="hero-container">

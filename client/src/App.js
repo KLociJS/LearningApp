@@ -24,7 +24,6 @@ import {
   Login,
   RequestPasswordChange,
   RequestPasswordReset,
-  SharedArticle,
   SingUp,
   UnAuthorized
 } from "Pages";
@@ -38,7 +37,10 @@ import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkel
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
+import Notice from "Pages/Message/Notice";
+import ModerationDashBoard from "Pages/ModerationDashBoard/ModerationDashBoard";
 import Profile from "Pages/Profile/Profile";
+import SharedArticleDashBoard from "Pages/SharedArticleDashBoard/SharedArticleDashBoard";
 
 const Users = lazy(() => import(/* webpackChunkName: "users" */ "./Pages/Users/Users"));
 const Articles = lazy(() => import(/* webpackChunkName: "articles" */ "./Pages/Articles/Articles"));
@@ -54,12 +56,14 @@ const renderLoader = () => <p>Loading</p>;
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="shared-article/:id" element={<SharedArticle />} />
+      <Route path="shared-article/:id" element={<SharedArticleDashBoard />} />
       <Route index element={<Home />} />
       <Route path="/search" element={<FullTextSearch />} />
       <Route path="profile/:name" element={<Profile />} />
+
       <Route element={<RequireRoles allowedRoles={["User"]} />}>
         <Route path="confirm-email" element={<ConfirmEmail />} />
+        <Route path="notice" element={<Notice />} />
         <Route element={<ArticleContextWrapper />}>
           <Route
             path="article"
@@ -95,6 +99,16 @@ const router = createBrowserRouter(
           element={
             <Suspense fallback={renderLoader()}>
               <Users />
+            </Suspense>
+          }
+        />
+      </Route>
+      <Route element={<RequireRoles allowedRoles={["Admin", "Moderator"]} />}>
+        <Route
+          path="moderation-dashboard"
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ModerationDashBoard />
             </Suspense>
           }
         />

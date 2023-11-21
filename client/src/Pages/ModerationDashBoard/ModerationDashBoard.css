@@ -1,0 +1,51 @@
+.report-page-container {
+  display: flex;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  gap: 1rem;
+  padding: 1rem;
+}
+.report-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  flex-basis: 100%;
+
+  padding: 0.5rem 1rem;
+
+  border-top: 1px solid var(--shadow);
+}
+
+.report-article-title-container {
+  display: flex;
+  align-items: center;
+}
+.reported-article-title {
+  color: var(--primary);
+}
+
+.report-article-link {
+  color: var(--url);
+}
+.report-link-icon {
+  font-size: 1.5rem;
+}
+.report-reason {
+  color: var(--primary);
+  font-weight: 400;
+}
+.report-details {
+  margin-top: 0.5rem;
+  color: var(--primary);
+}
+.report-date {
+  font-size: 0.8rem;
+  color: var(--shadow);
+}
+.reporter-link {
+  font-size: 0.8rem;
+  color: var(--url);
+}

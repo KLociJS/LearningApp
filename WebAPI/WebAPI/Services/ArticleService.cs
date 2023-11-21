@@ -597,6 +597,7 @@ public class ArticleService : IArticleService
             var articleDto = new ArticleDto()
             {
                 Author = article.Author.UserName,
+                AuthorProfilePicture = article.Author.ProfilePictureName,
                 CreatedAt = article.CreatedAt,
                 Id = article.Id,
                 Markdown = article.Markdown,
@@ -667,6 +668,7 @@ public class ArticleService : IArticleService
                             Name = sc.Name,
                             Articles = sc.Articles
                                 .OrderBy(a=>a.Title)
+                                .Where(a=>a.Published==true)
                                 .Select(a => new SidebarArticleDto() { Id = a.Id, Name = a.Title })
                                 .ToList()
                         }).ToList()
@@ -723,6 +725,7 @@ public class ArticleService : IArticleService
         try
         {
             var articles = await _context.Articles
+                .Where(a=>a.Published==true)
                 .Where(a => a.SearchVector.Matches(EF.Functions.PlainToTsQuery("english", searchTerm)))
                 .Include(a=>a.Author)
                 .Include(a=>a.ArticleTags)
@@ -746,6 +749,48 @@ public class ArticleService : IArticleService
 
             return SearchArticleFullTextResult.Succeed(articlesDto);
 
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
+    {
+        try
+        {
+            var articleToUnPublish = await _context.Articles
+                .Include(a=>a.Author)
+                .Include(a=>a.ArticleTags)
+                .FirstOrDefaultAsync(a => a.Id == id);
+            if (articleToUnPublish == null)
+            {
+                return UnPublishArticleByModResult.ArticleNotFound();
+            }
+
+            articleToUnPublish.Published = false;
+
+            var articleTakeDownNotice = new ArticleTakeDownNotice()
+            {
+                Author = articleToUnPublish.Author,
+                Details = unPublishArticleByModRequestDto.Details,
+                Reason = unPublishArticleByModRequestDto.Reason
+            };
+
+            _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+
+            var articleTags = articleToUnPublish.ArticleTags;
+            _context.ArticleTags.RemoveRange(articleTags);
+            
+            await _context.SaveChangesAsync();
+
+            await RemoveUnusedTags();
+            await _context.SaveChangesAsync();
+
+
+        return UnPublishArticleByModResult.Succeed();
+            
         }
         catch (Exception e)
         {

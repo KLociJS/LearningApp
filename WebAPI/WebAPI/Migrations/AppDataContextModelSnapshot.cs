@@ -290,6 +290,42 @@ namespace WebAPI.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ArticleReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AdditionalComments")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ReportedArticleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReporterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportedArticleId");
+
+                    b.HasIndex("ReporterId");
+
+                    b.ToTable("ArticleReports");
+                });
+
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -309,6 +345,36 @@ namespace WebAPI.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ArticleTags");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTakeDownNotice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Unread")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("ArticleTakeDownNotices");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -447,6 +513,25 @@ namespace WebAPI.Migrations
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ArticleReport", b =>
+                {
+                    b.HasOne("WebAPI.Models.Article", "ReportedArticle")
+                        .WithMany()
+                        .HasForeignKey("ReportedArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.AppUser", "Reporter")
+                        .WithMany()
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportedArticle");
+
+                    b.Navigation("Reporter");
+                });
+
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
                 {
                     b.HasOne("WebAPI.Models.Article", "Article")
@@ -464,6 +549,17 @@ namespace WebAPI.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTakeDownNotice", b =>
+                {
+                    b.HasOne("WebAPI.Models.AppUser", "Author")
+                        .WithMany("ArticleTakeDownNotices")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -498,6 +594,8 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.AppUser", b =>
                 {
+                    b.Navigation("ArticleTakeDownNotices");
+
                     b.Navigation("Articles");
 
                     b.Navigation("Categories");

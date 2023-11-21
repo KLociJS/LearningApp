@@ -3,14 +3,13 @@ import "./Components/DropdownMenu.css";
 
 import { RiDeleteBinLine } from "react-icons/ri";
 
-import { RoleBasedRender } from "Components";
 import MarkdownPreview from "Components/MarkdownEditor/MarkdownPreview/MarkdownPreview";
 import Modal from "Components/Modal/Modal";
 import ModalTriggerElement from "Components/Modal/ModalTriggerElement";
 
+import TableOfContents from "Components/TableOfContents/TableOfContents";
 import useArticleContext from "Hooks/useArticle";
-import useGetHeadingIds from "Pages/SharedArticle/Components/Hooks/useGetHeadingIds";
-import TableOfContents from "Pages/SharedArticle/Components/TableOfContents";
+import useGetHeadingIds from "Pages/SharedArticleDashBoard/Components/Hooks/useGetHeadingIds";
 import ArticleSkeleton from "./Components/ArticleSkeleton/ArticleSkeleton";
 import DeleteArticleModalContent from "./Components/DeleteArticleModal/DeleteArticleModalContent";
 import EditDropDownMenu from "./Components/EditDropDownMenu/EditDropDownMenu";
@@ -33,9 +32,7 @@ export default function Article() {
             <h1 className="article-title">{state.article.title}</h1>
           </div>
           <div className="action-btn">
-            <RoleBasedRender allowedroles={["Author"]}>
-              <PublishDropDownMenu />
-            </RoleBasedRender>
+            <PublishDropDownMenu />
             <EditDropDownMenu />
             <Modal
               modalContent={<DeleteArticleModalContent id={id} />}

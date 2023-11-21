@@ -2,6 +2,7 @@ import defaultProfilePicture from "Pages/Profile/Components/ProfileData/ProfileP
 import convertDate from "Utility/convertDate";
 import { getProfilePicture } from "_Constants/fetchUrl";
 import { Link } from "react-router-dom";
+import "./ArticleAuthorData.css";
 
 export default function ArticleAuthorData({ article }) {
   const profilePictureUrl = article.authorProfilePicture ? article.authorProfilePicture : null;

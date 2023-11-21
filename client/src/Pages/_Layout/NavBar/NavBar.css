@@ -50,6 +50,7 @@
 }
 
 .nav-item {
+  position: relative;
   display: flex;
   align-items: center;
   height: 80px;
@@ -160,6 +161,7 @@
 
   .nav-item {
     width: 100%;
+    height: auto;
   }
 
   .navbar-logo {
