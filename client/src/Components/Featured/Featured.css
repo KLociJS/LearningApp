@@ -8,7 +8,6 @@
   gap: 1rem;
   border-radius: 5px;
   padding: 1rem;
-  box-shadow: 1px 1px 3px var(--shadow);
 }
 
 @media screen and (max-width: 960px) {

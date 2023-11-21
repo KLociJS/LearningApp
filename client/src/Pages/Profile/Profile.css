@@ -13,7 +13,6 @@
   gap: 1rem;
 
   border-radius: 5px;
-  box-shadow: 1px 1px 3px var(--shadow);
 }
 
 .profile-user-name-label,
