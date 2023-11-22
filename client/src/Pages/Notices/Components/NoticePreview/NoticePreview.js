@@ -27,11 +27,11 @@ export default function NoticePreview({ notice, setShow, setNotices }) {
   };
 
   return (
-    <tr onClick={handleShow} className={`notice-table-row ${unreadClassName}`}>
-      <td className="notice-table-data">{isUnread ? <HiOutlineMail /> : <HiOutlineMailOpen />}</td>
-      <td className="notice-table-data">{notice.sender}</td>
-      <td className="notice-table-data">{notice.subject}</td>
-      <td onClick={handleDelete} className="notice-table-data">
+    <tr onClick={handleShow} className={`table-row ${unreadClassName}`}>
+      <td className="table-data">{isUnread ? <HiOutlineMail /> : <HiOutlineMailOpen />}</td>
+      <td className="table-data">{notice.sender}</td>
+      <td className="table-data max-width">{notice.subject}</td>
+      <td onClick={handleDelete} className="table-data">
         <RiDeleteBinLine className="delete-icon" />
       </td>
     </tr>

@@ -1,45 +1,48 @@
-.modal-container{
-    position: fixed;
-    top:0;
-    left:0;
-    z-index: 1000;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(48, 48, 48, 0.747);
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(48, 48, 48, 0.747);
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.modal{
-    background-color: var(--secondary);
-    padding: 2rem;
-    border-radius: 5px;
+.modal {
+  background-color: var(--secondary);
+  padding: 2rem;
+  border-radius: 5px;
 
-    position: relative;
-    
-    display: flex;
-    flex-direction: column;
-    /* align-items: center; */
-    gap: 0.75rem;
-}
-.modal-close-btn{
-    position: absolute;
-    
-}
+  position: relative;
 
-.modal-header{
-    color: var(--primary);
-    font-size: 2rem;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  gap: 0.75rem;
 }
-.modal-header.warning{
-    color: var(--danger)
+.modal-close-btn {
+  position: absolute;
 }
 
-.button-container{
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+.modal-header {
+  color: var(--primary);
+  font-size: 2rem;
+  text-align: center;
+}
+.modal-header.warning {
+  color: var(--danger);
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.modal-button {
+  border: none;
+  background-color: var(--secondary);
 }
