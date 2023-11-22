@@ -6,7 +6,6 @@
 .bio-container {
   position: relative;
   border-top: 1px solid var(--shadow);
-  flex: 2;
 }
 
 .edit-bio-icon {
