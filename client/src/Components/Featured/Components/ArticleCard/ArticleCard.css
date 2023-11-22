@@ -7,7 +7,7 @@
 }
 
 .article-card:hover {
-  border: 1px solid var(--shadow);
+  box-shadow: 1px 1px 3px var(--shadow);
   cursor: pointer;
 }
 .article-card-title {
