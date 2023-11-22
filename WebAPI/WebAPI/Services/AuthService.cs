@@ -130,7 +130,7 @@ public class AuthService : IAuthService
             if (user != null)
             {
                 var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var url = $"http://localhost:3000/forgot-password?token={HttpUtility.UrlEncode(token)}";
+                var url = $"http://52.57.115.197/forgot-password?token={HttpUtility.UrlEncode(token)}";
                 
                 var message = new Message(new[] { email }, "Reset password", url);
                 _emailService.SendEmail(message);
@@ -208,6 +208,6 @@ public class AuthService : IAuthService
     private async Task<string> GenerateConfirmationLink(AppUser user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        return $"http://localhost:3000/confirm-email?email={HttpUtility.UrlEncode(user.Email)}&token={HttpUtility.UrlEncode(token)}";
+        return $"http://52.57.115.197//confirm-email?email={HttpUtility.UrlEncode(user.Email)}&token={HttpUtility.UrlEncode(token)}";
     }
 }
