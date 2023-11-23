@@ -11,6 +11,7 @@
 *.sln.docstates
 
 launchSettings.json
+ProfilePictures/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

@@ -1,0 +1,40 @@
+.profile-picture-skeleton {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: var(--skeleton);
+}
+.profile-label-skeleton {
+  width: 100px;
+  height: 1.7rem;
+  background-color: var(--skeleton);
+  margin: 0 auto;
+}
+.profile-paragraph-skeleton {
+  width: 200px;
+  height: 220px;
+  background-color: var(--skeleton);
+}
+.profile-social-urls {
+  width: 200px;
+  height: 150px;
+  background-color: var(--skeleton);
+}
+.profile-divider-skeleton {
+  height: 2px;
+  width: 200px;
+  background-color: var(--skeleton);
+}
+.profile-divider-skeleton,
+.profile-label-skeleton,
+.profile-paragraph-skeleton,
+.profile-picture-skeleton,
+.profile-social-urls {
+  animation: skeleton 1s ease infinite alternate;
+}
+
+@keyframes skeleton {
+  to {
+    opacity: 0.5;
+  }
+}

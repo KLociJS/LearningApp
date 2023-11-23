@@ -4,6 +4,7 @@ using NuGet.Protocol.Plugins;
 using WebAPI.Models.RequestDtos;
 using WebAPI.Models.RequestDtos.ArticleRequestDto;
 using WebAPI.Models.ResponseDto;
+using WebAPI.Models.ResponseDto.ArticleResponseDto;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
@@ -273,6 +274,64 @@ public class ArticleController : ControllerBase
         {
             Console.WriteLine(e);
             return StatusCode(500, "An error occured ont he server.");
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("get-articles-by-author/{authorName}")]
+    public async Task<IActionResult> GetArticleByAuthor(string authorName)
+    {
+        try
+        {
+            var getArticleResult = await _articleService.GetArticlesByAuthor(authorName);
+            if (!getArticleResult.Succeeded)
+            {
+                return BadRequest();
+            }
+
+            return Ok(getArticleResult.ArticlesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return StatusCode(500, "An error occured ont he server.");
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("article-full-text-search")]
+    public async Task<IActionResult> ArticleFullTextSearch(string? searchTerm)
+    {
+        try
+        {
+            var articleFullTextSearchResult = await _articleService.SearchArticleFullText(searchTerm);
+            return Ok(articleFullTextSearchResult.ArticleCardDtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+
+    [Authorize(Roles = "Admin,Moderator")]
+    [HttpPatch("un-publish-by-mod/{id}")]
+    public async Task<IActionResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
+    {
+        try
+        {
+            var unPublishByModResult = await _articleService.UnPublishArticleByMod(id, unPublishArticleByModRequestDto);
+            if (!unPublishByModResult.Succeeded)
+            {
+                return BadRequest(new UnPublishArticleByModResponseDto(){Message = unPublishByModResult.Message});
+            }
+
+            return Ok(new UnPublishArticleByModResponseDto() { Message = unPublishByModResult.Message });
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

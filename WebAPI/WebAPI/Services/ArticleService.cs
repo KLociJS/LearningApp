@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using NpgsqlTypes;
 using WebAPI.Contexts;
 using WebAPI.Models;
 using WebAPI.Models.RequestDtos;
@@ -490,7 +491,6 @@ public class ArticleService : IArticleService
 
         return UpdatePublishedArticleResult.Succeed();
     }
-    
     private async Task<List<ArticleTag>> GetTagsAsync(List<string> tagStrings, Article article)
     {
         var tags = new List<Tag>();
@@ -509,7 +509,6 @@ public class ArticleService : IArticleService
 
         return tags.Select(t=>new ArticleTag(){Article = article, Tag = t}).ToList();
     }
-
     private async Task RemoveUnusedTags()
     {
         var unusedTags = await _context.Tags
@@ -543,6 +542,7 @@ public class ArticleService : IArticleService
                     Title = a.Title,
                     Description = a.Description!,
                     Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
                     CreatedAt = a.CreatedAt,
                     Tags = await GetArticleTagsAsync(a)
                 });
@@ -597,6 +597,7 @@ public class ArticleService : IArticleService
             var articleDto = new ArticleDto()
             {
                 Author = article.Author.UserName,
+                AuthorProfilePicture = article.Author.ProfilePictureName,
                 CreatedAt = article.CreatedAt,
                 Id = article.Id,
                 Markdown = article.Markdown,
@@ -667,6 +668,7 @@ public class ArticleService : IArticleService
                             Name = sc.Name,
                             Articles = sc.Articles
                                 .OrderBy(a=>a.Title)
+                                .Where(a=>a.Published==true)
                                 .Select(a => new SidebarArticleDto() { Id = a.Id, Name = a.Title })
                                 .ToList()
                         }).ToList()
@@ -675,6 +677,125 @@ public class ArticleService : IArticleService
             };
 
             return GetPublishedArticleSidebarContentResult.Succeed(sidebarContentDto);
+        }
+    }
+    public async Task<GetArticleByAuthorResult> GetArticlesByAuthor(string authorName)
+    {
+        try
+        {
+            var author = await _context.Users.FirstOrDefaultAsync(u => u.UserName == authorName);
+            if (author == null)
+            {
+                return GetArticleByAuthorResult.AuthorNotFound();
+            }
+            var articles = await _context.Articles
+                    .Where(a=>a.Author==author && a.Published==true)
+                    .Include(a=>a.Author)
+                    .Include(a=>a.ArticleTags)
+                    .OrderBy(a => a.CreatedAt)
+                    .Take(8)
+                    .ToListAsync();
+            
+            var articlesDto = new List<ArticleCardDto>();
+
+            foreach (var a in articles)
+            {
+                articlesDto.Add(new ArticleCardDto()
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Description = a.Description!,
+                    Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
+                    CreatedAt = a.CreatedAt,
+                    Tags = await GetArticleTagsAsync(a)
+                });
+            }
+
+            return GetArticleByAuthorResult.Succeed(articlesDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<SearchArticleFullTextResult> SearchArticleFullText(string? searchTerm)
+    {
+        try
+        {
+            var articles = await _context.Articles
+                .Where(a=>a.Published==true)
+                .Where(a => a.SearchVector.Matches(EF.Functions.PlainToTsQuery("english", searchTerm)))
+                .Include(a=>a.Author)
+                .Include(a=>a.ArticleTags)
+                .ToListAsync();
+            
+            var articlesDto = new List<ArticleCardDto>();
+
+            foreach (var a in articles)
+            {
+                articlesDto.Add(new ArticleCardDto()
+                {
+                    Id = a.Id,
+                    Title = a.Title,
+                    Description = a.Description!,
+                    Author = a.Author.UserName,
+                    AuthorProfilePicture = a.Author.ProfilePictureName,
+                    CreatedAt = a.CreatedAt,
+                    Tags = await GetArticleTagsAsync(a)
+                });
+            }
+
+            return SearchArticleFullTextResult.Succeed(articlesDto);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
+    public async Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto)
+    {
+        try
+        {
+            var articleToUnPublish = await _context.Articles
+                .Include(a=>a.Author)
+                .Include(a=>a.ArticleTags)
+                .FirstOrDefaultAsync(a => a.Id == id);
+            if (articleToUnPublish == null)
+            {
+                return UnPublishArticleByModResult.ArticleNotFound();
+            }
+
+            articleToUnPublish.Published = false;
+
+            var articleTakeDownNotice = new ArticleTakeDownNotice()
+            {
+                Author = articleToUnPublish.Author,
+                Details = unPublishArticleByModRequestDto.Details,
+                Reason = unPublishArticleByModRequestDto.Reason
+            };
+
+            _context.ArticleTakeDownNotices.Add(articleTakeDownNotice);
+
+            var articleTags = articleToUnPublish.ArticleTags;
+            _context.ArticleTags.RemoveRange(articleTags);
+            
+            await _context.SaveChangesAsync();
+
+            await RemoveUnusedTags();
+            await _context.SaveChangesAsync();
+
+
+        return UnPublishArticleByModResult.Succeed();
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
     }
 }

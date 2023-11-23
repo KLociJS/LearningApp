@@ -5,6 +5,9 @@ const apiUrl = `${process.env.REACT_APP_API_URI}api/`;
 const authController = `${apiUrl}Auth`;
 const userController = `${apiUrl}User`;
 const articleController = `${apiUrl}Article`;
+const profileController = `${apiUrl}Profile`;
+const reportController = `${apiUrl}Report`;
+const noticeController = `${apiUrl}Notice`;
 
 //// ActionUrls
 // Auth
@@ -33,33 +36,70 @@ const getSharedArticle = `${articleController}/shared-article/`;
 const updateCategory = `${articleController}/update-category/`;
 const updatePublishedArticle = `${articleController}/update-published-article/`;
 const unpublishArticle = `${articleController}/unpublish-article/`;
+const getFeaturedArticlesByAuthor = `${articleController}/get-articles-by-author/`;
+const fullTextSearch = `${articleController}/article-full-text-search?searchTerm=`;
+const unPublishByMod = `${articleController}/un-publish-by-mod/`;
 
 //Sidebar
 const getSidebarContentUrl = `${articleController}/sidebar-content`;
 const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar-content/`;
+
+//Profile
+const postProfilePicture = `${profileController}/upload-profile-picture`;
+const getProfilePicture = `${process.env.REACT_APP_API_URI}api/profile-picture/`;
+const getProfileData = `${profileController}/get-profile-data/`;
+const patchBio = `${profileController}/update-bio`;
+
+//Report
+const postArticleReport = `${reportController}/post-report-article`;
+const getPendingReports = `${reportController}/pending`;
+const patchArticleReport = `${reportController}/patch-article-report/`;
+const getPendingArticleReportCount = `${reportController}/pending-report-count`;
+
+//Notice
+const getNotices = `${noticeController}/get-notices`;
+const getNotice = `${noticeController}/get-notice/`;
+const deleteNotice = `${noticeController}/delete-notice/`;
+const getUnreadNoticeCount = `${noticeController}/get-notice-count`;
 
 export {
   changeRole,
   checkAuth,
   confirmEmail,
   deleteArticle,
+  deleteNotice,
   deleteUser,
   featuredArticle,
+  fullTextSearch,
   getArticleById,
+  getFeaturedArticlesByAuthor,
+  getNotice,
+  getNotices,
+  getPendingArticleReportCount,
+  getPendingReports,
+  getProfileData,
+  getProfilePicture,
   getSharedArticle,
   getSharedSidebarContent,
   getSidebarContentUrl,
+  getUnreadNoticeCount,
   getUsers,
   login,
   logout,
+  patchArticleReport,
+  patchBio,
+  postArticleReport,
   postArticleUrl,
+  postProfilePicture,
+  profileController,
   publishArticle,
   register,
   requestPasswordChange,
   resetPassword,
   searchArticle,
+  unPublishByMod,
   unpublishArticle,
   updateArticleUrl,
   updateCategory,
-  updatePublishedArticle,
+  updatePublishedArticle
 };

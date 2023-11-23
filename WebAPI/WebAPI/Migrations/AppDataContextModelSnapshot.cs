@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using NpgsqlTypes;
 using WebAPI.Contexts;
 
 #nullable disable
@@ -161,6 +162,9 @@ namespace WebAPI.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Bio")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -171,6 +175,12 @@ namespace WebAPI.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("GitHubUrl")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkedInUrl")
+                        .HasColumnType("text");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -195,7 +205,13 @@ namespace WebAPI.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("ProfilePictureName")
+                        .HasColumnType("text");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TwitterUrl")
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -242,6 +258,13 @@ namespace WebAPI.Migrations
                     b.Property<bool?>("Published")
                         .HasColumnType("boolean");
 
+                    b.Property<NpgsqlTsVector>("SearchVector")
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("tsvector")
+                        .HasAnnotation("Npgsql:TsVectorConfig", "english")
+                        .HasAnnotation("Npgsql:TsVectorProperties", new[] { "Title", "Description", "Markdown" });
+
                     b.Property<Guid?>("SubCategoryId")
                         .HasColumnType("uuid");
 
@@ -258,9 +281,49 @@ namespace WebAPI.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("SearchVector");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("SearchVector"), "GIN");
+
                     b.HasIndex("SubCategoryId");
 
                     b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("AdditionalComments")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ReportedArticleId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ReporterId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportedArticleId");
+
+                    b.HasIndex("ReporterId");
+
+                    b.ToTable("ArticleReports");
                 });
 
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
@@ -282,6 +345,36 @@ namespace WebAPI.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ArticleTags");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTakeDownNotice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Unread")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.ToTable("ArticleTakeDownNotices");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -420,6 +513,25 @@ namespace WebAPI.Migrations
                     b.Navigation("SubCategory");
                 });
 
+            modelBuilder.Entity("WebAPI.Models.ArticleReport", b =>
+                {
+                    b.HasOne("WebAPI.Models.Article", "ReportedArticle")
+                        .WithMany()
+                        .HasForeignKey("ReportedArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WebAPI.Models.AppUser", "Reporter")
+                        .WithMany()
+                        .HasForeignKey("ReporterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ReportedArticle");
+
+                    b.Navigation("Reporter");
+                });
+
             modelBuilder.Entity("WebAPI.Models.ArticleTag", b =>
                 {
                     b.HasOne("WebAPI.Models.Article", "Article")
@@ -437,6 +549,17 @@ namespace WebAPI.Migrations
                     b.Navigation("Article");
 
                     b.Navigation("Tag");
+                });
+
+            modelBuilder.Entity("WebAPI.Models.ArticleTakeDownNotice", b =>
+                {
+                    b.HasOne("WebAPI.Models.AppUser", "Author")
+                        .WithMany("ArticleTakeDownNotices")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("WebAPI.Models.Category", b =>
@@ -471,6 +594,8 @@ namespace WebAPI.Migrations
 
             modelBuilder.Entity("WebAPI.Models.AppUser", b =>
                 {
+                    b.Navigation("ArticleTakeDownNotices");
+
                     b.Navigation("Articles");
 
                     b.Navigation("Categories");

@@ -1,0 +1,10 @@
+.unread {
+  font-weight: 500;
+  background-color: var(--primary-transparent);
+}
+
+.max-width,
+.max-width {
+  width: 100%;
+  text-align: left;
+}

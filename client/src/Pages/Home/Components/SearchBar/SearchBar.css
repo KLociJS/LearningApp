@@ -49,6 +49,14 @@
   text-decoration: none;
 }
 
+.search-result {
+  list-style: none;
+  border-bottom: 1px solid var(--primary);
+}
+.search-result:last-child {
+  border-bottom: none;
+}
+
 .search-result-article {
   background-color: var(--secondary);
   border-bottom: 1px solid var(--primary);

@@ -1,13 +1,24 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 
-import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
+import {
+  AiOutlineHome,
+  AiOutlineLogin,
+  AiOutlineMail,
+  AiOutlineUser,
+  AiOutlineUserAdd
+} from "react-icons/ai";
 import { BiNotepad } from "react-icons/bi";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { LuBrainCircuit } from "react-icons/lu";
 
 import { AuthBasedRender, RoleBasedRender } from "Components";
+import { useAuth } from "Hooks";
+import { getPendingArticleReportCount, getUnreadNoticeCount } from "_Constants/fetchUrl";
+import Notifier from "./Components/Notifier/Notifier";
+import NavSearchBar from "./Components/SearchBar/NavSearchBar";
 import useLogout from "./Hooks/useLogout";
+import useNotificationCount from "./Hooks/useNotificationCount";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -17,6 +28,14 @@ export default function NavBar() {
   const handleClick = () => setIsOpen(!isOpen);
 
   const { handleLogout } = useLogout();
+
+  const { user } = useAuth();
+
+  const pendingArticleReportCount = useNotificationCount(getPendingArticleReportCount, [
+    "Admin",
+    "Moderator"
+  ]);
+  const unreadNoticesCount = useNotificationCount(getUnreadNoticeCount, ["User"]);
 
   return (
     <nav className="navbar">
@@ -39,19 +58,30 @@ export default function NavBar() {
               </div>
             </NavLink>
           </li>
-          <RoleBasedRender allowedroles={["User"]}>
+          <RoleBasedRender allowedRoles={["User"]}>
             <li className="nav-item">
               <NavLink
                 to="/article"
                 className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
                 <div className="centered-label">
                   <BiNotepad className="mobile-icon" size={16} />
-                  My Notes
+                  Notes
                 </div>
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/notice"
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineMail className="mobile-icon" size={16} />
+                  Notices
+                </div>
+                <Notifier count={unreadNoticesCount} />
+              </NavLink>
+            </li>
           </RoleBasedRender>
-          <RoleBasedRender allowedroles={["Admin"]}>
+          <RoleBasedRender allowedRoles={["Admin"]}>
             <li className="nav-item">
               <NavLink
                 to="/users"
@@ -63,8 +93,32 @@ export default function NavBar() {
               </NavLink>
             </li>
           </RoleBasedRender>
-          <RoleBasedRender allowedroles={["User", "Admin", "Moderator", "Author"]}>
+          <RoleBasedRender allowedRoles={["Admin", "Moderator"]}>
+            <li className="nav-item">
+              <NavLink
+                to="/moderation-dashboard"
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineUserAdd className="mobile-icon" size={16} />
+                  Moderation
+                </div>
+                <Notifier count={pendingArticleReportCount} />
+              </NavLink>
+            </li>
+          </RoleBasedRender>
+          <NavSearchBar />
+          <RoleBasedRender allowedRoles={["User", "Admin", "Moderator", "Author"]}>
             <li className="nav-item nav-pc-align-right">
+              <NavLink
+                to={`profile/${user?.userName}`}
+                className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                <div className="centered-label">
+                  <AiOutlineUser className="mobile-icon" size={16} />
+                  Profile
+                </div>
+              </NavLink>
+            </li>
+            <li className="nav-item">
               <button className="nav-link" onClick={handleLogout}>
                 <div className="centered-label">
                   <AiOutlineUserAdd className="mobile-icon" size={16} />

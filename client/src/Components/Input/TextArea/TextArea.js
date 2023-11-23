@@ -7,7 +7,9 @@ export default function TextArea({
   setInputValue,
   error,
   setError,
-  isDisabled
+  isDisabled,
+  min = 0,
+  max = Infinity
 }) {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -19,7 +21,7 @@ export default function TextArea({
   };
 
   const isActive = isFocused || inputValue ? "active" : "";
-  const isRightLength = inputValue.length > 99 && inputValue.length < 401;
+  const isRightLength = inputValue.length >= min && inputValue.length <= max;
 
   return (
     <div className={`textarea-input-group ${error ? "error" : ""}`}>
@@ -35,7 +37,9 @@ export default function TextArea({
         disabled={isDisabled}
         autoComplete="off"
       />
-      <p className={`textarea-counter ${isRightLength ? "" : "error"}`}>{inputValue.length}/400</p>
+      <p className={`textarea-counter ${isRightLength ? "" : "error"}`}>
+        {inputValue.length}/{max}
+      </p>
     </div>
   );
 }

@@ -1,0 +1,41 @@
+.reported-article-title-skeleton {
+  height: 1.5rem;
+  width: 20rem;
+}
+.report-reason-skeleton {
+  height: 1.2rem;
+  width: 10rem;
+}
+.report-details-skeleton {
+  height: 5rem;
+  width: 30rem;
+}
+.report-reporter-link-skeleton {
+  height: 1rem;
+  width: 6rem;
+}
+.report-date-skeleton {
+  height: 1rem;
+  width: 8rem;
+}
+.report-button-skeleton {
+  height: 2rem;
+  width: 10rem;
+}
+
+.report-button-skeleton,
+.report-date-skeleton,
+.report-details-skeleton,
+.report-reason-skeleton,
+.report-reporter-link-skeleton,
+.reported-article-title-skeleton {
+  background-color: var(--skeleton);
+  border-radius: 5px;
+  animation: skeleton 1s ease infinite alternate;
+}
+
+@keyframes skeleton {
+  to {
+    opacity: 0.5;
+  }
+}

@@ -2,7 +2,7 @@ export default function ArticleLanding() {
   return (
     <section className="article-container">
       <header>
-        <h1 className="heading-1">Welcome to Learn notes!</h1>
+        <h1 className="heading-1">Welcome to Web Dev Notes!</h1>
         <p className="paragraph-light">
           Unlock the power of efficient note-taking and organization with our user-friendly app.
           Whether you{`'`}re a student, a professional, or just someone who loves to jot down ideas,

@@ -1,0 +1,31 @@
+.featured {
+  flex-basis: 99%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+@media screen and (max-width: 960px) {
+  .featured {
+    border-radius: 0;
+    flex-basis: 100%;
+  }
+}
+
+.featured-label {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.05rem;
+  color: var(--primary);
+}
+
+.no-available-articles {
+  color: var(--primary);
+  font-weight: 400;
+  margin: auto;
+}

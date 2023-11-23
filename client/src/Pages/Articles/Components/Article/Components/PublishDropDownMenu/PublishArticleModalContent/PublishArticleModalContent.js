@@ -36,6 +36,8 @@ export default function PublishArticleModalContent({ setShow }) {
         setInputValue={setDescription}
         error={descriptionError}
         isDisabled={isDisabled}
+        min={100}
+        max={400}
       />
       <button className="primary-button" onClick={publishArticleHandler} disabled={isDisabled}>
         Publish

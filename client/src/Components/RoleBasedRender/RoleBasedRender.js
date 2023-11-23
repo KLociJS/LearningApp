@@ -1,18 +1,13 @@
-import useAuth from 'Hooks/useAuth'
-import React from 'react'
+import useAuth from "Hooks/useAuth";
 
-export default function RoleBasedRender({children, allowedroles }) {
-    const { user } = useAuth()
+export default function RoleBasedRender({ children, allowedRoles }) {
+  const { user } = useAuth();
 
-    const hasAllowedRoles = user?.roles?.some(r=>allowedroles?.includes(r))
+  const hasAllowedRoles = user?.roles?.some((r) => allowedRoles?.includes(r));
 
-    if(!hasAllowedRoles){
-        return null
-    }
+  if (!hasAllowedRoles) {
+    return null;
+  }
 
-  return (
-    <>
-        {children}
-    </>
-  )
+  return <>{children}</>;
 }

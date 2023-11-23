@@ -148,6 +148,9 @@
 .editor-preview h1,
 .editor-preview h2,
 .editor-preview h3,
+.editor-preview h4,
+.editor-preview h5,
+.editor-preview h6,
 .editor-preview p,
 .editor-preview li {
   color: var(--primary);
@@ -159,12 +162,18 @@
 }
 .editor-preview h3,
 .editor-preview h2 {
-  margin: 1rem 0 1rem 0;
+  margin: 1.5rem 0 1rem 0;
 }
 
-.editor-preview p {
-  margin-bottom: 1.5rem;
+.editor-preview h4,
+.editor-preview h5,
+.editor-preview h6 {
+  margin: 1rem 0 0.5rem 0;
 }
+
+/* .editor-preview p {
+  margin-bottom: 1.5rem;
+} */
 .editor-preview pre {
   margin-bottom: 1.5rem;
 }
@@ -175,7 +184,6 @@
 
 .editor-preview ul {
   margin-left: 1rem;
-  margin-bottom: 2rem;
 }
 
 /* Typography*/
@@ -194,10 +202,13 @@
 .editor-preview h2 {
   font-weight: 400;
 }
+.editor-preview p {
+  overflow-wrap: break-word;
+}
 
 /* Code */
 .editor-preview pre {
-  margin: 2rem 0;
+  margin: 1rem 0;
 }
 pre div {
   border-radius: 15px !important;
@@ -308,4 +319,66 @@ blockquote > p {
 
 .artilce-landing-ul {
   margin: 1.5rem 0 0 2rem;
+}
+
+.markdown-note {
+  background-color: #d44242;
+}
+
+/* Custom components */
+/* Custom block quotes */
+[class$="quote-container"] {
+  display: flex;
+  margin: 1rem 0;
+  border-radius: 0 5px 5px 0;
+}
+[class$="quote-icon-container"] {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0.2rem;
+}
+[class$="quote-text"] {
+  padding: 0.25rem 0.5rem;
+  color: var(--primary);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+}
+.info-quote-container {
+  background-color: var(--info-transparent);
+}
+.info-quote-icon-container {
+  background-color: var(--info);
+}
+.info-icon {
+  font-size: 1.75rem;
+  color: var(--secondary);
+}
+
+.warning-quote-container {
+  background-color: var(--warning-transparent);
+}
+.warning-quote-icon-container {
+  background-color: var(--warning);
+}
+.warning-icon {
+  font-size: 1.75rem;
+  color: var(--secondary);
+}
+.warning-block-quote-text {
+  color: var(--primary);
+}
+
+/* Heading */
+.custom-heading {
+  display: flex;
+  align-items: center;
+}
+.heading-anchor {
+  display: flex;
+  margin-left: 0.25rem;
+  color: var(--primary-transparent);
+}
+.heading-anchor:hover {
+  color: var(--primary);
 }

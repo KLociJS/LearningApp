@@ -10,7 +10,6 @@ export default function PublishUpdateModal({ setShow }) {
   } = useUpdatePublishedArticle(setShow);
 
   const setTags = (tags) => {
-    console.log(tags);
     const tagArr = tags.split(",");
     dispatch({ type: "set_tags", payload: tagArr });
   };
@@ -37,6 +36,8 @@ export default function PublishUpdateModal({ setShow }) {
         setInputValue={setDescription}
         error={descriptionError}
         isDisabled={isDisabled}
+        min={100}
+        max={400}
       />
       {fetchError ? <p className="error-msg">{fetchError}</p> : null}
       <button className="primary-button" disabled={isDisabled} onClick={updatePublishHandler}>

@@ -27,4 +27,7 @@ public interface IArticleService
         PublishArticleDto publishArticleDto);
 
     Task<UnPublishArticleResult> UnPublishArticle(Guid id, string? userName);
+    Task<GetArticleByAuthorResult> GetArticlesByAuthor(string authorName);
+    Task<SearchArticleFullTextResult> SearchArticleFullText(string? searchTerm);
+    Task<UnPublishArticleByModResult> UnPublishArticleByMod(Guid id, UnPublishArticleByModRequestDto unPublishArticleByModRequestDto);
 }

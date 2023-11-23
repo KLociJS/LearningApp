@@ -1,0 +1,12 @@
+.article-card-tags-container {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+.article-card-tag {
+  color: var(--primary);
+  background-color: var(--primary-transparent);
+  padding: 0.2rem 0.4rem;
+  /* border: 1px solid var(--primary); */
+  border-radius: 10px;
+}
