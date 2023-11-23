@@ -30,15 +30,6 @@ public class ProfileService : IProfileService
                 return UploadProfilePictureResult.UserNotFound();
             }
 
-            if (user.ProfilePictureName != null)
-            {
-                var deleteImageResult = _imageService.DeleteImage(user.ProfilePictureName);
-                if (!deleteImageResult.Succeeded)
-                {
-                    return UploadProfilePictureResult.FailedToDeleteOldProfilePicture();
-                }
-            }
-
             var uploadImageResult = _imageService.UploadImage(profilePicture);
             if (!uploadImageResult.Succeeded)
             {

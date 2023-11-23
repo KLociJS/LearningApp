@@ -13,14 +13,16 @@
   gap: 1rem;
 
   border-radius: 5px;
-  box-shadow: 1px 1px 3px var(--shadow);
 }
 
 .profile-user-name-label,
 .profile-data-label {
-  text-align: center;
   color: var(--primary);
-  font-weight: 500;
+  font-weight: 400;
+  text-align: center;
+}
+.profile-data-label {
+  padding-left: 0.5rem;
 }
 .profile-data-label {
   padding-top: 1rem;

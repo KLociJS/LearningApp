@@ -148,6 +148,9 @@
 .editor-preview h1,
 .editor-preview h2,
 .editor-preview h3,
+.editor-preview h4,
+.editor-preview h5,
+.editor-preview h6,
 .editor-preview p,
 .editor-preview li {
   color: var(--primary);
@@ -159,12 +162,18 @@
 }
 .editor-preview h3,
 .editor-preview h2 {
-  margin: 1rem 0 1rem 0;
+  margin: 1.5rem 0 1rem 0;
 }
 
-.editor-preview p {
-  margin-bottom: 1.5rem;
+.editor-preview h4,
+.editor-preview h5,
+.editor-preview h6 {
+  margin: 1rem 0 0.5rem 0;
 }
+
+/* .editor-preview p {
+  margin-bottom: 1.5rem;
+} */
 .editor-preview pre {
   margin-bottom: 1.5rem;
 }
@@ -175,7 +184,6 @@
 
 .editor-preview ul {
   margin-left: 1rem;
-  margin-bottom: 2rem;
 }
 
 /* Typography*/
@@ -200,7 +208,7 @@
 
 /* Code */
 .editor-preview pre {
-  margin: 2rem 0;
+  margin: 1rem 0;
 }
 pre div {
   border-radius: 15px !important;
@@ -331,6 +339,10 @@ blockquote > p {
 }
 [class$="quote-text"] {
   padding: 0.25rem 0.5rem;
+  color: var(--primary);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
 }
 .info-quote-container {
   background-color: var(--info-transparent);

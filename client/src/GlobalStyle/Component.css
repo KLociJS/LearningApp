@@ -98,8 +98,9 @@
   gap: 1rem;
   padding: 2rem 3rem;
 
-  border-radius: 5px;
-  box-shadow: 3px 3px 10px 1px var(--shadow);
+  border-radius: 10px;
+  border: 1px solid var(--primary-light);
+  background-color: var(--secondary);
 }
 
 .card > *:first-child,
@@ -116,5 +117,49 @@
 @media screen and (max-width: 400px) {
   .card {
     padding: 1rem 1rem;
+  }
+}
+
+/* Icons */
+.delete-icon {
+  border: none;
+  color: var(--primary);
+  background-color: transparent;
+}
+.delete-icon:hover {
+  cursor: pointer;
+  color: var(--danger);
+}
+
+.edit-icon:hover {
+  cursor: pointer;
+}
+
+/* Table */
+.table {
+  width: 100%;
+  align-self: flex-start;
+  margin: 1rem;
+  border-collapse: collapse;
+  color: var(--primary);
+}
+
+.table-data {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--primary-transparent);
+}
+
+.table-row:hover {
+  box-shadow: 1px 1px 3px var(--shadow);
+  cursor: pointer;
+}
+
+@media screen and (max-width: 800px) {
+  .table {
+    margin: 0;
+  }
+  .table-data {
+    padding: 0.5rem;
   }
 }

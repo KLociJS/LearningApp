@@ -46,7 +46,7 @@ const getSharedSidebarContent = `${articleController}/get-shared-article-sidebar
 
 //Profile
 const postProfilePicture = `${profileController}/upload-profile-picture`;
-const getProfilePicture = `${process.env.REACT_APP_API_URI}profile-picture/`;
+const getProfilePicture = `${process.env.REACT_APP_API_URI}api/profile-picture/`;
 const getProfileData = `${profileController}/get-profile-data/`;
 const patchBio = `${profileController}/update-bio`;
 

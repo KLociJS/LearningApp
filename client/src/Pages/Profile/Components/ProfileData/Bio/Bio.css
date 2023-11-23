@@ -1,12 +1,11 @@
 .bio-text {
   color: var(--primary);
-  padding: 0.25rem;
+  padding: 0.5rem;
   border: 1px solid transparent;
 }
 .bio-container {
   position: relative;
   border-top: 1px solid var(--shadow);
-  flex: 2;
 }
 
 .edit-bio-icon {

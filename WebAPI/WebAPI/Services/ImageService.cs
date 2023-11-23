@@ -17,7 +17,9 @@ public class ImageService : IImageService
         try
         {
             var contentPath = _environment.ContentRootPath;
+            
             var path = Path.Combine(contentPath, "ProfilePictures");
+            Console.WriteLine(path);
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);

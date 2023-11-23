@@ -1,6 +1,8 @@
 import "./Users.css";
 
 import { Modal, ModalTriggerElement } from "Components";
+import { AiOutlineEdit } from "react-icons/ai";
+import { RiDeleteBinLine } from "react-icons/ri";
 import DeleteUserModalContent from "./Components/DeleteUserModal/DeleteUserModalContent";
 import RolesModalContent from "./Components/RolesModal/RolesModalContent";
 import UsersSkeleton from "./Components/Skeleton/UsersSkeleton";
@@ -15,36 +17,43 @@ export default function Users() {
 
   return (
     <>
-      <table className="table mt-2">
+      <table className="table">
         <thead>
           <tr className="table-row">
-            <th className="table-heading">Name</th>
-            <th className="table-heading table-hidden">Roles</th>
-            <th className="table-heading table-hidden">Email</th>
-            <th className="table-heading"></th>
+            <th className="table-data">Name</th>
+            <th className="table-data">Roles</th>
+            <th className="table-data table-hidden">Email</th>
+            <th className="table-data"></th>
+            <th className="table-data"></th>
           </tr>
         </thead>
         <tbody>
           {users.map((u) => (
             <tr className="table-row" key={u.id}>
               <td className="table-data">{u.userName}</td>
-              <td className="table-data table-hidden">{u.roles.join(", ")}</td>
-              <td className="table-data table-hidden">{u.email}</td>
+              <td className="table-data">{u.roles.join(", ")}</td>
+              <td className="table-data table-hidden max-width">{u.email}</td>
               <td className="table-data">
-                <div className="table-button-container">
-                  <Modal
-                    modalContent={<RolesModalContent user={u} setUsers={setUsers} />}
-                    triggerElement={
-                      <ModalTriggerElement text="Edit Role" className="secondary-button" />
-                    }
-                  />
-                  <Modal
-                    modalContent={<DeleteUserModalContent user={u} setUsers={setUsers} />}
-                    triggerElement={
-                      <ModalTriggerElement text="Delete User" className="warning-button ml-2" />
-                    }
-                  />
-                </div>
+                <Modal
+                  modalContent={<RolesModalContent user={u} setUsers={setUsers} />}
+                  triggerElement={
+                    <ModalTriggerElement
+                      text={<AiOutlineEdit className="edit-icon" />}
+                      className="modal-button"
+                    />
+                  }
+                />
+              </td>
+              <td className="table-data">
+                <Modal
+                  modalContent={<DeleteUserModalContent user={u} setUsers={setUsers} />}
+                  triggerElement={
+                    <ModalTriggerElement
+                      text={<RiDeleteBinLine className="delete-icon" />}
+                      className="modal-button"
+                    />
+                  }
+                />
               </td>
             </tr>
           ))}

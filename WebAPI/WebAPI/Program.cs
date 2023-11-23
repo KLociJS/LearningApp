@@ -174,7 +174,8 @@ app.UseCors(MyAllowSpecificOrigins);
 app.UseStaticFiles(new StaticFileOptions()
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "ProfilePictures")),
-    RequestPath = "/profile-picture"
+    RequestPath = "/api/profile-picture",
+    ServeUnknownFileTypes = true
 });
 
 app.UseAuthentication();

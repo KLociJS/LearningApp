@@ -1,3 +1,4 @@
+import "../../GlobalStyle/Component.css";
 import NoticeModal from "./Components/NoticeModal/NoticeModal";
 import useNotice from "./Hooks/useNotice";
 import "./Notice.css";
@@ -9,13 +10,13 @@ export default function Notice() {
   }
 
   return (
-    <table className="notice-table">
+    <table className="table">
       <thead>
         <tr>
-          <th className="notice-table-data"></th>
-          <th className="notice-table-data">Sender</th>
-          <th className="notice-table-data">Subject</th>
-          <th className="notice-table-data"></th>
+          <th className="table-data"></th>
+          <th className="table-data">Sender</th>
+          <th className="table-data">Subject</th>
+          <th className="table-data"></th>
         </tr>
       </thead>
       <tbody>

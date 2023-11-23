@@ -37,8 +37,8 @@ import MarkdownEditorSkeleton from "Components/MarkdownEditor/MarkdownEditorSkel
 import Article from "Pages/Articles/Components/Article/Article";
 import ArticleLanding from "Pages/Articles/Components/ArticleLanding/ArticleLanding";
 import FullTextSearch from "Pages/FullTextSearch/FullTextSearch";
-import Notice from "Pages/Message/Notice";
 import ModerationDashBoard from "Pages/ModerationDashBoard/ModerationDashBoard";
+import Notice from "Pages/Notices/Notice";
 import Profile from "Pages/Profile/Profile";
 import SharedArticleDashBoard from "Pages/SharedArticleDashBoard/SharedArticleDashBoard";
 
