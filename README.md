@@ -1,38 +1,41 @@
-# Learning app
+# Web Dev Notes
 
 ## Description
-Learning app provides easy to use markdown editor to write notes or articles.
-These notes can be categorized by topic, category and subcategory, the last two are optional.
-Which can be updated, deleted or published.
-App is about learning by explaining certain topics in an expert manner and sharing with others.
+Web Dev Notes provides markdown editor to write notes or articles.
+These notes can be categorized by topic, category and subcategory, the last is optional.
+Which can be edited, deleted or published.
 
 ## Features
-### Completed:
-- Role based authentication
-- User bashboard for admins
-- Note editor with live preview
-- Note CRUD operations
-- Sidebar for notes in a fodler like structure
-- Specify category and subcategory on creation optionally
+- Role based authentication (User,Author,Moderator,Admin)
+    - User: Note and crut operations, profile, abiliti to report articles
+    - Author: Share notes as articles
+    - Moderator: Moderation of articles
+    - Admin: Managing users, roles
+- Note editor
+- Notes CRUD operations
+- Share notes as articles
+- Article moderation
+- User profile
+- Moderation notices
+- Article search
 
-### Ongoing:
-- Change category, subcategory
-- Specify topic
-- Publish note as article
-- Moderation features
-- Article advanced search
+## Tech stack:
+ASP.NET Web API
+React
+PostgreSQL
+Docker
+Aws
+Github Actions
+Github Projects
 
 ### Live website:
-[visit live](http://52.57.115.197/login)
+[visit live](http://52.57.115.197)
 
 
-### Usage:
-#### Notes page:
-![](https://i.imgur.com/KTjCE5D.png)
-
-#### Editor page:
-![](https://i.imgur.com/vxddXpn.png)
-
-#### Saving articles:
-![](https://i.imgur.com/7RVk6dx.png)
-
+### Preview:
+#### Home
+![](https://i.imgur.com/lTN6rKE.png)
+#### Notes
+![](https://i.imgur.com/ZidVQuk.png)
+#### Profile
+![](https://i.imgur.com/tHqf7vm.png)
