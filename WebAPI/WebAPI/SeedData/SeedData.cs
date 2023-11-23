@@ -15,15 +15,19 @@ public class SeedData
             await CreateRole("Author", roleManager);
             await CreateRole("User", roleManager);
         }
-
         if (!userManager.Users.Any())
         {
             var adminUser = new AppUser()
             {
-                UserName = "Admin",
+                UserName = Environment.GetEnvironmentVariable("ADMIN_USER"),
                 Email = "LapAdmin@lap.com"
             };
-            await userManager.CreateAsync(adminUser, "Abcd@1234");
+            var password = Environment.GetEnvironmentVariable("ADMIN_PASSWORD");
+            Console.WriteLine("Creating admin user");
+            Console.WriteLine($"Username: {adminUser.UserName}");
+            Console.WriteLine($"Email: {adminUser.Email}");
+            Console.WriteLine($"Password: {password}");
+            await userManager.CreateAsync(adminUser, password);
             await userManager.AddToRolesAsync(adminUser, new[] { "Admin", "Moderator", "Author", "User" });
         }
     }

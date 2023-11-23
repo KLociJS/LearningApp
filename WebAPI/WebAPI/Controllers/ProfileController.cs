@@ -33,7 +33,7 @@ public class ProfileController : ControllerBase
 
             if (!uploadPictureResult.Succeeded)
             {
-                return BadRequest();
+                return BadRequest(new { uploadPictureResult.Message});
             }
 
             return Ok(new UploadProfilePictureResponseDto(){ImageName = uploadPictureResult.ProfilePictureName!});
